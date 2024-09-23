@@ -1,0 +1,503 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Recursion - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly-Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Railway Pattern</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Monads</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</div></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Solutions to Exercises</div></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html" class="active"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.2.</strong> First-Class Functions</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.3.</strong> Lambda Calculus</div></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="app:recap-recursion"><a class="header" href="#app:recap-recursion">Recursion</a></h1>
+<h2 id="recursion"><a class="header" href="#recursion">Recursion</a></h2>
+<p>Something is recursive if it is defined using itself. A simple (albeit
+hardly useful and contrived) example is the following function:</p>
+<pre><code class="language-python">def f(n):
+    return f(n + 1)
+</code></pre>
+<p>As defined, the body of function <code>f</code>{.python} invokes itself. In other
+words, it is <em>defined using itself</em>. Readers who are unconvinced that
+<code>f</code>{.python} is not a recursive definition may see that it is analogous
+to the following mathematical definition, which is clearly recursive:
+$$f(n) = f(n + 1) = f(n + 2) = f(n + 3) = \dots$$</p>
+<p>Data types can also be defined recursively:</p>
+<pre><code class="language-python">from abc import ABC
+from dataclasses import dataclass
+
+class SinglyLinkedList(ABC):
+    pass
+
+class Empty(SinglyLinkedList):
+    pass
+
+@dataclass
+class Node(SinglyLinkedList):
+    head: object
+    tail: SinglyLinkedList
+</code></pre>
+<p>Likewise, you can see that the <code>SinglyLinkedList</code> class has a subclass
+<code>Node</code> which itself holds another <code>SinglyLinkedList</code>. This makes
+<code>SinglyLinkedList</code> a recursive data structure.</p>
+<p>The core idea we present in this section is that we can write recursive
+functions by thinking <em>structural-inductively</em>.</p>
+<h3 id="induction"><a class="header" href="#induction">Induction</a></h3>
+<p>We shall begin by describing a <em>proof by induction</em> for a statement over
+the natural numbers. The principle of a proof by induction is as
+follows. Given a <em>predicate</em> $P(n)$ over the natural numbers, if we can
+show:</p>
+<ol>
+<li>
+<p>$P(0)$ is true</p>
+</li>
+<li>
+<p>$\forall n \in \mathbb{N}.~P(n)\to P(n + 1)$ (for all natural
+numbers $n$, $P(n)$ implies $P(n + 1)$)</p>
+</li>
+</ol>
+<p>Then $P(n)$ is true for all natural numbers $n$. This works because of
+<em>modus ponens</em>:</p>
+<p>::: center
+::: prooftree
+[[Modus Ponens]q]{.smallcaps}
+:::
+:::</p>
+<p><em>Modus Ponens</em> codifies the following idea: if a proposition $p$ is
+true, and if $p$ implies $q$, then $q$ is true. To show how this allows
+proofs by induction, we see that we have a proof of $P(0)$. Since we
+also know that $P(0)$ implies $P(0 + 1) = P(1)$, by <em>modus ponens</em>,
+$P(1)$ is true. We also know that $P(1)$ implies $P(2)$, and since from
+earlier $P(1)$ is true, by <em>modus ponens</em>, $P(2)$ is also true, and so
+on.</p>
+<p>Let us attempt to write a proof by induction. We start with an
+implementation of the factorial function, then prove that it is correct:</p>
+<pre><code class="language-python">def factorial(n):
+    return 1 if not n else \
+           n * factorial(n - 1)
+</code></pre>
+<p>::: proposition
+Let $P(n)$ be the proposition that <code>factorial(n)</code>{.python} returns $n!$.
+Then, for all natural numbers $n$, $P(n)$ is true.
+:::</p>
+<p>::: proof
+<em>Proof.</em> We prove $P(0)$ and $\forall n\in\mathbb{N}.~P(n)\to P(n + 1)$
+separately.<br />
+<strong>Basis</strong>. Trivial. $0! = 1$. Furthermore, by definition,
+<code>factorial(0)</code>{.python} returns <code>1</code>{.python}. In other words, $P(0)$ is
+true.<br />
+<strong>Inductive</strong>. Suppose for some natural number $k$,
+<code>factorial(k)</code>{.python} returns
+$k! = k \times (k - 1) \times \dots \times 1$. By definition of
+<code>factorial</code>{.python}, <code>factorial(k + 1)</code>{.python} returns
+<code>(k + 1) * factorial(k)</code>{.python}. By our supposition, this evaluates to
+$(k + 1) \times k!$, which is, by definition, $(k + 1)!$. Thus, if for
+some $k$, <code>factorial(k)</code>{.python} returns $k!$, then
+<code>factorial(k + 1)</code>{.python} returns $(k + 1)!$. In other words,
+$\forall k\in\mathbb{N}.~P(k) \to P(k + 1)$.<br />
+As such, since we have proven $P(0)$ and
+$\forall k\in\mathbb{N}.~P(k)\to P(k+1)$, we have proven
+$\forall n\in\mathbb{N}.~P(n)$ by induction. ◻
+:::</p>
+<h3 id="recursion-via-inductive-reasoning"><a class="header" href="#recursion-via-inductive-reasoning">Recursion via Inductive Reasoning</a></h3>
+<p>Naturally (haha), the next question to ask would be, "how do we make use
+of induction to write recursive functions?" As above, the recipe for a
+proof by induction involves (broadly) two steps:</p>
+<ol>
+<li>
+<p>Proof of the basis, e.g. $P(0)$</p>
+</li>
+<li>
+<p>The inductive proof, e.g. $P(k)\to P(k + 1)$. Typically, the
+inductive step is completed by <strong>supposing</strong> $P(k)$ for some $k$,
+and showing $P(k + 1)$.</p>
+</li>
+</ol>
+<p>We can write recursive functions similarly by providing:</p>
+<ol>
+<li>
+<p>Non-recursive computation for the result of the base-case, e.g.
+$f(0)$;</p>
+</li>
+<li>
+<p>Recursive computation of $f(k + 1)$ based on the result of $f(k)$
+<strong>assuming</strong> that $f(k)$ gives the correct result.</p>
+</li>
+</ol>
+<p>However, induction doesn't only work for the natural numbers. To see
+this, let us start with a simple description of the natural numbers:
+$$\begin{aligned}
+0 &amp;\in \mathbb{N} &amp;&amp;\triangleright~0\text{ is a natural number}\
+n \in \mathbb{N} &amp;\to S(n) \in \mathbb{N} &amp;&amp; \triangleright~\text{if }n \text{ is a natural number then it has a successor that is also a natural number}
+\end{aligned}$$ In our usual understanding of the natural numbers,
+$S(n) = n + 1$.</p>
+<p>A formulation of the natural numbers in Python might be the following:</p>
+<pre><code class="language-python">class Nat: pass
+
+@dataclass
+class Zero(Nat): pass
+
+@dataclass
+class Succ(Nat):
+    pred: Nat
+</code></pre>
+<p>In which case, the number $3$ can be written as follows:</p>
+<pre><code class="language-python">three = Succ(Succ(Succ(Zero())))
+</code></pre>
+<p>Let us attempt to define addition over the natural numbers as we have
+formulated above, recursively:</p>
+<pre><code class="language-python">&gt;&gt;&gt; three = Succ(Succ(Succ(Zero())))
+&gt;&gt;&gt; two = Succ(Succ(Zero()))
+&gt;&gt;&gt; add(three, two)
+Succ(pred=Succ(pred=Succ(pred=Succ(pred=Succ(pred=Zero())))))
+</code></pre>
+<p>We might decide to perform recursion on the first addend (doing so on
+the second addend is fine as well). In computing $m + n$ there are two
+possibilities for what $m$ could be: $0$, or the successor of some
+natural number $k$. The first case is straightforward since $0$ itself
+is non-recursive (see the definition of <code>Zero</code> above), and $0 + n$ is
+just $n$. In the other case of $m + n$ where $m = S(k)= k + 1$ for some
+$k$, assuming (via our inductive hypothesis) that <code>add(k, n)</code>{.python}
+correctly gives $k + n$, then $m + n$ is $(k + n) + 1$ which can be done
+by <code>Succ(add(k, n))</code>{.python}. Therefore, we arrive at the following
+solution:</p>
+<pre><code class="language-python">def add(m, n):
+    return n if m == Zero() else \
+           Succ(add(m.pred, n))
+</code></pre>
+<p>Using <em>structural pattern matching</em> which we present in
+<a href="#ch:types">[ch:types]</a>{reference-type="autoref"
+reference="ch:types"}, we may also write the following definition which
+might be more intuitive:</p>
+<pre><code class="language-python">def add(m, n):
+    match m:
+        case Zero(): return n
+        case Succ(k): return Succ(add(k, n))
+</code></pre>
+<p>At this point you might be wondering why we had given such an odd
+formulation of the natural numbers in Python, when we could have used
+the <code>int</code>{.python} type instead (we totally could). One core idea we
+would like to make apparent in this formulation, is that recursion via
+inductive reasoning can be done over the <em>structure</em> of data. Our
+formulation shows that natural numbers are recursive data structures,
+where the successor of a natural number has a predecessor who is also,
+likewise, a natural number. This should make writing recursive functions
+over other kinds of recursive data structures not too far of a leap from
+writing recursive functions over natural numbers. To show this, consult
+our <code>SinglyLinkedList</code> data structure from above before we proceed to
+write recursive functions over them using inductive reasoning.</p>
+<p>First, we shall write a function that appends an element to the end of a
+singly-linked list.</p>
+<pre><code class="language-python">&gt;&gt;&gt; append(1, Empty())
+Node(head=1,tail=Empty())
+&gt;&gt;&gt; append(2, append(1, Empty()))
+Node(head=1,tail=Node(head=2,tail=Empty()))
+</code></pre>
+<p>We can perform recursion over the structure of the list. There are two
+possible structures of the list, the first being the empty list, and the
+second being a node of a head element and a tail list. In the former we
+append to an empty list, which should give the singleton. Note once
+again that because the empty list is non-recursive, our solution for
+appending to the empty list likewise requires no recursion. For the
+second case of $[e_1, e_2,\dots,e_n]$ (shorthand for
+$\mathtt{Node}(e_1, [e_2,\dots,e_n])$), assume that our solution is
+correct for the substructure of the <code>Node</code>, i.e.
+$\mathtt{append}(x, [e_2,\dots,e_n]) = [e_2,\dots,e_n, x]$. Our goal is
+to have
+$$\mathtt{append}(x, \mathtt{Node}(e_1, [e_2,\dots,e_n])) = \mathtt{Node}(e_1, [e_2,\dots,e_n,x])$$
+Observe that: $$\begin{aligned}
+\mathtt{append}(x, \mathtt{Node}(e_1, [e_2,\dots,e_n])) &amp;= \mathtt{Node}(e_1, [e_2,\dots,e_n,x])\
+&amp;= \mathtt{Node}(e_1, \mathtt{append}(x, [e_2,\dots,e_n]))
+\end{aligned}$$</p>
+<p>Therefore, we can write:</p>
+<pre><code class="language-python">def append(x, ls):
+    if ls == Empty():
+        return Node(x, Empty())
+    return Node(ls.head, append(x, ls.tail))
+
+# Using structural pattern matching:
+def append2(x, ls):
+    match ls:
+        case Empty():
+            return Node(x, Empty())
+        case Node(e1, xs):
+            return Node(e1, append2(x, xs))
+</code></pre>
+<p>We shall give another example by writing list reversals recursively,
+going straight into our derivation. Reversing the empty list gives the
+empty list. For nonempty lists our goal is to have
+$\mathtt{reverse}([e_1,\dots,e_n])=[e_n,\dots,e_1]$. Assuming that
+$\mathtt{reverse}([e_2,\dots,e_n])=[e_n,\dots,e_2]$, we can see that
+$[e_n,\dots,e_1] = \mathtt{append}(e_1, [e_n,\dots,e_2])$, giving us the
+following formulation:</p>
+<pre><code class="language-python">def reverse(ls):
+    if ls == Empty():
+        return Empty()
+    return append(ls.head, reverse(ls.tail))
+
+# Using structural pattern matching:
+def reverse2(ls):
+    match ls:
+        case Empty(): return Empty()
+        case Node(e1, xs): return append(e1, reverse(xs))
+</code></pre>
+<p>By this point you should be able to see that recursion can be done via
+the following based on the structure of the data:</p>
+<ol>
+<li>
+<p>If the data is non-recursive, provide a non-recursive computation
+that computes the result directly</p>
+</li>
+<li>
+<p>If the data is recursive, recursively solve the problem on the
+substructure(s) of the data (e.g. <code>pred</code> or <code>tail</code> of the natural
+number or list), and include its result in your main result</p>
+</li>
+</ol>
+<p>You should be well aware that data structures may be more complex. For
+example, solving a problem for a structure may require more than one
+recursive calls, one non-recursive call and one recursive call, etc. To
+make this apparent, let us look at a formulation of a binary tree of
+integers:</p>
+<pre><code class="language-python">class Tree: pass
+
+@dataclass
+class EmptyTree(Tree): pass
+
+@dataclass
+class TreeNode(Tree):
+    left: Tree
+    val: int
+    right: Tree
+</code></pre>
+<p>Now let us attempt to write a function that sums all integers in the
+tree. Again there are two possible structures a tree can have: the first
+being the empty tree, which has sum 0. For tree nodes, we have two
+subtrees, <code>left</code> and <code>right</code>, from whom we may recursively obtain their
+sums using our function. Then, the sum of the entire tree is just the
+total of the value at the node, the sum of the left subtree and the sum
+of the right subtree:</p>
+<pre><code class="language-python">def sum_tree(t):
+    if t == EmptyTree():
+        return 0
+    return t.val + sum_tree(t.left) + sum_tree(t.right)
+
+# Structural pattern matching
+def sum_tree(t):
+    match t:
+        case EmptyTree(): return 0
+        case TreeNode(l, v, r):
+            return sum_tree(l) + v + sum_tree(r)
+</code></pre>
+<p>Clearly, our recursive case can make more than one recursive call.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../recap/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../recap/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
