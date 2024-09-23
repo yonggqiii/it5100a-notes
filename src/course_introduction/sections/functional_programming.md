@@ -44,9 +44,7 @@ reasoning about any of the variables, objects and functions incredibly
 simple.
 
 Overall, immutability forces us to be disciplined with **state**.
-Contrast this with using **mutable** data structures and variables.
-
-Observe the following program fragment:
+Contrast this with using **mutable** data structures and variables, such as in the following program fragment:
 
 ``` python
 # Python
@@ -150,12 +148,8 @@ print(x) # [1, 2, 3]
 ```
 ## Recursion
 
-You have seen this beforeuse *recursive* functions to simulate
-loops.[^2] Let's look at an example of a perfectly reasonable way to sum
-the numbers of a 2-dimensional list:
-
-The `sum2D` function
-sums the integers in a 2-dimensional list using nested `for` loops:
+You have seen this before&mdash;use *recursive* functions to simulate loops.[^2] Let's look at an example of a perfectly reasonable way to sum
+the numbers of a 2-dimensional list, using the `sum2D` function:
 
 ``` python
 # Python
@@ -166,17 +160,14 @@ def sum2D(ls):
       total += num
   return total
 ```
-:::
 
 Loops are typically useful for its side-effects, primarily mutation.
-Looking at the (nested) loop in
-[\[eg:nestedloopsum2D\]](#eg:nestedloopsum2D){reference-type="autoref"
-reference="eg:nestedloopsum2D"}, a bunch of mutation occurs: the
-reassignments to `row`{.python} and `num`{.python} (the loop variables),
-and the mutation of the `total`{.python} variable in the loop body. In
+Looking at the (nested) loop above, a bunch of mutation occurs: the
+reassignments to `row` and `num` (the loop variables),
+and the mutation of the `total` variable in the loop body. In
 an environment where mutation is impossible, can we write the same
 program? Yes! Like we have said, rely on **recursion**! An example
-recursive formulation of the `sum2D`{.python} function from above would
+recursive formulation of the `sum2D` function from above would
 be like so:
 
 ``` python
@@ -191,7 +182,7 @@ def sum2D(ls):
 ```
 
 Again, the behaviour of the program has not changed: the
-`sum2D`{.python} function still produces the correct output given any
+`sum2D` function still produces the correct output given any
 2-dimensional list of integers. However, our function is still pure and
 does not mutate **any** data structure or variable.
 
@@ -201,14 +192,12 @@ recursive. Take the example of obtaining the preorder of a binary tree.
 Binary trees are recursive data structures, if formulated the following
 way:
 
-1.  A (nonempty) tree is either:
-
-    -   A node with a value, a left tree and a right tree; OR
-
-    -   A leaf with just a value
+> A (nonempty) tree is either:
+>    - A node with a value, a left tree and a right tree; OR
+>    - A leaf with just a value
 
 As you can see, the definition of a node contains (sub)trees, making it
-a recursive data structure[^3]. Then, operations on trees can often be
+a recursive data structure[^3]. Therefore, operations on trees can often be
 expressed elegantly using recursion. For example, the specification of
 getting the *preorder* of a tree can be like so:
 
@@ -270,11 +259,9 @@ def myTree : Tree Nat := .node 1 (.leaf 2) (.leaf 3)
 ```
 
 The primary reason for this is that recursive functions can often be
-reasoned about via *induction*: $$\begin{prooftree}
-    \hypo{P(0)}
-    \hypo{\forall k\in\mathbb{N}:P(k)\to P(k + 1)}
-    \infer2{\forall n \in \mathbb{N}: P(n)}
-  \end{prooftree}$$
+reasoned about via *induction*: 
+
+\\[\frac{P(0)~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Modus Ponens}\\]
 
 We have seen that factorial can be written recursively, and in fact we
 can prove its correctness (in a quite straightforward manner) via
@@ -294,7 +281,6 @@ Adhering strictly to type information **eliminates type-related bugs**
 and makes functions **transparent**. Perhaps most importantly, adherence
 to type information can be verified by a program.
 
-::: exampleT
 Observe the following program fragment.
 
 ``` python
@@ -304,17 +290,13 @@ x: int = 123
 print(x + 5)
 ```
 
-If we fix the type of `x`{.python} to `int`{.python} and strictly adhere
-to it, then the last line containing `x + 5`{.python} will definitely
-not cause a `TypeError`{.python}, because we know that adding any number
+If we fix the type of `x` to `int` and strictly adhere
+to it, then the last line containing `x + 5` will definitely
+not cause a `TypeError`, because we know that adding any number
 to an integer will always work.
-:::
 
 Contrast the above with the following example.
 
-::: exampleT
-[]{#eg:lousysafediv label="eg:lousysafediv"} Observe the following
-program fragment.
 
 ``` python
 # Python
@@ -329,27 +311,26 @@ print(z)
 ```
 
 If we do not adhere to typing information strictly, no one knows that
-the `safe_div`{.python} function could return `None`{.python}! In such a
-scenario, if the user enters `0`{.python} for `y`{.python}, the
-expression `safe_div(x, y) + 1`{.python} would give a
-`TypeError`{.python}!
-:::
+the `safe_div` function could return `None`! In such a
+scenario, if the user enters `0` for `y`, the
+expression `safe_div(x, y) + 1` would give a
+`TypeError`!
 
 Function purity and adhering to types forces functions to be
 **transparent in effects**. That is because if we want our pure function
 to perform some effectful computation (such as potentially returning
-`None`{.python}), we must return an object that encapsulates this
+`None`), we must return an object that encapsulates this
 behaviour; coupled with adhering to types, we must assign the correct
-type for the output of the functionthe type of the object which
-encapsulates this behaviourmaking the function's effects obvious. To
-improve [\[eg:lousysafediv\]](#eg:lousysafediv){reference-type="autoref"
-reference="eg:lousysafediv"}, let us try to create a data structure
-`Maybe`{.python} that is one of two things: `Just`{.python} a value, or
-`Nothing`{.python}. We can express this as dataclasses in Python (you
-may ignore the stuff involving `typing`{.python} and `Generic`{.python}s
+type for the output of the function&mdash;the type of the object which
+encapsulates this behaviour&mdash;making the function's effects obvious. 
+
+To improve the program written earlier, let us try to create a data structure
+`Maybe` that is one of two things: `Just` a value, or
+`Nothing`. We can express this as dataclasses in Python (you
+may ignore the stuff involving `typing` and `Generic`s
 for now, they will make sense later).
 
-``` python
+```python
 # Python 3.11
 from dataclasses import dataclass
 from typing import Generic, TypeVar, Any
@@ -369,8 +350,8 @@ class Nothing(Maybe[Any], Generic[T]):
     pass
 ```
 
-Now we can amend our `safe_div`{.python} function appropriately to
-return a `Maybe`{.python} value:
+Now we can amend our `safe_div` function appropriately to
+return a `Maybe` value:
 
 ``` python
 def safe_div(num: int, den: int) -> Maybe[int]:
@@ -381,16 +362,16 @@ def safe_div(num: int, den: int) -> Maybe[int]:
 Notice two things: 1) the function is pure, and does nothing other than
 receive inputs and returns output 2) the function's type signature makes
 it incredibly obvious that the function will *maybe* produce an
-`int`{.python}. Therefore, users of this function are *forced* to handle
-the case where the function produces `Nothing`{.python}.
+`int`. Therefore, users of this function are *forced* to handle
+the case where the function produces `Nothing`.
 
-From this, we may proceed to use the `safe_div`{.python} function as
+From this, we may proceed to use the `safe_div` function as
 before, except that instead of directly assigning
-`z = safe_div(x, y) + 1`{.python}, we must first call
-`safe_div`{.python} and handle the two cases: one where some integer was
+`z = safe_div(x, y) + 1`, we must first call
+`safe_div` and handle the two cases: one where some integer was
 returned, the other where nothing was.
 
-``` python
+```python
 x: int = int(input())
 y: int = int(input())
 z: Maybe[int]
@@ -412,8 +393,8 @@ can write proof-carrying code and theorems (mathematical theorems or
 theorems about properties of code itself). An example is as follows,
 where theorems about the additive identity and the commutativity of
 addition of numbers can be used to show that concatenating a vector
-(like an immutable list) of length $n$ to one of length $k$ gives a
-vector of length $n + k$.
+(like an immutable list) of length \\(n\\) to one of length \\(k\\) gives a
+vector of length \\(n + k\\).
 
 ``` lean
 -- Lean 4
@@ -437,14 +418,12 @@ def Vect.concat {α : Type} {n k : Nat} :
 You might have seen in IT5001 that in some languages, functions are
 *first-class* objects. This gives rise to higher-order functions which
 support **code re-use**. *Higher-order functions* can receive functions
-as arguments and/or return functions as output. What follows is an
-example of both.
+as arguments and/or return functions as output. 
 
-::: exampleT
-In the following program fragment, the `map`{.python} method of
-`Tree`{.python}s receive a function and returns a new tree with the
+In the following program fragment, the `map` method of
+`Tree`s receive a function and returns a new tree with the
 function applied to all of its values. We then also *curry* the
-`add`{.python} function so that it receives the first addend, then
+`add` function so that it receives the first addend, then
 returns a function that receives the second addend and returns the sum.
 This way, adding 2 to the values of a tree is as simple as several
 function calls:
@@ -479,20 +458,21 @@ def add(x):
 x = Node(1, Leaf(2), Leaf(3))
 print(x.map(add(2))) # Node(3, Leaf(4), Leaf(5))
 ```
-:::
 
 Functional programming languages emphasize this fact and makes it easy
 and ergonomic to define higher-order functions. For example, in Haskell,
 functions are automatically curried, and has higher-order functions like
-`map`{.haskell} built into the standard library. This makes, for
+`map` built into the standard library. This makes, for
 example, adding two to elements of a list, straightforward:
 
-``` haskell
--- Haskell
+```haskell
 main :: IO ()
 main = do
   let x = [1, 2, 3]
   print (map (+2) x) -- [3, 4, 5]
+
+class Eq a where
+    (==) :: a -> a -> Bool
 ```
 
 ### So what?
@@ -548,3 +528,7 @@ For this course, you will need the following software:
 [^2]: If you have not, you may want to read
     [a recap on recursion](../../recap/sections/recursion.md) before continuing.
 
+[^3]: (Singly-linked) lists are also recursive data structures. To see
+    this, look at our definition of binary trees, and remove one subtree
+    in the definition of a node (therefore, a node has a value and one
+    subtree). This is now a singly-linked list.

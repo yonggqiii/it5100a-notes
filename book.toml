@@ -6,4 +6,6 @@ src = "src"
 title = "Typed Functional Programming"
 
 [output.html]
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
 mathjax-support = true

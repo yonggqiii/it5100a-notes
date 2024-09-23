@@ -1,6 +1,4 @@
 # Course Administration
-
-
 ## Course Coordinator
 Foo Yong Qi
 
@@ -49,10 +47,10 @@ The Practical Exam is planned to be during the last lecture.
 ## Plagiarism Notice
 Assignments are on programming... standard plagiarism rules apply.
 
-No code sharing!
+<mark>No code sharing!</mark>
 
-- ChatGPT (and similar tools) is allowed for \textbf{learning only}
-- Using LLMs to generate code is \textbf{not allowed}
+- ChatGPT (and similar tools) is allowed for **learning only**
+- Using LLMs to generate code is **not allowed**
 - NUS takes a strict view of plagiarism and cheating
 - Disciplinary action will be taken against students who violate NUS Student Code of Conduct
 - No part of your assignment can come from any other source

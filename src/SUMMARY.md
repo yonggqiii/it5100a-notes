@@ -1,10 +1,33 @@
 # Summary
 
-- [Introduction](./course_introduction/README.md)
+[About IT5100A](./about.md)
+
+# Typed Functional Programming
+- [Course Introduction](./course_introduction/README.md)
     - [Course Administration](./course_introduction/sections/course_admin.md)
     - [Functional Programming](./course_introduction/sections/functional_programming.md)
     - [Haskell](./course_introduction/sections/haskell.md)
     - [Exercises](./course_introduction/sections/exercises.md)
+- [Types](./types/README.md)
+    - [Type Systems](./types/sections/type_systems.md)
+    - [Polymorphism](./types/sections/polymorphism.md)
+    - [Algebraic Data Types](./types/sections/algebraic_data_types.md)
+    - [Pattern Matching](./types/sections/pattern_matching.md)
+    - [Exercises](./types/sections/exercises.md)
+- [Typeclasses](./typeclasses/README.md)
+    - [Ad-Hoc Polymorphism](./typeclasses/sections/ad-hoc-polymorphism.md)
+    - [Typeclasses](./typeclasses/sections/typeclasses.md)
+    - [Commonly-Used Typeclasses](./typeclasses/sections/commonly-used-typeclasses.md)
+    - [Functional Dependencies](./typeclasses/sections/functional-dependencies.md)
+    - [Exercises](./typeclasses/sections/exercises.md)
+- [Railway Pattern]()
+- [Monads]()
+- [Concurrent and Parallel Programming]()
 
+---
+# Appendices
+- [Solutions to Exercises]()
 - [Recap of Concepts](./recap/README.md)
     - [Recursion](./recap/sections/recursion.md)
+    - [First-Class Functions]()
+    - [Lambda Calculus]()
