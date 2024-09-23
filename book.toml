@@ -1,0 +1,9 @@
+[book]
+authors = ["Foo Yong Qi"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Typed Functional Programming"
+
+[output.html]
+mathjax-support = true
