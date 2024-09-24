@@ -12,10 +12,8 @@ control structure just like if-else statements, except that we would
 execute different branches based on the value/structure of the data,
 instead of a general condition.
 
-::: example
-[]{#eg:factorialpatternmatching label="eg:factorialpatternmatching"} Let
-us define the factorial function using pattern matching instead of
-conditional expressions or guards. We use `case`{.haskell} expressions
+Let us define the factorial function using pattern matching instead of
+conditional expressions or guards. We use `case` expressions
 to do so:
 
 ``` haskell
@@ -24,14 +22,12 @@ fac n = case n of -- match n against these patterns:
     0 -> 1
     x -> x * fac (x - 1) -- any other Int
 ```
-:::
 
 The nice thing about pattern matching is that we can also match against
 the *structure* of data, i.e. to match against constructors:
 
-::: example
-[]{#eg:fstsndpatternmatching label="eg:fstsndpatternmatching"} Let us
-redefine the `fst`{.haskell} and `snd`{.haskell} functions which project
+Let us
+redefine the `fst` and `snd` functions which project
 a tuple into its component values:
 
 ``` haskell
@@ -43,11 +39,8 @@ snd' :: (a, b) -> b
 snd' p = case p of
     (_, y) -> y
 ```
-:::
 
-::: example
-[]{#eg:fractionpatternmatching label="eg:fractionpatternmatching"} Let
-us write accessor functions to access the numerator and denominator of a
+Let us write accessor functions to access the numerator and denominator of a
 fraction.
 
 ``` haskell
@@ -58,21 +51,13 @@ numerator f = case f of
 denominator f = case f of 
     F _ x -> x
 ```
-:::
 
 One nice thing about Haskell is that because we perform pattern matching
 over the arguments of functions so frequently, we can actually bring the
 patterns up to the definitions of the functions themselves.
 
-::: example
 Let us define all of the functions we've just written using
-`case`{.haskell} expressions in
-[\[eg:factorialpatternmatching\]](#eg:factorialpatternmatching){reference-type="autoref"
-reference="eg:factorialpatternmatching"},
-[\[eg:fstsndpatternmatching\]](#eg:fstsndpatternmatching){reference-type="autoref"
-reference="eg:fstsndpatternmatching"} and
-[\[eg:fractionpatternmatching\]](#eg:fractionpatternmatching){reference-type="autoref"
-reference="eg:fractionpatternmatching"} into more idiomatic uses of
+`case` expressions into more idiomatic uses of
 pattern matching.
 
 ``` haskell
@@ -81,8 +66,9 @@ fac 0 = 1
 fac n = n * fac (n - 1)
  
 fst' :: (a, b) -> a
-snd' :: (a, b) -> b
 fst' (x, _) = x
+
+snd' :: (a, b) -> b
 snd' (_, y) = y
  
 data Fraction = F Int Int
@@ -91,7 +77,6 @@ numerator, denominator :: Fraction -> Int
 numerator (F x _) = x
 denominator (F _ y) = y
 ```
-:::
 
 We also know that the list type is a singly linked list, which is
 roughly defined as such:
@@ -102,7 +87,6 @@ data [a] = [] | a : [a]
 
 We can use this fact to pattern match against lists!
 
-::: example
 The sum of a list of integers is 0 if the list is empty, otherwise its
 the head of the list plus the sum of the tail of the list.
 
@@ -111,9 +95,6 @@ sum' :: [Int] -> Int
 sum' [] = 0
 sum' (x : xs) = x + sum' xs
 ```
-:::
-
-::: example
 The length of a list is 0 if the list is empty, otherwise it is 1 more
 than the length of its tail.
 
@@ -122,15 +103,13 @@ len :: [a] -> Int
 len [] = 0
 len (_ : xs) = 1 + len xs
 ```
-:::
 
 Really neat! Defining functions operating on algebraic data types
 (including recursive data types) are very convenient thanks to pattern
 matching! What's more, patterns can actually be used virtually anywhere
 on the left side of any binding:
 
-::: example
-Let us use pattern matching in a `let`{.haskell} binding:
+Let us use pattern matching in a `let` binding:
 
 ``` haskell
 len :: [a] -> Int
@@ -139,7 +118,6 @@ len ls =
     let (_ : xs) = ls
     in  1 + len xs
 ```
-:::
 
 Perhaps the most powerful feature of pattern matching is that the
 compiler will warn you if your pattern matches are non-exhaustive, i.e.
@@ -155,26 +133,27 @@ emp [] = []
 
 Compile it to see the warning!
 
-    ghc Main.hs
-    Main.hs:3:1: warning: [-Wincomplete-patterns]
-        Pattern match(es) are non-exhaustive
-        In an equation for ‘emp’: Patterns of type ‘[a]’ not matched: (_:_)
-      |
-    3 | emp [] = []
-      | ^^^^^^^^^^^
+```output warn
+ghc Main.hs
+Main.hs:3:1: warning: [-Wincomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In an equation for 'emp': Patterns of type '[a]' not matched: (_:_)
+  |
+3 | emp [] = []
+  | ^^^^^^^^^^^
+```
 
 This is one reason why pattern matching is so powerful; compilers can
 check if you have covered all possible patterns of a given type. This is
 unlike usual if-else statements where it is much less straightforward to
 check if you have covered all possible branches, especially if you omit
-`else`{.python} statements.
+`else` statements.
 
 One important point to highlight here is that pattern matching is done
 top-down. Thus, using pattern-matching is kind of similar to if-else
 statements in that regard: your most specific condition should be
 defined first, then followed by more general or catch-all patterns.
 
-::: example
 The following factorial function is poorly defined, because the first
 pattern match will match all possible integers, thereby causing the
 function to never terminate:
@@ -185,15 +164,13 @@ fac n = n * fac (n - 1)
 fac 0 = 1 -- redundant as pattern above matches all
           -- possible integers
 ```
-:::
 
 With pattern matching, let us know fulfil our earlier promise of
-defining the `eval`{.haskell} function for the `Expr`{.haskell} GADT in
-[\[sec:gadt\]](#sec:gadt){reference-type="autoref"
-reference="sec:gadt"}.
+defining the `eval` function for the `Expr` GADT in
+[Chapter 2.3 (Algebraic Data Types)](./algebraic_data_types.md).
 
-In our Python formulation, we know that `eval`{.haskell} should have the
-type signature `Expr a -> a`{.haskell}. Let us then define how each
+In our Python formulation, we know that `eval` should have the
+type signature `Expr a -> a`. Let us then define how each
 expression should be evaluated with pattern matching.
 
 ``` haskell
@@ -206,28 +183,30 @@ eval (CondExpr a b c) = if eval a then eval b else eval c
 
 This is highly straightforward! However, you might find that when this
 program is compiled, the compiler throws an error on the use of the
-`(==)`{.haskell} function:
+`(==)` function:
 
-    ghc Main.hs
-    Main.hs:13:28: error:
-        • Could not deduce (Eq a1) arising from a use of ‘==’
-          from the context: a ~ Bool
-            bound by a pattern with constructor:
-                       EqExpr :: forall a. Expr a -> Expr a -> Expr Bool,
-                     in an equation for ‘eval’
-            at app/Main.hs:13:7-16
-          Possible fix:
-            add (Eq a1) to the context of the data constructor ‘EqExpr’
-        • In the expression: eval a == eval b
-          In an equation for ‘eval’: eval (EqExpr a b) = eval a == eval b
-       |
-    13 | eval (EqExpr a b) = eval a == eval b
-       |       
+```output error
+ghc Main.hs
+Main.hs:13:28: error:
+    • Could not deduce (Eq a1) arising from a use of ‘==’
+      from the context: a ~ Bool
+        bound by a pattern with constructor:
+                   EqExpr :: forall a. Expr a -> Expr a -> Expr Bool,
+                 in an equation for ‘eval’
+        at app/Main.hs:13:7-16
+      Possible fix:
+        add (Eq a1) to the context of the data constructor ‘EqExpr’
+    • In the expression: eval a == eval b
+      In an equation for ‘eval’: eval (EqExpr a b) = eval a == eval b
+   |
+13 | eval (EqExpr a b) = eval a == eval b
+   |       
+```
 
 The reason for this is Haskell is unable to determine that the type
 parameter `a` is amenable to equality comparisons. Solving this requires
 an understanding of *typeclasses*, which we will explore in the next
-lecture. For now, just include an `Eq a =>`{.haskell} constraint in our
+lecture. For now, just include an `Eq a =>` constraint in our
 GADT declaration.
 
 You might also get a warning about pattern matching on GADTs being
@@ -248,9 +227,9 @@ Our program should compile now!
 
 ### Pattern Matching in Python
 
-Python also has pattern matching with `match`{.python} statements with
-`case`{.python} clauses! It looks very similar to how we would write
-`case`{.haskell} expressions in Haskell.
+Python also has pattern matching with `match` statements with
+`case` clauses! It looks very similar to how we would write
+`case` expressions in Haskell.
 
 ``` python
 def factorial(n: int) -> int:
@@ -334,7 +313,7 @@ exhaustivity of subclasses (such as defining a *sealed* class) are
 formally introduced, exhaustive pattern matching checks are going to be
 difficult to do. When doing pattern matching in Python, ensure that all
 possible cases are handled before doing a catch-all clause in your
-`match`{.python} statement.
+`match` statement.
 
 All-in-all, we have just introduced a new control structure known as
 pattern matching. When should we use this control structure? The general
@@ -342,7 +321,7 @@ rule of thumb is as follows:
 
 -   If you are doing different things based on the value and/or
     structure of data, use pattern matching. You can tell this is the
-    case if you are doing equality and `isinstance`{.python} checks in
+    case if you are doing equality and `isinstance` checks in
     your conditional statements in Python.
 
 -   Otherwise, you are likely going with the more general case of doing
@@ -350,22 +329,5 @@ rule of thumb is as follows:
     which case, rely on if-else statements, or in Haskell, conditional
     expressions and/or guards.
 
-[^1]: Python doesn't have arrow types. The actual type of the function
-    is `Callable[[int], int]`{.python}.
-
-[^2]: These are the three axes that form the *lambda cube*, with the
-    simply typed lambda calculus only having terms that depend on terms,
-    and the Calculus of Constructions having types and terms depending
-    on types and terms.
-
-[^3]: The word *polymorphism* can be broken down into *poly* (many) and
-    *morphism* (shape). The word is not just used in Computer Science,
-    but in other areas like biology and pharmacology. Within Computer
-    Science itself there are several kinds of polymorphism, and we shall
-    investigate the most common ones in this lecture and in later
-    lectures too. Finally, polymorphism in Computer Science is really
-    about things taking on different forms, but I suspect that our
-    description of parametric polymorphism gives a pretty good picture
-    of what it entails.
 
 [^4]: The code snippet requires Python 3.12.

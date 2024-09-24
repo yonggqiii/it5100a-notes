@@ -9,3 +9,4 @@ title = "Typed Functional Programming"
 default-theme = "ayu"
 preferred-dark-theme = "ayu"
 mathjax-support = true
+additional-css = ["custom.css"]

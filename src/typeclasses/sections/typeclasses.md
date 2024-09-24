@@ -26,7 +26,7 @@ their magic assistants, and their magic trick is to cough up a furball,
 and the dogs all present their chew toys as their magic assistants, and
 their magic trick is to give their paw. The club administrator then puts
 all these into boxes as certificates of their membership into the
-club---in our analogy, these certificates are typeclass instances.
+club&mdash;in our analogy, these certificates are typeclass instances.
 
 Let us return to the shape and house example we have seen at the start
 of this chapter. We first define some types (slightly different from
@@ -43,27 +43,27 @@ data room = R { roomName :: String
 
 Now, our goal is to describe the phenomenon that some types have an
 area. For this, we shall describe a contract for such types to follow.
-The contract is straightforward---all such types must have an
-`area`{.haskell} function (known as a method).
+The contract is straightforward&mdash;all such types must have an
+`area` function (known as a method).
 
 ``` haskell
 class HasArea a where
   area :: a -> Double
 ```
 
-An important question one might ask is: why is `HasArea`{.haskell}
+An important question one might ask is: why is `HasArea`
 polymorphic? To give an analogy, recall in our Python implementation
-with dictionaries that `HasArea`{.python} is a dictionary where we are
-looking up type-specific implementations of `area`{.python} by type.
+with dictionaries that `HasArea` is a dictionary where we are
+looking up type-specific implementations of `area` by type.
 Essentially, it is a finite map or (partial) function from types to
-functions. This essentially makes `HasArea`{.haskell} polymorphic,
+functions. This essentially makes `HasArea` polymorphic,
 because it acts as a function that produces different implementations
 depending on the type!
 
-Then, the `area`{.haskell} function should also receive a parameter of
-type `a`{.haskell}---that is, if `a`{.haskell} is a member of the
-`HasArea`{.haskell} typeclass, then there is a function
-`area :: a -> Double`{.haskell}. The example typeclass instances make
+Then, the `area` function should also receive a parameter of
+type `a`&mdash;that is, if `a` is a member of the
+`HasArea` typeclass, then there is a function
+`area :: a -> Double`. The example typeclass instances make
 this clear:
 
 ``` haskell
@@ -82,13 +82,13 @@ instance HasArea House where
   area (H rooms) = sum $ map area rooms
 ```
 
-Each instance of `HasArea`{.haskell} provides a type-specific
-implementation of `area`{.haskell}. For example, the
-`HasArea Shape`{.haskell} instance acts as a witness that
-`Shape`{.haskell} belongs to the `HasArea`{.haskell} typeclass. It does
-so by providing an implementation of `area :: Shape -> Double`{.haskell}
+Each instance of `HasArea` provides a type-specific
+implementation of `area`. For example, the
+`HasArea Shape` instance acts as a witness that
+`Shape` belongs to the `HasArea` typeclass. It does
+so by providing an implementation of `area :: Shape -> Double`
 (in the obvious way). We do the same for rooms and houses, and now the
-`area`{.haskell} function works for all (and only) these three types!
+`area` function works for all (and only) these three types!
 
 ``` haskell
 x :: Shape = Triangle 2 3
@@ -100,20 +100,20 @@ ay = area y -- 12
 az = area z -- 12
 ```
 
-Now let us investigate the type of `area`{.haskell}:
+Now let us investigate the type of `area`:
 
 ``` haskell
 ghci> :t area
 area :: forall a. HasArea a => a -> double
 ```
 
-The type of `area`{.haskell} is read as "a function for all
-`a`{.haskell} where `a`{.haskell} is constrained by `HasArea`{.haskell},
-and receives an `a`{.haskell}, and returns a `Double`{.haskell}".
+The type of `area` is read as "a function for all
+`a` where `a` is constrained by `HasArea`,
+and receives an `a`, and returns a `Double`".
 
 Constrains on type variables are not limited to class methods. In fact,
-we can, and probably should, make functions that use `area`{.haskell}
-polymorphic over type variables, constrained by `HasArea`{.haskell}. Let
+we can, and probably should, make functions that use `area`
+polymorphic over type variables, constrained by `HasArea`. Let
 us consider a function that sums the area over a list of shapes, and
 another one over a list of rooms:
 
@@ -130,11 +130,11 @@ totalArea'' :: [Room] -> Double
 totalArea'' = sum . map area
 ```
 
-Notice that both `totalArea'`{.haskell} and `totalArea''`{.haskell} have
+Notice that both `totalArea'` and `totalArea''` have
 precisely the same implementation, except that they operate over
-`Shape`{.haskell} and `Room`{.haskell} respectively. Notice that we can
-substitute these types for any type variable `a`{.haskell}, so long as
-there is an instance of `HasArea a`{.haskell}! Therefore, the most
+`Shape` and `Room` respectively. Notice that we can
+substitute these types for any type variable `a`, so long as
+there is an instance of `HasArea a`! Therefore, the most
 general type we should ascribe for this function would be
 
 ``` haskell
@@ -142,8 +142,8 @@ totalArea :: HasArea a => [a] -> Double
 totalArea = sum . map area
 ```
 
-Now our `totalArea`{.haskell} function works on any list that contains a
-type that has an instance of `HasArea`{.haskell}!
+Now our `totalArea` function works on any list that contains a
+type that has an instance of `HasArea`!
 
 ``` haskell
 xs :: [Shape] = [Rectangle 1 2, Triangle 3 4]
@@ -157,21 +157,21 @@ ayx = totalArea ys -- 2
 By now, you should be able to observe that typeclasses allow (1)
 otherwise disparate types adhering to a common interface, i.e. ad-hoc
 polymorphism and (2) decoupling types and behaviour, all in a type-safe
-way---this is very difficult (if not impossible) to achieve in other
+way&mdash;this is very difficult (if not impossible) to achieve in other
 languages like Python. The question then becomes: how does Haskell do
 it?
 
 The core idea behind typeclasses and typeclass instances are that
 typeclasses are implemented as regular algebraic data types, and
 typeclass instances are implemented as regular terms of typeclasses.
-Using our `area`{.haskell} example, we can define the typeclass as
+Using our `area` example, we can define the typeclass as
 
 ``` haskell
 data HasArea a = HA { area :: a -> Double }
 ```
 
 Then, typeclass instances are merely helper-terms of the
-`HasArea`{.haskell} type:
+`HasArea` type:
 
 ``` haskell
 hasAreaShape :: HasArea Shape
@@ -181,12 +181,12 @@ hasAreaShape = HA $ \x -> case x of
   Triangle  w h -> w * h / 2
 ```
 
-Notice that `area`{.haskell} now has the type
-`HasArea a -> a -> Double`{.haskell}. Clearly,
-`area hasAreaShape`{.haskell} is now the `Shape`{.haskell}-specific
+Notice that `area` now has the type
+`HasArea a -> a -> Double`. Clearly,
+`area hasAreaShape` is now the `Shape`-specific
 implementation for obtaining the area of a shape! We can take this
 further by defining the helper-terms for other types that wish to
-implement the `HasArea`{.haskell} typeclass:
+implement the `HasArea` typeclass:
 
 ``` haskell
 hasAreaRoom :: HasArea Room
@@ -197,7 +197,7 @@ hasAreaHouse = HA $ \x -> case x of
   H rooms -> sum $ map (area hasAreaRoom) rooms
 ```
 
-Finally, we can use the `area`{.haskell} function, together with the
+Finally, we can use the `area` function, together with the
 type-specific helpers, to compute the area of shapes, rooms and houses!
 
 ``` haskell

@@ -117,9 +117,10 @@ We will look at what the first line means in the future. For now, try
 compiling and running your code by issuing the following commands in
 your terminal (windows users might have to run `./MyCode.exe`):
 
-    ghc MyCode.hs
-    ./MyCode
-
+```
+ghc MyCode.hs
+./MyCode
+```
 The first command invokes GHC to *compile* your source file.
 *Compilation* translates your source file into an *executable* file that
 your computer that understand. The compilation process will also perform
@@ -128,6 +129,10 @@ perform some optimizations. The outcome of invoking that command is an
 executable (probably called `MyCode`) along with other files (which we
 shall not talk about for now). The second command then executes that
 executable, and you should see `Hello World!` shown in the terminal.
+
+```output info
+Hello World!
+```
 
 We shall ignore compiling source files for now and temporarily focus on
 working with GHCI. In GHCI, we can load files by issuing `:l MyFile.hs`,
@@ -145,7 +150,7 @@ As we have described earlier, everything in Haskell is immutable.
 Therefore, re-defining what `y` is should be disallowed! Let's try
 loading `MyCode.hs` into GHCI:
 
-``` haskell
+```output error
 ghci> :l MyCode.hs
 [1 of 2] Compiling Main ( MyCode.hs, interpreted )
 

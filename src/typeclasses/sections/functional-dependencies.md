@@ -1,6 +1,6 @@
 # Functional Dependencies
 
-Observe the type signature of `(+)`{.haskell}:
+Observe the type signature of `(+)`:
 
 ``` haskell
 :t (+)
@@ -9,7 +9,7 @@ Observe the type signature of `(+)`{.haskell}:
 
 This behaviour is quite different in Python:
 
-``` text
+```python-repl
 >>> type(1 + 1)
 class <'int'>
 >>> type(1 + 1.0)
@@ -20,9 +20,9 @@ class <'float'>
 class <'float'>
 ```
 
-The `+`{.python} operator in Python behaves heterogenously---when given
-two `int`{.python}s we get an `int`{.python}; when given at least one
-`float`{.python} we get a `float`{.python}. How would we encode this in
+The `+` operator in Python behaves heterogenously&mdash;when given
+two `int`s we get an `int`; when given at least one
+`float` we get a `float`. How would we encode this in
 Haskell?
 
 Simple! Create a multi-parameter typeclass that describes the argument
@@ -50,7 +50,7 @@ instance HAdd Double Int Double where
   x +# y = x + fromIntegral y
 ```
 
-However, trying to use `(+#)`{.haskell} is very cumbersome:
+However, trying to use `(+#)` is very cumbersome:
 
 ``` haskell
 ghci> x :: Int = 1
@@ -64,18 +64,18 @@ ghci> x +# y :: Double
 3.0
 ```
 
-This occurs because without specifying the return type `c`{.haskell},
+This occurs because without specifying the return type `c`,
 Haskell has no idea what it is as it may be ambiguous! As per the
 definition, no one is stopping us from defining another
-`instance HAdd Int Double String`{.haskell}! On the other hand, we know
-that adding an `Int`{.haskell} and a `Double`{.haskell} *must* result in
-a `Double`{.haskell} and nothing else; in other words, the types of the
-arguments to `(+#)`{.haskell} *uniquely characterizes* the resulting
+`instance HAdd Int Double String`! On the other hand, we know
+that adding an `Int` and a `Double` *must* result in
+a `Double` and nothing else; in other words, the types of the
+arguments to `(+#)` *uniquely characterizes* the resulting
 type.
 
 The way we introduce this dependency between these type variables by
 introducing *functional dependencies* on typeclass declarations, which,
-adding them to our declaration of `HAdd`{.haskell}, looks something like
+adding them to our declaration of `HAdd`, looks something like
 the following:
 
 ``` haskell

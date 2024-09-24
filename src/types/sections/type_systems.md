@@ -1,7 +1,7 @@
 # Type Systems
 
 As the course title suggests, Haskell is a typed functional programming
-languagein particular, it uses a statically-typed *type system*. This
+language&mdash;in particular, it uses a statically-typed *type system*. This
 begs the question, \"what is a type system?\"
 
 An online search for definitions might give you the following:
@@ -199,27 +199,25 @@ specifically, lambda abstraction.
 The T-Abs rule is an *inference rule* stating that if the
 premise above the line is true, then the conclusion below the line will
 also be true. Let's first parse the premise. The part to the left of
-$\vdash$ is the *typing environment*, more or less describing the type
+\\(\vdash\\) is the *typing environment*, more or less describing the type
 declarations we have at the point of analysis of the program.
-Specifically, $\Gamma$ is the actual type environment, while $x: S$ is
-an additional assumption that a variable $x$ has type $S$. The part to
-the right of $\vdash$ describes the judgement of the type of $e$ being
-$T$. Overall, the premise states \"given what we have so far, if in
-assuming $x$ is of type $S$ we get that $e$ is of type $T$, \...\". The
+Specifically, \\(\Gamma\\) is the actual type environment, while \\(x: S\\) is
+an additional assumption that a variable \\(x\\) has type \\(S\\). The part to
+the right of \\(\vdash\\) describes the judgement of the type of \\(e\\) being
+\\(T\\). Overall, the premise states \"given what we have so far, if in
+assuming \\(x\\) is of type \\(S\\) we get that \\(e\\) is of type \\(T\\), \...\". The
 conclusion can be understood similarly: it states that the typing
-environment $\Gamma$ will show that the function $\lambda x.e$ has type
-$S \to T$. Putting these together, the rule states that \"given typing
-environment $\Gamma$, if by assuming that variable $x$ has type $S$ we
-get that the expression $e$ is of type $T$, then $\Gamma$ will also show
-that the type of the function $\lambda x.e$ is of type $S \to T$\".
+environment \\(\Gamma\\) will show that the function \\(\lambda x.e\\) has type
+\\(S \to T\\). Putting these together, the rule states that \"given typing
+environment \\(\Gamma\\), if by assuming that variable \\(x\\) has type \\(S\\) we
+get that the expression \\(e\\) is of type \\(T\\), then \\(\Gamma\\) will also show
+that the type of the function \\(\lambda x.e\\) is of type \\(S \to T\\)\".
 
-::: example
-A simple demonstration in Python is as follows: suppose we have $x$ as
-`x` and $e$ as `x * 2`. If we assume that `x`
+A simple demonstration in Python is as follows: suppose we have \\(x\\) as
+`x` and \\(e\\) as `x * 2`. If we assume that `x`
 is of type `int`, then we know that `x * 2` will also
-be an `int`. Therefore, the type of $\lambda x.e$ which is
+be an `int`. Therefore, the type of \\(\lambda x.e\\) which is
 `lambda x: x * 2` is `int -> int`[^1].
-:::
 
 What about multi-parameter functions? Remember that in Haskell, all
 functions are curried, thus, all functions in Haskell are single
@@ -248,12 +246,11 @@ time, decide what the type of a variable, function, function parameter
 is, then write the implementation of your function around those
 restrictions.
 
-::: example
-[]{#eg:inferredtypeofg label="eg:inferredtypeofg"} The following code
+The following code
 snippet first *declares* the type of `f` before showing its
 implementation. It is not only good practice to declare types above
 their implementation, but it can be a nice way to frame your mind around
-the implementation of your functionstart by providing a high-level
+the implementation of your function&mdash;start by providing a high-level
 specification of your function, then work on the implementation to
 describe what the function is actually trying to achieve.
 
@@ -270,10 +267,9 @@ of `g` via a process known as *type inference*. That still
 means that the implementation of `g` itself must be well-typed
 (its implementation does not break any of the typing rules), and that
 any users of `g` must abide by its static type signature.
-:::
 
 Generally speaking, it is good practice to declare the types of
-top-level bindingsthat is, nested bindings of functions, variables (for
+top-level bindings&mdash;that is, nested bindings of functions, variables (for
 example, in `let` expressions) do not need type declarations
 and can often be inferred. The example above of the declaration of
 `f` is a perfectly idiomatic way of defining and declaring a
@@ -286,9 +282,8 @@ types; this is because Python does not care about type annotations. For
 example, you can happily annotate a variable to be an `int` but
 then assign a string into it. This is very much unlike Haskell, where
 adherence to type declarations and well-typedness is *enforced* by the
-compilerthe compiler will reject any program that is not well-typed.
+compiler&mdash;the compiler will reject any program that is not well-typed.
 
-::: example
 Observe the following program fragment:
 
 ``` haskell
@@ -303,7 +298,6 @@ typing rules, and all the types make sense. However, since `f`
 only receives `Int`, passing a `String` into it is a
 clear violation of the rules. Thus, the entire program is ill-typed and
 will not be compiled. Try this for yourself!
-:::
 
 Programming in such a strict and formal language can feel restrictive,
 but these restrictions actually feel more like "guard rails" or
@@ -317,7 +311,7 @@ types?
 
 The first step of being able to program with types is understanding the
 typing rules. We shall elide explanation on how typing works with
-inference, typeclasses, polymorphism and etc. and focus solely on the
+inference, typeclasses, polymorphism etc. and focus solely on the
 simplest typing rules:
 
 1.  In a binding `x = e`, the type of `x` must be
@@ -339,7 +333,6 @@ simplest typing rules:
     assuming `x` to be of type `a`, `e`
     must be of type `b`.
 
-::: example
 Try calculating the types of every expression in the following code
 snippet. Can you get it all right?
 
@@ -353,30 +346,20 @@ f x n =
     in  x : r
 ```
 
-Let's work through this example. We are declaring `f` to be of
-type `Int -> Int -> [Int]`, so it stands to reason that in the
-definition of `f` we are assuming that `x` and
-`n` are both of type `Int`. For this to be
-well-typed, we must ensure that the conditional expression evaluates to
-`[Int]`, that means both branches must themselves evaluate to
-`[Int]`. First we observe the condition `n == 0`;
-the `(==)` function receives two numbers and returns a
-`Bool`, so this is well-typed. Looking at the `True`
-branch, we see that we are returning the empty list, which matches the
-type of `[Int]`. In the `False` branch, we have a
-`let` expression, so we must ensure that `x : r`
-evaluates to `[Int]` too. The `let` binding contains
-a binding `r = f x (n - 1)`; knowing that (by our own
-declaration) `f` has type `Int -> Int -> [Int]`,
-knowing that `x` and `n - 1` are of type
-`Int` means we can safely conclude that `r` has type
-`[Int]` (of course, the `(-)` function receives two
-integers and returns an integer). The `(:)` function receives
-an `Int` and a `[Int]` and returns a
-`[Int]`, so all the types match. Overall, we have seen that we
+Let's work through this example. 
+- We are declaring `f` to be of type `Int -> Int -> [Int]`, so it stands to reason that in the definition of `f` we are assuming that `x` and `n` are both of type `Int`. 
+- For this to be well-typed, we must ensure that the conditional expression evaluates to `[Int]`, that means both branches must themselves evaluate to `[Int]`. 
+- First we observe the condition `n == 0`; the `(==)` function receives two numbers and returns a `Bool`, so this is well-typed.
+- Looking at the `True` branch, we see that we are returning the empty list, which matches the type of `[Int]`. 
+- In the `False` branch, we have a `let` expression, so we must ensure that `x : r` evaluates to `[Int]` too. 
+- The `let` binding contains a binding `r = f x (n - 1)`; knowing that (by our own declaration) `f` has type `Int -> Int -> [Int]`, knowing that `x` and `n - 1` are of type `Int` means we can safely conclude that `r` has type `[Int]` (of course, the `(-)` function receives two
+integers and returns an integer). 
+- The `(:)` function receives an `Int` and a `[Int]` and returns a
+`[Int]`, so all the types match. 
+
+Overall, we have seen that we
 successfully determined the types of every expression in the program
 fragment, and concluded that it is well-typed.
-:::
 
 Now that you are familiar with the basic typing rules and how (roughly)
 types are inferred, the next step is to get comfortable writing programs
@@ -384,8 +367,6 @@ with static types. Generally this comes with practice, but one great way
 to get you started with typeful programming is to try letting the types
 guide your programming.
 
-::: example
-[]{#eg:programmingbytypessimple label="eg:programmingbytypessimple"}
 Suppose we are trying to define a function `f` that receives
 an integer `x` and returns a string showing the result of
 multiplying `x` by 2:
@@ -401,18 +382,21 @@ Let us try implementing this function. The first thing we have to
 consider is the type of `f` itself, which by definition,
 should receive an `Int` and return a `String`. As
 such, we may start with the type declaration
-`f :: Int -> String`.\
+`f :: Int -> String`.
+
 Next, we know we are eventually going to have to convert `x`
 into a `String`. We know that there is a `show`
 function that does that. Its type signature (modified) is
 `Int -> String`, so we know that `show x` is a
-`String`.\
+`String`.
+
 We also know that we need to multiply `x` by 2. For this, we
 can use the `(*)` function, which has a (modified) type
 signature of `Int -> Int -> Int`. Thus, we can write
 `x * 2` and that gives us an `Int`. Knowing that we
 eventually need to display it as a `String`, once again, we
-can rely on the `show` function.\
+can rely on the `show` function.
+
 Now we have all the numbers we need in `String` form, we need
 to concatenate them together. For this, we can rely on our trusty
 `(++)` function that receives two `String` and
@@ -429,33 +413,35 @@ f x =
       sy :: String = show y
   in  sx ++ " * 2 = " ++ sy
 ```
-:::
 
-[\[eg:programmingbytypessimple\]](#eg:programmingbytypessimple){reference-type="autoref"
-reference="eg:programmingbytypessimple"} is a simple example of using
+This is a simple example of using
 types to guide your programming. While seemingly trivial, this skill can
 be incredibly useful for defining recursive functions!
 
-::: example
 Suppose we are trying to define a function that sums the integers in a
-list. Let us attempt to define this function recursively.\
+list. Let us attempt to define this function recursively.
+
 As always, we must decide what the type of this function is. As per our
 definition, it receives a list of integers and returns the final sum,
 which should be an integer as well. This gives us the type declaration
-`sum' :: [Int] -> Int`.\
+`sum' :: [Int] -> Int`.
+
 First, let us define the base case. We should be quite clear on what the
 condition for the base case: it should be when the input list is empty.
 What should we return in the base case? By our type declaration, we must
 return an `Int`, so we must express our base result in that
-type. The result is `0`, which matches our type declaration.\
+type. The result is `0`, which matches our type declaration.
+
 Next we must define the recursive case. This one might be tricky
 initially. We know that we can make our recursive call, passing in the
 tail of the input list. This might look something like
 `sum' (tail ls)`. We must be very clear about the type of this
 expression; as per the type declaration, the result is an
-`Int`, and not anything else.\
+`Int`, and not anything else.
+
 We also know that we want to add the head of the input list to the
-result of the recursive call. In doing so we get an `Int`.\
+result of the recursive call. In doing so we get an `Int`.
+
 Finally, we can sum the results together, giving us an `Int`,
 which matches our return type.
 
@@ -469,7 +455,6 @@ sum' ls =
           hd :: Int = head ls
       in  hd + r
 ```
-:::
 
 By getting used to types, having a statically-typed system no longer
 feels like a chore or a hurdle to cross, and instead feels like a
@@ -495,30 +480,31 @@ def f(x: int, y: int) -> int:
     z = x / y
     return z
 ```
-
-    pyright main.py
-    /home/main.py
-      /home/main.py:4:12 - error:
-        Expression of type "float" is incompatible with return
-        type "int"
-        "float" is incompatible with "int" (reportReturnType)
-    1 error, 0 warnings, 0 informations 
-
+```output error
+pyright main.py
+/home/main.py
+  /home/main.py:4:12 - error:
+    Expression of type "float" is incompatible with return
+    type "int"
+    "float" is incompatible with "int" (reportReturnType)
+1 error, 0 warnings, 0 informations 
+``````
 Great! This makes sense because assuming `x` and `y`
 are of type `int`, the type of `z` should actually be
 `float`! Let's correct the program and try running pyright
 against it:
 
-``` python
+```python
 # main.py
 def f(x: int, y: int) -> int:
     z = x // y
     return z
 ```
 
-    pyright main.py
-    0 errors, 0 warnings, 0 informations
-
+```output info
+pyright main.py
+0 errors, 0 warnings, 0 informations
+```
 Very well! We have now learnt how to program with types in Haskell and
 in Python, and since Python does not come with a type-checker, we are
 able to use tools like pyright to do the type checking for us!
@@ -527,3 +513,7 @@ One additional great feature about pyright is that it is actually also a
 language server. As such, you can include pyright in your favourite text
 editors so that it can catch bugs while writing programs!
 
+---
+
+[^1]: Python doesn't have arrow types. The actual type of the function
+    is `Callable[[int], int]`.

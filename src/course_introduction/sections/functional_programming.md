@@ -261,7 +261,7 @@ def myTree : Tree Nat := .node 1 (.leaf 2) (.leaf 3)
 The primary reason for this is that recursive functions can often be
 reasoned about via *induction*: 
 
-\\[\frac{P(0)~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Modus Ponens}\\]
+\\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Modus Ponens}\\]
 
 We have seen that factorial can be written recursively, and in fact we
 can prove its correctness (in a quite straightforward manner) via
@@ -407,8 +407,7 @@ theorem isucc (n k : Nat) : n + k + 1 = n + 1 + k :=
   | 0 => by rfl
   | x + 1 => congrArg (. + 1) (isucc n x)
  
-def Vect.concat {α : Type} {n k : Nat} : 
-    Vect α n -> Vect α k -> Vect α (n + k)
+def Vect.concat {α : Type} {n k : Nat} : Vect α n -> Vect α k -> Vect α (n + k)
   | .nil, ys => izero k ▸ ys
   | .cons x xs, ys => isucc _ _ ▸ .cons x (xs.concat ys)
 ```
@@ -470,9 +469,6 @@ main :: IO ()
 main = do
   let x = [1, 2, 3]
   print (map (+2) x) -- [3, 4, 5]
-
-class Eq a where
-    (==) :: a -> a -> Bool
 ```
 
 ### So what?
@@ -491,7 +487,7 @@ adopted in commonly-used imperative programming languages:
 As such, learning functional programming features has direct carry-over
 to the work that you might do in the future. Of course, functional
 programming is more than just a set of programming language features and
-principleslearning functional programming is about **rethinking the way
+principles&mdash;learning functional programming is about **rethinking the way
 we solve problems**. As you have seen, some of the principles we have
 discussed impose restrictions on the programmer. Although these are
 meaningful restrictions, solving problems with them imposed can be quite

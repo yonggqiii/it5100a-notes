@@ -159,3 +159,15 @@ hljs.registerLanguage("lean", function(hljs) {
     ]
   };
 });
+
+// Stop complaints from appearing in the JS console about missing
+// language "output".  We need to have a dummy language for output,
+// because further classes like "error" and "info" won't get added
+// properly if they appear in language position.
+hljs.registerLanguage("output", function(hljs) {
+  return {
+    name: "output",
+    keywords: {},
+    contains: []
+  };
+});

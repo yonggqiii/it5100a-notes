@@ -18,25 +18,25 @@ class Num a where
   fromInteger :: Integer a
 ```
 
-### Equality Comparisons
+## Equality Comparisons
 
-The `Eq`{.haskell} typeclass describes types that are amenable to
-equality comparisons; the `Num`{.haskell} typeclass describes types that
+The `Eq` typeclass describes types that are amenable to
+equality comparisons; the `Num` typeclass describes types that
 can behave as numbers, with support for typical numeric operations like
 addition, subtraction and so on. Haskell's Prelude already ships with
 the instances of these typeclasses for commonly-used types, such as
-instances for `Num Int`{.haskell} and `Eq String`{.haskell}.
+instances for `Num Int` and `Eq String`.
 
-Let us try defining our own instance of `Eq`{.haskell}. Suppose we are
-re-using the `Fraction`{.haskell} algebraic data type defined in the
+Let us try defining our own instance of `Eq`. Suppose we are
+re-using the `Fraction` algebraic data type defined in the
 previous chapter:
 
 ``` haskell
 data Fraction = Fraction Int Int
 ```
 
-Let us allow `Fraction`{.haskell} to be amenable to equality comparisons
-by implementing a typeclass instance for `Eq Fraction`{.haskell}:
+Let us allow `Fraction` to be amenable to equality comparisons
+by implementing a typeclass instance for `Eq Fraction`:
 
 ``` haskell
 instance Eq Fraction where
@@ -50,14 +50,14 @@ instance Eq Fraction where
 Firstly, notice that we are performing equality comparisons between the
 numerators and denominators. This is okay because we know that the
 numerators and denominators of fractions are integers, and there is
-already an instance of `Eq Int`{.haskell}. Next, usually by definition,
-`a /= b`{.haskell} is the same as `not (a == b)`{.haskell}. Therefore,
-having to always define both `(==)`{.haskell} and `(/=)`{.haskell} for
+already an instance of `Eq Int`. Next, usually by definition,
+`a /= b` is the same as `not (a == b)`. Therefore,
+having to always define both `(==)` and `(/=)` for
 every instance is cumbersome.
 
-### Minimal Instance Definitions
+## Minimal Instance Definitions
 
-Let us inspect the definition of the `Eq`{.haskell} typeclass:
+Let us inspect the definition of the `Eq` typeclass:
 
 ``` haskell
 ghci> :i Eq
@@ -69,10 +69,10 @@ class Eq a where
     -- Defined in 'GHC.Classes'
 ```
 
-Notice the `MINIMAL` *pragma*---the pragma states that we only need to
-define either `(==)`{.haskell} *or* `(/=)`{.haskell} for a complete
+Notice the `MINIMAL` *pragma*&mdash;the pragma states that we only need to
+define either `(==)` *or* `(/=)` for a complete
 instance definition! Therefore, we can omit the definition of
-`(/=)`{.haskell} in our `Eq Fraction`{.haskell} instance, and we would
+`(/=)` in our `Eq Fraction` instance, and we would
 still have a complete definition:
 
 ``` haskell
@@ -88,8 +88,8 @@ ghci> Fraction 1 2 /= Fraction 1 2
 False
 ```
 
-A natural question to ask is, why not simply define `Eq`{.haskell} to
-only have `(==)`{.haskell} and give `(/=)`{.haskell} for free?
+A natural question to ask is, why not simply define `Eq` to
+only have `(==)` and give `(/=)` for free?
 
 ``` haskell
 class Eq a where
@@ -100,11 +100,11 @@ x /= y = not (x == y)
 ```
 
 By placing both functions as methods in the typeclass, programmers have
-the option to define *either* `(==)`{.haskell} *or* `(/=)`{.haskell}, or
+the option to define *either* `(==)` *or* `(/=)`, or
 both, if specifying each implementation individually gives a more
 efficient performance.
 
-### Typeclass Constraints in Typeclasses and Instances
+## Typeclass Constraints in Typeclasses and Instances
 
 We can even define instances over polymorphic types. Here is an example
 of how we can perform equality comparisons over trees:
@@ -121,9 +121,9 @@ instance Eq (Tree a) where
 ```
 
 However, our instance will not type-check because the elements
-`a`{.haskell} of the trees also need to be amenable to equality
+`a` of the trees also need to be amenable to equality
 comparisons for us to compare trees! Therefore, we should constrain
-`a`{.haskell} with `Eq`{.haskell} in the *instance* declaration, like
+`a` with `Eq` in the *instance* declaration, like
 so:
 
 ``` haskell
@@ -138,7 +138,7 @@ instance Eq a => Eq (Tree a) where
 ```
 
 In fact, we can write typeclass constraints in typeclass declarations as
-well. For example, the `Ord`{.haskell} typeclass describes (total)
+well. For example, the `Ord` typeclass describes (total)
 orders on types, and all (totally) ordered types must also be amenable
 to equality comparisons:
 
@@ -149,18 +149,18 @@ class Eq a => Ord a where
   -- ...
 ```
 
-### Deriving Typeclasses
+## Deriving Typeclasses
 
 In fact, some typeclasses are so straightforward that defining instances
-of these classes are a tedium. For example, the `Eq`{.haskell} class is
-(usually) very straightforward to define---two terms are equal if they
+of these classes are a tedium. For example, the `Eq` class is
+(usually) very straightforward to define&mdash;two terms are equal if they
 are built with the same constructor and their argument terms are
 respectively equal. As such, the language should not require programmers
-to implement straightforward instances of classes like `Eq`{.haskell}.
+to implement straightforward instances of classes like `Eq`.
 
 Haskell has a *deriving mechanism* that allows the compiler to
 automatically synthesize typeclass instances for us. It is able to do so
-for `Eq`{.haskell}, `Ord`{.haskell}, and others like `Enum`{.haskell}.
+for `Eq`, `Ord`, and others like `Enum`.
 Doing so is incredibly straightforward:
 
 ``` haskell

@@ -19,7 +19,6 @@ mix of the following:
 
 -   A type **or** another type **or**...**or** yet another type
 
-::: example
 We can express the following types using **and** and **or** over other
 types:
 
@@ -36,15 +35,13 @@ types:
 -   A polymorphic `Tree` is either (a leaf with a value of type `a`)
     **or** (a node with a value (`a`) **and** a left subtree (`Tree a`)
     **and** a right subtree (`Tree a`))
-:::
 
 This formulation of data types as products (**and**) and/or sums
 (**sum**) is what is known as Algebraic Data Types (not to be confused
 with Abstract Data Types). In Haskell, types are **sums** of one or more
 **constructors**; constructors are **products** of zero or more types.
 
-::: example
-To create a new data type in Haskell, we can use the `data`{.haskell}
+To create a new data type in Haskell, we can use the `data`
 keyword. Let us create a fraction type based on our algebraic
 specification above:
 
@@ -57,16 +54,17 @@ half = Fraction 1 2
 
 On the left hand side we have the declaration of the type, and on the
 right hand side, a list of constructors that help us create the type.
-Note that the `Fraction`{.haskell} on the right hand side is the name of
+Note that the `Fraction` on the right hand side is the name of
 the constructor of the type; it in fact can be distinct from the name of
 the type itself (which is very helpful when you have more than one
-constructor). As you can see, to construct a `Fraction`{.haskell}, the
-`Fraction`{.haskell} constructor receives two `Int`{.haskell}s, one
-numerator, and one denominator.\
+constructor). As you can see, to construct a `Fraction`, the
+`Fraction` constructor receives two `Int`s, one
+numerator, and one denominator.
+
 Then, defining the student type from our algebraic formulation above
 should also be straightforward:
 
-``` haskell
+```haskell
 data Student = S String Int
 
 bob :: Student
@@ -76,7 +74,7 @@ bob = S "Bob" 123
 Let us define the `Bool` type, which should have two constructors, each
 constructor not having any fields:
 
-``` haskell
+```haskell
 data Bool = True | False
 
 true, false :: Bool
@@ -84,52 +82,51 @@ true = True
 false = False
 ```
 
-To construct a `Bool`{.haskell} we can use either the `True`{.haskell}
-constructor or the `False`{.haskell} constructor. Neither of these
-constructors receive any other fields.\
+To construct a `Bool` we can use either the `True`
+constructor or the `False` constructor. Neither of these
+constructors receive any other fields.
+
 We can also have multiple constructors, each being products of more than
 zero types, as we shall see in the algebraic formulation of a
-`String`{.haskell}:
+`String`:
 
-``` haskell
+```haskell
 data String = EmptyString | Node Char String
 
 hello, empty :: String
 hello = Node 'h' (Node 'e' (Node 'l' (Node 'l' (Node 'o' EmptyString))))
 empty = EmptyString
 ```
-:::
 
-### Polymorphic Algebraic Data Types
+## Polymorphic Algebraic Data Types
 
 Now we show examples of creating our own polymorphic data types. The way
 we would do so is similar to how we defined generic/polymorphic classes
 in Python.
 
-::: example
 Let us start from the bottom again by creating specialized versions of a
 box type, this time in Haskell. We start by assuming that a box contains
-an `Int`{.haskell}:
+an `Int`:
 
-``` haskell
+```haskell
 data IntBox = IB Int
 b :: IntBox
 b = IB 1
 ```
 
-Then define a box that contains a `String`{.haskell}:
+Then define a box that contains a `String`:
 
-``` haskell
+```haskell
 data StrBox = SB String
 b :: StrBox
 b = SB "123"
 ```
 
 Again, they look more or less the same, except for the type of the
-field. As such, we should allow `Box`{.haskell} to be polymorphic by
+field. As such, we should allow `Box` to be polymorphic by
 introducing a type parameter:
 
-``` haskell
+```haskell
 data Box a = B a
 x :: Box Int
 x = B 1
@@ -140,7 +137,7 @@ y = B "123"
 Perfect! Let us try more complex polymorphic algebraic data types like
 linked lists and trees:
 
-``` haskell
+```haskell
 data LinkedList a = EmptyList | Node a (LinkedList a)
 cat :: LinkedList Char
 cat = Node 'c' (Node 'a' (Node 't' EmptyList))
@@ -149,11 +146,10 @@ data Tree a = Leaf a | TreeNode (Tree a) a (Tree a)
 tree :: Tree Int
 tree = TreeNode (Leaf 1) 2 (Leaf 3)
 ```
-:::
 
 Constructors are actually functions!
 
-``` haskell
+```haskell
 ghci> data Fraction = F Int Int
 ghci> :t F
 F :: Int -> Int -> Fraction
@@ -171,12 +167,11 @@ There are ways to define functions that do so and we will show them to
 you in later sections, but for now, Haskell has *record syntax* that
 automatically defines these accessor functions for us.
 
-::: example
-Let us re-create the `Student`{.haskell} type, this time using record
+Let us re-create the `Student` type, this time using record
 syntax to automatically derive functions that obtain their names and
 IDs:
 
-``` haskell
+```haskell
 data Student = S { name :: String, id :: Int }
 ```
 
@@ -185,7 +180,7 @@ these fields for us. Record syntax is great for giving names to fields!
 Importantly, record syntax is nothing special, and we can continue to
 create terms of those types by way of usual constructor application.
 
-``` haskell
+```haskell
 x, y :: Student
 x = S { name = "Alice", id = 123 }
 y = S "Bob" 456
@@ -194,18 +189,17 @@ y = S "Bob" 456
 Let's try loading this into GHCI and see the accessor functions in
 action:
 
-``` haskell
+```haskell
 ghci> name x
 "Alice"
 ghci> id y
 456
 ```
-:::
 
 We can even mix and match these different forms of constructor
 definitions, or create large data structures!
 
-``` haskell
+```haskell
 data Department = D {name' :: String, courses :: [Course]}
 data Course = C { code :: String, 
                   credits :: Int,
@@ -222,7 +216,7 @@ it5100b = C "IT5100B" 2 [alice, bob]
 cs      = D "Computer Science" [it5100a, it5100b]
 ```
 
-### More on Polymorphism
+## More on Polymorphism
 
 Now that we have shown how to create our own algebraic data types in
 Haskell (and polymorphic ones), we step aside and give a mental model
@@ -231,16 +225,20 @@ polymorphic functions and types as functions/types that
 quantifies/parameterizes types; in other words, they receive a type as a
 parameter.
 
-Recall in the lambda calculus $\lambda$ creates a function over a
-parameter. Assuming the parameter has type $S$ and the returned value
-has type $T$, we get: $$\lambda x.e: S \to T$$ and when we call or apply
-this function, we are substituting the parameter for the argument of the
-function application: $$(\lambda x.e_1)e_2 \equiv_\beta e_1[x:=e_2]$$
+Recall in the lambda calculus \\(\lambda\\) creates a function over a
+parameter. Assuming the parameter has type \\(S\\) and the returned value
+has type \\(T\\), we get: 
 
-::: example
+$$\lambda x.e: S \to T$$ 
+
+and when we call or apply
+this function, we are substituting the parameter for the argument of the
+function application: 
+$$(\lambda x.e_1)e_2 \equiv_\beta e_1[x:=e_2]$$
+
 $$\begin{aligned}
-(\lambda x: \mathtt{Int}.x + 4)3 &\equiv_\beta (x + 4)[x := 3]\\
-&\equiv_\beta (3 + 4)\\
+(\lambda x: \mathtt{Int}.x + 4)3 &\equiv_\beta (x + 4)[x := 3]\\\\
+&\equiv_\beta (3 + 4)\\\\
 & \equiv_\beta 7
 \end{aligned}$$ In Haskell (the expression in parentheses is a lambda
 expression):
@@ -249,22 +247,21 @@ expression):
 ghci> (\x -> x + 4) 3
 7
 ```
-:::
 
-A typed variant of the lambda calculus known as System $F$ has
+A typed variant of the lambda calculus known as System \\(F\\) has
 polymorphic functions, which are functions that also receive a type
 parameter. We can then apply this function onto a type *argument* to get
 a specialized version of that function. Such type parameters are bound
-by $\Lambda$. As an example, if we have a term $e$ of type $T$, we get:
-$$\Lambda \alpha.e: \forall\alpha.T$$ Calling or applying this function
-with a type argument, once again, substitutes the type parameter with
-the type argument:
+by \\(\Lambda\\). As an example, if we have a term \\(e\\) of type \\(T\\), we get:
+
+$$\Lambda \alpha.e: \forall\alpha.T$$
+Calling or applying this function with a type argument, once again, substitutes the type parameter with the type argument:
+
 $$(\Lambda\alpha.e).\tau\equiv_\beta e[\alpha := \tau]$$
 $$(\Lambda\alpha.e).\tau : T[\alpha := \tau]$$
 
-::: example
 $$\begin{aligned}
-(\Lambda \alpha.\lambda x:\alpha.[x]) \mathtt{Int} &\equiv_\beta (\lambda x:\alpha.[x])[\alpha := \mathtt{Int}]\\
+(\Lambda \alpha.\lambda x:\alpha.[x]) \mathtt{Int} &\equiv_\beta (\lambda x:\alpha.[x])[\alpha := \mathtt{Int}]\\\\
   & \equiv_\beta \lambda x:\mathtt{Int}.[x]
 \end{aligned}$$
 
@@ -288,24 +285,23 @@ f @Int :: Int -> [Int]
 ghci> f @Int 1
 [1]
 ```
-:::
 
 On the other hand, polymorphic types can be seen as *functions at the
 type-level*. These are "functions" that receive types and return types!
-For example, we can define a `Pair`{.haskell} type that is polymorphic
-in its component types. Thus, the `Pair`{.haskell} type itself (not its
+For example, we can define a `Pair` type that is polymorphic
+in its component types. Thus, the `Pair` type itself (not its
 constructor!) receives two types, and returns the resulting
-`Pair`{.haskell} type specialized to those component types. This makes
-`Pair`{.haskell} what is known as a *type constructor*.
+`Pair` type specialized to those component types. This makes
+`Pair` what is known as a *type constructor*.
 
 To observe this fact, know that types are to terms as *kinds* are to
 types: they describe what *kind* of type a type is. The usual types that
-we encounter `Int`{.haskell}, `[[Char]]`{.haskell} etc. have kind
-`*`{.haskell}, and type constructors or "type-level functions\" have
-kind `* -> *`{.haskell} for example. Below, we show that
-`Pair`{.haskell} is a type constructor of kind `* -> * -> *`{.haskell},
+we encounter `Int`, `[[Char]]` etc. have kind
+`*`, and type constructors or "type-level functions\" have
+kind `* -> *` for example. Below, we show that
+`Pair` is a type constructor of kind `* -> * -> *`,
 which makes sense since it receives two types and returns the
-specialized type of the `Pair`{.haskell}:
+specialized type of the `Pair`:
 
 ``` haskell
 ghci> data Pair a b = P a b
@@ -318,8 +314,8 @@ Pair Int String :: *
 ```
 
 We know that we can have higher-order functions, for example, the type
-of `map`{.haskell} might be something like
-`(a -> b) -> [a] -> [b]`{.haskell}. Can we have higher-order type
+of `map` might be something like
+`(a -> b) -> [a] -> [b]`. Can we have higher-order type
 constructors? Yes! These are known as *higher kinds* or *higher-kinded
 types*. These types receive *type constructors* as type arguments. Let
 us construct a higher-kinded type that receives a type constructor and
@@ -330,8 +326,8 @@ ghci> data Crazy f a = C (f a)
 ```
 
 Upon visual inspection we can see that `f` must be a type constructor,
-because the constructor `C`{.haskell} receives a term of type `f a`!
-What's crazier is, when inspecting the kind of `Crazy`{.haskell}, we see
+because the constructor `C` receives a term of type `f a`!
+What's crazier is, when inspecting the kind of `Crazy`, we see
 that it exhibits *kind polymorphism*:
 
 ``` haskell
@@ -341,9 +337,9 @@ Crazy :: forall {k}. (k -> *) -> k -> *
 ```
 
 To give you an example of how this might work, because we know we can
-construct lists of any type, `[]`{.haskell} (the type, not the empty
-list) must be a type constructor. We can thus pass the `[]`{.haskell}
-type constructor into `Crazy`{.haskell}:
+construct lists of any type, `[]` (the type, not the empty
+list) must be a type constructor. We can thus pass the `[]`
+type constructor into `Crazy`:
 
 ``` haskell
 ghci> :k Crazy []
@@ -352,9 +348,9 @@ ghci> :k Crazy [] Int
 Crazy [] Int :: *
 ```
 
-How might this work? We see that `Crazy [] Int`{.haskell} has kind `*`,
+How might this work? We see that `Crazy [] Int` has kind `*`,
 so we should be able to construct a term of this type. We can do so by
-using the `C`{.haskell} constructor defined above! To be clear, let's
+using the `C` constructor defined above! To be clear, let's
 see the specialized version of the constructor with the type arguments
 entered:
 
@@ -364,7 +360,7 @@ C @[] @Int :: [Int] -> Crazy [] Int
 ```
 
 As we can see, to construct a term of this type, we just need to pass in
-a list of integers to `C`{.haskell}:
+a list of integers to `C`:
 
 ``` haskell
 ghci> x :: Crazy [] Int = C [1]
@@ -385,15 +381,11 @@ Although this might confuse you so far, what we have demonstrated merely
 serves to demonstrate the idea that parametric polymorphism can be
 thought of the phenomenon where something (type or term) can receive a
 type and give you a type or term, just as we have stated at the
-beginning of
-[\[sec:polymorphism\]](#sec:polymorphism){reference-type="autoref"
-reference="sec:polymorphism"}.
+beginning of [Chapter 2.2 (Polymorphism)](./polymorphism.md).
 
-### Other Polymorphisms
+## Other Polymorphisms
 
-At the start of
-[\[sec:polymorphism\]](#sec:polymorphism){reference-type="autoref"
-reference="sec:polymorphism"} we introduced three questions, two of
+At the start of [Chapter 2.2 (Polymorphism)](./polymorphism.md) we introduced three questions, two of
 which have been answered. Let us restate the final question and pose one
 more:
 
@@ -461,9 +453,9 @@ these with Haskell's Algebraic Data Types. Most importantly, in Haskell,
 data types are types, but constructors are not. This is unlike Python,
 where all classes are types. That means a variable of type
 `Node[int]`{.python} is valid in Python, but a variable of type
-`Node Int`{.haskell} is not in Haskell.
+`Node Int` is not in Haskell.
 
-### Generalized Algebraic Data Types {#sec:gadt}
+## Generalized Algebraic Data Types
 
 However, something interesting is going on here. In the second
 formulation, a `Node[a]`{.python} is a `List[a]`, which makes sense. On
@@ -527,9 +519,9 @@ class CondExpr[a](Expr[a]):
 Let's try this out! Suppose we would like to evaluate the following
 expression:
 
-::: center
-`if 1 == 2 then 1 + 1 else 0`
-:::
+```
+if 1 == 2 then 1 + 1 else 0
+```
 
 Let's write this in the program using our classes and evaluate it!
 
@@ -558,7 +550,7 @@ data LinkedList a where
 ```
 
 Now let us take it a step further, and truly customize the constructors
-of an `Expr`{.haskell} GADT:
+of an `Expr` GADT:
 
 ``` haskell
 data Expr a where
@@ -571,5 +563,5 @@ data Expr a where
 Pretty neat huh! There are many uses of GADTs, and we might see them in
 the future. In the next section, we will show you how we can write
 functions against algebraic data types and GADTs, including how we can
-implement the `eval`{.haskell} function.
+implement the `eval` function.
 
