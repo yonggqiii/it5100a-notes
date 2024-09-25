@@ -26,6 +26,7 @@
     - [Applicative Functors](./railway_pattern/applicative.md)
     - [Validation](./railway_pattern/validation.md)
     - [Monads](./railway_pattern/monad.md)
+    - [Railway Pattern in Python](./railway_pattern/railway_python.md)
     - [Exercises](./railway_pattern/exercises.md)
 - [Monads]()
 - [Concurrent and Parallel Programming]()

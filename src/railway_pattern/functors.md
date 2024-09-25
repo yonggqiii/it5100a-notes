@@ -1,6 +1,6 @@
 # Category Theory
 
-We can borrow some ideas from a branch of mathematics, known as _Category Theory_, to improve the ergonomics of these structures. Part of the reason why we are able to do so is that all the types that we have described have kind `* -> *`, i.e. they "wrap" around another type. As such, they should be able to behave as _functors_, which we will formalize shortly.[^3]
+We can borrow some ideas from a branch of mathematics, known as _Category Theory_, to improve the ergonomics of these structures. Part of the reason why we are able to do so is that all the types that we have described have kind `* -> *`, i.e. they "wrap" around another type. As such, they should be able to behave as _functors_, which we will formalize shortly.[^1]
 
 However, before we even talk about what a functor is and how the data structures we have described are functors, we first need to describe what category theory is. Intuitively, most theories (especially the algebraic ones) study mathematical structures that abstract over things; groups are abstractions of symmetries, and geometric spaces are abstractions of space. Category theory takes things one step further and study abstraction itself.
 
@@ -47,7 +47,7 @@ A ----> B
 ```
 Here we have three objects `A` `B` and `C`, and the morphisms `f: A -> B`, `g: B -> C` and `h: A -> C`. The identity morphisms for the objects are omitted for simplicity. Note that the composition of `f` and `g` exists in the category (assume in the example `g . f == h`).
 
-Why do we care? Well, it turns out that types and functions in Haskell assemble into a category \\(\mathcal{H}\\)![^1]
+Why do we care? Well, it turns out that types and functions in Haskell assemble into a category \\(\mathcal{H}\\)![^2]
 - Objects in \\(\mathcal{H}\\) are types like `Int`, `String` etc.
 - Morphisms in \\(\mathcal{H}\\) are functions like `(+1)` and `head`
 
@@ -82,7 +82,7 @@ especially the compositions and identities.
 
 > Let \\(\mathcal{C}\\) and \\(\mathcal{D}\\) be categories. A (_covariant_)
 > _functor_ \\(F: \mathcal{C} \rightarrow \mathcal{D}\\) consists of:
-> - An object \\(F(C) \in \text{ob}(\mathcal{D})\\) for each object \\(C \in \text{ob}(\mathcal{C})\\)[^2].
+> - An object \\(F(C) \in \text{ob}(\mathcal{D})\\) for each object \\(C \in \text{ob}(\mathcal{C})\\)[^3].
 > - A morphism \\(F(f): F(C) \rightarrow F(D) \in \text{mor}(\mathcal{D})\\) for each morphism \\(f: C\rightarrow D \in \text{mor}(\mathcal{C})\\).
 >
 > subject to the two _functoriality axioms_:
@@ -152,6 +152,7 @@ ghci> id @[Int] [1, 2, 3]
 ```
 That is great! `[]` and `map` form a functor over \\(\mathcal{H}\\), which means that we no longer have to worry if someone wants to work in the `[]` context. This is because if we have functions from `a` to `b`, we can _lift_ it into a function from `[a]` to `[b]` using `map` and it will behave in the most obvious way!
 
+
 Can we say the same about `Maybe` and the other type constructors we saw earlier? Fret not! Let's see how we can define a function for `Maybe` so that it can behave as a functor as well! Let's look at `maybeMap`:
 
 ```haskell
@@ -200,6 +201,15 @@ The key point of `[]`, `Maybe`, `Either` etc being functors is as such:
 
 > Given any functor `F` and a function `f` from `A` to `B`, `fmap f` is a function from `F A` to `F B` and **behaves as we should expect**. 
 
+```
+       f
+  A ------> B
+       |
+       |
+       v
+F A ------> F B
+    fmap f
+```
 Whenever we are presented with a situation that requires us to map a function `f :: A -> B` over a functor `fa :: F A`, just use `fmap f fa` to give us some `fb :: F B`. There is no need to unwrap the `A` from the `F A` (which may not be possible), apply `f` then wrap it back in the `F`; just use `fmap`!
 
 A simple example is as follows. Suppose we have our `head'` function that returns a `Maybe a`, as we have defined earlier. A possible program that we could write that operates on the result of `head'` is the following:
@@ -226,9 +236,9 @@ That being said, we now have a very powerful tool, `fmap`, that allows us to per
 
 ---
 
-[^3]: We do not cover category theory in too much detail since it is not _required_ for functional programming, although an appreciation of it can help with understanding. For a more detailed walkthrough of the connections between functional programming and category theory, see my [article on category theory](https://yongqi.foo/papers/fun/Monads.pdf).
+[^1]: We do not cover category theory in too much detail since it is not _required_ for functional programming, although an appreciation of it can help with understanding. For a more detailed walkthrough of the connections between functional programming and category theory, see my [article on category theory](https://yongqi.foo/papers/fun/Monads.pdf).
 
-[^1]: Not really... due to the laziness of Haskell and functions like `seq`, the types and functions in Haskell do not actually assemble in to a category. However, just to put some ideas across, we shall assume that they do.
+[^2]: Not really... due to the laziness of Haskell and functions like `seq`, the types and functions in Haskell do not actually assemble in to a category. However, just to put some ideas across, we shall assume that they do.
 
-[^2]: We abuse the notation of set membership here. It is not necessary for the collections of objects and morphisms of a category to be sets, as is the case for the category of sets.
+[^3]: We abuse the notation of set membership here. It is not necessary for the collections of objects and morphisms of a category to be sets, as is the case for the category of sets.
 

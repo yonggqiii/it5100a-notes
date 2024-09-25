@@ -86,3 +86,22 @@ code.language-lean:before {
   margin-left: -50px;
 }
 
+.ayu .hljs-op {
+  color: #c4e889;
+}
+
+.navy .hljs-op {
+  color: #bbb8ff;
+}
+
+.coal .hljs-op {
+  color: #bbb8ff;
+}
+.rust .hljs-op {
+  color: white;
+}
+
+.light .hljs-op {
+  color: white;
+}
+

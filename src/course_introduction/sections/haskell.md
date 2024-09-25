@@ -490,11 +490,11 @@ ghci> take 5 y
 As we know, performing recursion over a list frequently requires us to
 get a head element and then recursively calling the function over the
 remaining list. This is nicely supported without any performance costs
-unlike in Python, where `ls[1:]` runs in $O(n)$. For example,
+unlike in Python, where `ls[1:]` runs in \\(O(n)\\). For example,
 writing a function that sums a list of numbers might look like the
 following in Python:
 
-``` haskell
+``` python
 def sum(ls):
     if len(ls) == 0:
         return 0
