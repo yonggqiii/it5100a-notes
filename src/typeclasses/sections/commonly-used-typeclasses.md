@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Commonly-Used Typeclasses
 
 Let us have a look at some typeclasses and their methods that you have
@@ -28,14 +30,13 @@ the instances of these typeclasses for commonly-used types, such as
 instances for `Num Int` and `Eq String`.
 
 Let us try defining our own instance of `Eq`. Suppose we are
-re-using the `Fraction` algebraic data type defined in the
-previous chapter:
+re-using the `Fraction` algebraic data type defined in [Chapter 2.3 (Types#Algebraic Data Types)](../../types/sections/algebraic_data_types.md):
 
 ``` haskell
 data Fraction = Fraction Int Int
 ```
 
-Let us allow `Fraction` to be amenable to equality comparisons
+We allow `Fraction` to be amenable to equality comparisons
 by implementing a typeclass instance for `Eq Fraction`:
 
 ``` haskell
@@ -101,8 +102,8 @@ x /= y = not (x == y)
 
 By placing both functions as methods in the typeclass, programmers have
 the option to define *either* `(==)` *or* `(/=)`, or
-both, if specifying each implementation individually gives a more
-efficient performance.
+both, if specifying each implementation individually gives better performance or 
+different behaviour than the default.
 
 ## Typeclass Constraints in Typeclasses and Instances
 
@@ -187,3 +188,6 @@ Node Empty 1 Empty
 ghci> x == y
 False
 ```
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

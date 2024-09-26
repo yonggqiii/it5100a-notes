@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Polymorphism {#sec:polymorphism}
 
 In FP, functions describe computation and applying functions perform
@@ -64,10 +66,9 @@ behaviour (higher-order functions), however, can we parameterize
 *types*?
 
 Yes! We can define `Box` to receive a *type parameter* `a`, and allow
-the value in the box to be of that type `a`[^4].
+the value in the box to be of that type `a`.
 
-``` python
-# Python 3.12
+```python
 @dataclass
 class Box[a]:
     value: a
@@ -100,7 +101,6 @@ example, may define this function that works on `int`s, and
 separately, another function that works on `str`s:
 
 ``` python
-# Python 3.12
 def singleton_int(x: int) -> list[int]:
     return [x]
 def singleton_str(x: str) -> list[str]:
@@ -121,8 +121,8 @@ y: list[str] = singleton('a')
 bad: list[bool] = singleton(2)
 ```
 
-`singleton` is what is known as a polymorphic function, where the
-function depends on the type!
+`singleton` is what is known as a _polymorphic function_: a 
+function that depends on the type!
 
 ## Polymorphic Functions in Haskell
 
@@ -170,7 +170,7 @@ Let's inspect the type signature of `(.)`. Recall that this
 function performs function composition; the implementation of
 `(.)` might look something like this:
 
-``` haskell
+```haskell
 (.) :: (b -> c) -> (a -> b) -> a -> c
 (.) g f x = g (f x)
 ```
@@ -180,12 +180,11 @@ functions since we are calling them, thus we are going to let the types
 of `g` and `f` to be `d -> c` and `a -> b`
 respectively. Additionally, `x` is just some other term, and we will let
 its type be `e`. Thus for now, we shall let the type signature of
-`(.)` be the following, assuming the return type ultimately
-becomes `r`:
+`(.)` be the following, assuming the function ultimately returns
+`r`:
 
 ``` haskell
 (.) :: (d -> c) -> (a -> b) -> e -> r
-(.) g f x = g (f x)
 ```
 
 Now notice the following: for `f x` to be well-typed, the type
@@ -194,22 +193,20 @@ of `x` must be the same as the type of the parameter to `f`, which is
 
 ``` haskell
 (.) :: (d -> c) -> (a -> b) -> a -> r
-(.) g f x = g (f x)
 ```
 
 We can now see that `f x` is well-typed, and this expression is of type
 `b`. We then pass this result into `g`. For this to be well-typed,
 again, the parameter type of `g` must match the type of `f x`. Thus, `g`
-must actually be of type `b -> c`:
+must actually be of type `b -> c` for some `c`:
 
 ``` haskell
 (.) :: (b -> c) -> (a -> b) -> a -> r
-(.) g f x = g (f x)
 ```
 
 Finally, `g (f x)` has type `c`, which is what is returned from the
 function. As such, the return type of `(.) g f x` should also
-be `c`. This recovers the correct type signature shown by GHCI.
+be `c`. This recovers the type signature shown by GHCI.
 
 > You might be surprised to know that the process of recovering or
 reconstructing the types is known as type inference, which as stated in
@@ -228,7 +225,7 @@ some practice, so to start, just create specialized versions of those
 types/functions, and as the need arises, make them polymorphic by
 parameterizing the appropriate types.
 
-Suppose we
+For example, suppose we
 are trying to create a `Tree` class that represents binary trees. Should
 this class be polymorphic? For now, let's ignore this fact and proceed
 to create a naive implementation of this class. Further suppose we are
@@ -290,7 +287,7 @@ class Leaf[a](Tree[a]):
 
 Now from this one class, we are able to create all kinds of trees!
 
-Suppose we are trying to define a function that reverses a list. Once
+As another example, suppose we are trying to define a function that reverses a list. Once
 again, we have to be specific with the type of this function.
 Temporarily, we shall create a function that works on lists of integers:
 
@@ -344,3 +341,4 @@ representing/acting on.
     description of parametric polymorphism gives a pretty good picture
     of what it entails.
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

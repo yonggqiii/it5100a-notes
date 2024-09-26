@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Algebraic Data Types
 
 We have just seen different data types in Haskell, and introduced the
@@ -7,12 +9,11 @@ in Haskell!
 
 Haskell is a purely functional language, so do not expect classes here.
 In OOP, objects have both data (attributes) and behaviour (methods),
-whereas this is not necessarily a principle in FP (you can have data
-types with functions as fields). We already know how to create
-functions, so now we must investigate how we can create data types in a
+whereas this is not necessarily a principle in FP (although, you can have data
+types with functions as fields since functions are first-class). We already know how to create functions, so now we must investigate how we can create data types in a
 purely functional language.
 
-If we think about it carefully, we might notice that data types are a
+If we think about it carefully, we might realize that data types are a
 mix of the following:
 
 -   A type **and** another type **and**...**and** yet another type
@@ -25,7 +26,7 @@ types:
 -   A `Fraction` consists of a numerator (`Int`) **and** a denominator
     (`Int`)
 
--   A `Student` consists of a name (`String`) and an ID (`Int`)
+-   A `Student` consists of a name (`String`) **and** an ID (`Int`)
 
 -   A `Bool` is either `True` **or** `False`
 
@@ -37,8 +38,8 @@ types:
     **and** a right subtree (`Tree a`))
 
 This formulation of data types as products (**and**) and/or sums
-(**sum**) is what is known as Algebraic Data Types (not to be confused
-with Abstract Data Types). In Haskell, types are **sums** of one or more
+(**sum**) is what is known as Algebraic Data Types (ADTs) (not to be confused
+with Abstract Data Types). In Haskell, types are **sums** of zero or more
 **constructors**; constructors are **products** of zero or more types.
 
 To create a new data type in Haskell, we can use the `data`
@@ -53,12 +54,12 @@ half = Fraction 1 2
 ```
 
 On the left hand side we have the declaration of the type, and on the
-right hand side, a list of constructors that help us create the type.
+right hand side, a list of constructors separated by `|` that help us create the type.
 Note that the `Fraction` on the right hand side is the name of
 the constructor of the type; it in fact can be distinct from the name of
 the type itself (which is very helpful when you have more than one
-constructor). As you can see, to construct a `Fraction`, the
-`Fraction` constructor receives two `Int`s, one
+constructor). As you can see, to construct a `Fraction` (the type), the
+`Fraction` _constructor_ receives two `Int`s, one
 numerator, and one denominator.
 
 Then, defining the student type from our algebraic formulation above
@@ -86,7 +87,7 @@ To construct a `Bool` we can use either the `True`
 constructor or the `False` constructor. Neither of these
 constructors receive any other fields.
 
-We can also have multiple constructors, each being products of more than
+We can also have multiple constructors that are products of more than
 zero types, as we shall see in the algebraic formulation of a
 `String`:
 
@@ -196,6 +197,20 @@ ghci> id y
 456
 ```
 
+You can also make use of record syntax to express record updates. For example, 
+we can update Alice to have the ID of 456 like so:
+```haskell
+ghci> id x
+123
+ghci> z = x { id = 456 }
+ghci> name z
+"Alice"
+ghci> id z
+456
+```
+Of course, the original term was not actually _updated_ since everything is immutable in Haskell&mdash;`x { id = 456 }` simply constructs a new term that contains the same values for all its fields, except where the `id` field now takes the value `456`.
+
+
 We can even mix and match these different forms of constructor
 definitions, or create large data structures!
 
@@ -225,7 +240,7 @@ polymorphic functions and types as functions/types that
 quantifies/parameterizes types; in other words, they receive a type as a
 parameter.
 
-Recall in the lambda calculus \\(\lambda\\) creates a function over a
+Recall in the lambda calculus that \\(\lambda\\) creates a function over a
 parameter. Assuming the parameter has type \\(S\\) and the returned value
 has type \\(T\\), we get: 
 
@@ -257,8 +272,8 @@ by \\(\Lambda\\). As an example, if we have a term \\(e\\) of type \\(T\\), we g
 $$\Lambda \alpha.e: \forall\alpha.T$$
 Calling or applying this function with a type argument, once again, substitutes the type parameter with the type argument:
 
-$$(\Lambda\alpha.e).\tau\equiv_\beta e[\alpha := \tau]$$
-$$(\Lambda\alpha.e).\tau : T[\alpha := \tau]$$
+$$(\Lambda\alpha.e)\ \tau\equiv_\beta e[\alpha := \tau]$$
+$$(\Lambda\alpha.e)\ \tau : T[\alpha := \tau]$$
 
 $$\begin{aligned}
 (\Lambda \alpha.\lambda x:\alpha.[x]) \mathtt{Int} &\equiv_\beta (\lambda x:\alpha.[x])[\alpha := \mathtt{Int}]\\\\
@@ -452,20 +467,20 @@ There are some differences between the two formulations, and between
 these with Haskell's Algebraic Data Types. Most importantly, in Haskell,
 data types are types, but constructors are not. This is unlike Python,
 where all classes are types. That means a variable of type
-`Node[int]`{.python} is valid in Python, but a variable of type
+`Node[int]` is valid in Python, but a variable of type
 `Node Int` is not in Haskell.
 
 ## Generalized Algebraic Data Types
 
 However, something interesting is going on here. In the second
-formulation, a `Node[a]`{.python} is a `List[a]`, which makes sense. On
+formulation, a `Node[a]` is a `List[a]`, which makes sense. On
 the other hand, an `Empty` can be typed as `List[Any]`, because an empty
 list fits all kinds of lists. An interesting observation you might see
-is that the supertype of our \"constructors\" need not strictly be
+is that the supertype of our "constructors" need not strictly be
 `List[a]`, it could be any kind of list!
 
-Consider the following example of defining simple expressions in a
-polymorphic manner using OOP.
+Consider the following example of defining simple expressions in a programming
+language, which is defined polymorphically using OOP:
 
 ``` python
 class Expr[a]:
@@ -565,3 +580,4 @@ the future. In the next section, we will show you how we can write
 functions against algebraic data types and GADTs, including how we can
 implement the `eval` function.
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

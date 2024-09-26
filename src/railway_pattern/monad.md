@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Monads
 
 Another incredibly useful tool is to be able to perform _composition in context_. That is, that given something of `f a` and a function from `a -> f b`, how do we get an `f b`?
@@ -86,25 +87,25 @@ x = 123
 y :: Maybe Int
 y = (`safeDiv` 4) x
 
-z :: Maybe (Maybe Int)
+z :: Maybe Int
 z = y >>= (`safeDiv` 5)
 ```
 
 As we know, function composition `(g . f) x` is sort of to say "do `f` _and then_ do `g` on `x`". Similarly, when `f` and `g` are computations in context and `x` is a term in context, `x >>= f >>= g` also means "do `f` _and then_ do `g` on `x`"! However, `>>=` is incredibly powerful because the actual definition of `>>=` depends on the monad you use&mdash;therefore, monads allow us to _overload_ composition in context![^3]
 
 ```
-     safeDiv                         safeDiv
-        ┏━━━━                           ┏━━━━
-Int ━━━━┫      Maybe Int  >>=   Int ━━━━┫     Maybe Int
-        ┗━━━━                           ┗━━━━
+     safeDiv   |                       safeDiv
+        ┏━━━━  |                          ┏━━━━
+Int ━━━━┫      | Maybe Int  >>=   Int ━━━━┫     Maybe Int
+        ┗━━━━  |                          ┗━━━━
 ```
-Therefore, if you had `f :: a -> b` and `g :: b -> c` and `x :: a`, you would write `g (f x)` for `f` and then `g`. However, if you had `f :: a -> m b` and `g :: b -> m c` and `x :: m a`, you would write `x >>= f >>= g` for `f` and then `g`.
+Therefore, if you had `f :: a -> b` and `g :: b -> c` and `x :: a`, you would write `g (f x)` for `f` _and then_ `g`. However, if you had `f :: a -> m b` and `g :: b -> m c` and `x :: m a`, you would write `x >>= f >>= g` for `f` _and then_ `g`.
 
 
 ## Beyond the Railways
-As we know, data structures like `Maybe`, `Either` and `Validation` support the railway pattern, and them being functors, applicatives and (in the case of `Maybe` and `Either`) monads. However, the use of functors, applicatives and monads extend beyond just the railway pattern.
+As we know, data structures like `Maybe`, `Either` and `Validation` support the railway pattern, and them being functors, applicatives and (in the case of `Maybe` and `Either`) monads makes them ergonomic to use. However, the use of functors, applicatives and monads extend beyond just the railway pattern.
 
-As described in [Chapter 4.1 (Context/Notions of Computation)](./context.md), types like `[]` and `IO` provide _context_ around a type. As it turns out, these types are also functors, applicatives and monads. While we have not touched `IO` at all so far, let us see the instance definitions for `[]`:
+As described in [Chapter 4.1 (Context/Notions of Computation)](./context.md), types like `[]` and `IO` provide _context_ around a type. As it turns out, these types are also functors, applicatives and monads. While we have not touched `IO` at all so far, and will only do so in the next chapter, let us see the instance definitions for `[]`:
 
 ```haskell
 instance Functor [] where
@@ -114,6 +115,7 @@ instance Functor [] where
 instance Applicative [] where
     pure :: a -> [a]
     pure x    = [x]
+
     (<*>) :: [a -> b] -> [a] -> [b]
     fs <*> xs = [f x | f <- fs, x <- xs]
 
@@ -124,18 +126,22 @@ instance Monad []  where
     (>>=) :: [a] -> (a -> [b]) -> [b]
     xs >>= f = [y | x <- xs, y <- f x]
 ```
-Observe the definition of `>>=` for lists. The idea is that we apply `f` onto every single `x`s in the list. As per the type signature, `f x` produces the type `[b]`, which is a list. We extract each `y` from that list, and put them in the resulting list. Let us see the action of `>>=` through an example:
+Observe the definition of `>>=` for lists. The idea is that whatever `fmap f xs` produces (which is a 2+D list), `xs >>= f` flattens that result (it doesn't flatten it recursively, just the top layer). It does so by applying `f` onto every single `x`s in the list. As per the type signature, each `f x` produces a term of the type `[b]`, which is a list. We extract each `y` from that list, and put them all as elements of the resulting list. Let us see the action of `>>=` through an example:
 ```haskell
 ghci> fmap (\x -> return x) [1, 2, 3]
 [[1], [2], [3]] -- fmap gives a 2D list
 ghci> [1, 2, 3] >>= (\x -> return x)
 [1, 2, 3]       -- >>= gives a 1D list
+
+ghci> fmap (\x -> return (x, x + 1)) [1, 2, 3]
+[[(1, 2)], [(2, 3)], [(3, 4)]] -- fmap gives a 2D list
 ghci> [1, 2, 3] >>= (\x -> return (x, x + 1))
-ghci> [(1, 2), (2, 3), (3, 4)]
+ghci> [(1, 2), (2, 3), (3, 4)] -- >>= gives a 1D list
+
 ghci> [1, 2] >>= (\x -> [3] >>= (\y -> >>= return (x, y)))
 [(1, 3), (2, 3)]
 ```
-Let us look an example. Suppose we want to write a function that produces the "cartesian product" of two lists. Writing this function using the monad methods can look unwieldy, but will ultimately pay off as you will see shortly:
+The last function can be written a little more clearly. Suppose we want to write a function that produces the "cartesian product" of two lists. Writing this function using the monad methods can look unwieldy, but will ultimately pay off as you will see shortly:
 
 ```haskell
 cartesian_product :: [a] -> [a] -> [(a, a)]
@@ -151,7 +157,7 @@ ghci> cartesian_product [1,2] [3]
 ```
 
 ## Do-notation
-That's awesome! However, this definition looks very hard to read. However, this form of programming is (as you will surely see) very common&mdash;we bind each `x` from `xs`, then bind each `y` from `ys`, and return `(x, y)`. Why not let us write the same implementation in this way:
+The definition of `cartesian_product` above is hard to read. However, this form of programming is (as you will surely see) very common&mdash;we bind each `x` from `xs`, then bind each `y` from `ys`, and return `(x, y)`. Why not let us write the same implementation in this way:
 
 ```haskell
 cartesian_product :: [a] -> [a] -> [(a, a)]
@@ -203,16 +209,12 @@ alice -- user input
 bob   -- user input
 ("alice","bob")
 ```
-As you can tell, each monad has its own way of composing operations and has its own meaning behind the context it provides. This is why monads are such a powerful tool for functional programming! It is for this reason that we will dedicate the entirety of the next chapter to monads.
-
-## Key Takeaways
-- Instead of functions with side-effects, pure functions can emulate the desired effects (like branching railways) using the right data structures as notions of computation
-- We can operate in context using regular functions when the context is a functor
-- We can combine context when the context is an applicative
-- We can compose functions in context sequentially when they are monads
+As you can tell, each monad has its own way of composing computation in context and has its own meaning behind the context it provides. This is why monads are such a powerful tool for functional programming! It is for this reason that we will dedicate the entirety of the next chapter to monads.
 
 ---
 
 [^1]: You might notice that the monadic bind operator `>>=` looks very similar to the Haskell logo. Monads are incredibly important in functional programming, and we shall spend an entire chapter dedicated to this subject.
 [^2]: Many popular languages call this `flatMap`.
 [^3]: Just like how languages like C, C++ and Java have `;` to separate statements, i.e. a program like `A;B` means do `A` and then do `B`, `>>=` allows us to _overload_ what _and then_ means!
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

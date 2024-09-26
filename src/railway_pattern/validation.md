@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Validation
 
 One of the most common use of applicatives is _validation_. From our example at the start of this chapter, we have several data structures and we want to be able to parse them from strings:
@@ -16,7 +17,7 @@ data User = User { username   :: String
                  , userSalary :: Salary }
   deriving (Eq, Show)
 ```
-Parsing them from strings may not always succeed, therefore it is imperative that our parsing function does not guarantee that it returns the desired data structure. Therefore, what we can do instead is for our parsing functions to return results in the `Maybe` context to express this fact. This makes our parsing functions have the following type signatures:
+Parsing them from strings may not always succeed, therefore it is imperative that our parsing function does not guarantee that it returns the desired data structure. Therefore, what we can do instead is to have our parsing functions return results in the `Maybe` context to express this fact. This makes our parsing functions have the following type signatures:
 
 ```haskell
 parseEmail :: String -> Maybe Email
@@ -116,13 +117,13 @@ However, there is one case that is not handled in our validation function. Let's
 ghci> parseUser "Foo" "abc" "x"
 Left "error: abc is not an email"
 ```
-Notice that although _both_ the email and salaries are invalid, the error message shown _only_ describes the invalid email address. This is misleading because, in fact, the salary is invalid as well, and the user does not know that!
+Notice that although _both_ the email and salaries are invalid, the error message shown _only_ highlights the invalid email address. This is misleading because, in fact, the salary is invalid as well, and the user of this function does not know that!
 
 The reason for this lies in the definition of the typeclass instance `Applicative (Either a)`. Notice that in the case of `Left f <*> Left x`, the result is `Left f`, ignoring the other error message `Left x`! In other words, `Either` is a fail-fast `Applicative`, and this is not what we want for our parsing function!
 
 As briefly stated earlier, although the `Applicative` laws describe how an `Applicative` behaves in the _most obvious way_, there is in fact, multiple _most obvious ways_ an instance can behave. In fact, we can define a data structure that does not exhibit fail-fastness, and yet, is still a valid `Applicative`&mdash;the result of which is an `Applicative` that allows us to collect all error messages! Let us give this a try.
 
-The first is to re-define an ADT called `Validation` that is practically the same (isomorphic) to `Either`, since that structure is still useful for our purposes. The `Functor` instance of this ADT will remain the same.
+The first is to re-define `Either` as an ADT called `Validation` that is practically the same (isomorphic) to `Either`, since that structure is still useful for our purposes. The `Functor` instance of this ADT will remain the same.
 
 ```haskell
 data Validation err a = Success a
@@ -133,7 +134,7 @@ instance Functor (Validation err) where
     fmap f (Success x) = Success $ f x
 ```
 
-Notice that our `err` type variable remains as a type variable, instead of a pre-defined error message collection type like `[String]`. This is because, as always, we want to keep our types as general as possible so that it can be used in any valid way possible. However, it is now incumbent on us to restrict or constraint `err` in a way that makes it amenable to collecting error messages in an obvious way so that we can still use it for our purposes. In essence, we just need `err` to have some binary operation that is _associative_:
+Notice that our `err` type variable remains as a type variable, instead of a pre-defined error message collection type like `[String]`. This is because, as always, we want to keep our types as general as possible so that it can be used liberally. However, it is now incumbent on us to restrict or constraint `err` in a way that makes it amenable to collecting error messages in an obvious way so that we can still use it for our purposes. In essence, we just need `err` to have some binary operation that is _associative_:
 
 \\[E_1\oplus(E_2 \oplus E_3) = (E_1 \oplus E_2) \oplus E_3 \\]
 
@@ -157,7 +158,7 @@ instance Semigroup err => Applicative (Validation err) where
     _ <*> Failure r = Failure r
     Success f <*> Success x = Success (f x)
 ```
-Notice the double-failure case&mdash;the errors are combined or aggregated using the semigroup binary operation. This way, no information is lost if both operands are `Failure` cases since they are accumulated together.
+Notice the double-failure case&mdash;the errors are combined or aggregated using the semigroup binary operation `(<>)`. This way, no information is lost if both operands are `Failure` cases since they are accumulated together.
 
 Assuredly, using a list of strings as our error log is fine because concatenation is an associative binary operation over lists!
 
@@ -181,7 +182,7 @@ parseSalary :: String -> Validation [String] Salary
 parseSalary salary =
     if ... then
         Failure ["error: " ++ salary ++ " is not a number"]
-    else​
+    else
         Success $ SInt ...
 ```
 
@@ -211,6 +212,109 @@ ghci> parseUser "Foo" "abc" "x"
 Failure ["error: abc is not an email", "error: x is not a number"]
 ```
 
+## Hands-On
+In this chapter, we went from parsing with `Maybe`s to parsing with `Either`s and finally to parsing with `Validation`s. Give this a try for yourself!
+
+Written below is the full program for parsing users with `Maybe`. Try replacing the `Maybe`s with `Either`s, then with `Validation`s and see the outcome of running the program each time!
+
+```haskell
+module Main where
+
+import Control.Applicative
+import Text.Read
+import System.IO
+
+-- edit these!
+parseEmail :: String -> Maybe Email
+parseEmail email = 
+    if '@' `elem` email && length e == 2 && '.' `elem` last e
+    -- edit the following two lines when replacing Maybe with
+    -- Either or Validation
+    then Just $ Email (head e) (last e)
+    else Nothing
+  where e = split '@' email
+
+parseSalary :: String -> Maybe Salary
+parseSalary s = 
+  let si = SInt <$> readMaybe s
+      sf = SDouble <$> readMaybe s
+  in  case si <|> sf of
+        Just x -> Just x -- change the RHS `Just x` when replacing
+                         -- Maybe with Either or Validation
+        Nothing -> Nothing -- change the RHS `Nothing` when replacing
+                           -- Maybe with Either or Validation
+
+-- you should only need to change the type of `parseUser` when 
+-- replacing Maybe with Either or Validation
+parseUser :: String -- name
+          -> String -- email
+          -> String -- salary
+          -> Maybe User 
+parseUser name email salary = 
+    let e = parseEmail email
+        s = parseSalary salary
+    in  User name <$> e <*> s
+
+-- no need to edit the rest!
+
+-- the data structures
+data Email = Email { emailUsername :: String,
+                     emailDomain :: String    }
+  deriving (Eq, Show)
+
+data Salary = SInt Int | SDouble Double
+  deriving (Eq, Show)
+
+data User = User { username :: String,
+                   userEmail :: Email,
+                   userSalary :: Salary }
+  deriving (Eq, Show)
+
+-- user input with a prompt
+input :: String -> IO String
+input prompt = do
+  putStr prompt
+  hFlush stdout
+  getLine
+
+-- splitting strings
+split :: Char -> String -> [String]
+split _ [] = [""]
+split delim (x : xs)
+    | x == delim = "" : xs'
+    | otherwise  = (x : head xs') : tail xs'
+  where xs' = split delim xs
+
+-- validation
+data Validation err a = Success a
+                      | Failure err
+
+instance Functor (Validation err) where
+    fmap :: (a -> b) -> Validation err a -> Validation err b
+    fmap _ (Failure e) = Failure e
+    fmap f (Success x) = Success $ f x
+
+instance Semigroup err => Applicative (Validation err) where
+    pure :: a -> Validation err a
+    pure = Success
+
+    (<*>) :: Validation err (a -> b) -> Validation err a -> Validation err b
+    Failure l <*> Failure r = Failure (l <> r)
+    Failure l <*> _ = Failure l
+    _ <*> Failure r = Failure r
+    Success f <*> Success x = Success (f x)
+
+main :: IO ()
+main = do
+  n <- input "Enter name: "
+  e <- input "Enter email: "
+  s <- input "Enter salary: "
+  print $ parseUser n e s
+```
+
 ---
 
 [^1]: It is important to note that the use of the word "parallel" in this chapter has nothing to do with _parallelism_. The word "parallel" is only used to describe the notion of merging parallel railways into a single rail line via `<*>`. 
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

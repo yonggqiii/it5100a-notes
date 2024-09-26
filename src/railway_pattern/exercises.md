@@ -1,6 +1,7 @@
+![Updated][update-shield]
 # Exercises
 
-These exercises has questions that will require you to write code in Python and Haskell. All your Python code should be written in a purely-functional style.
+These exercises have questions that will require you to write code in Python and Haskell. All your Python code should be written in a purely-functional style.
 
 ## Question 1
 
@@ -131,7 +132,7 @@ Failure(['boohoo'])
 
 ## Question 2
 #### Question 2.1: Unsafe Sum
-Write a function `sum_digits(n)` that sums the digits of a nonnegative integer \\(n\\). Do so in Python and Haskell. Example runs follow:
+Recall Question 6 in [Chapter 1.4 (Exercises)](../course_introduction/sections/exercises.md) where we defined a function `sumDigits` in Haskell. Now write a function `sum_digits(n)` that does the same, i.e. sums the digits of a nonnegative integer \\(n\\), in Python. Example runs follow:
 
 ```python
 >>> sum_digits(1234)
@@ -140,6 +141,7 @@ Write a function `sum_digits(n)` that sums the digits of a nonnegative integer \
 45
 ```
 
+Your Haskell definition should also run similarly:
 ```haskell
 ghci> sumDigits 1234
 10
@@ -147,9 +149,9 @@ ghci> sumDigits 99999
 45
 ```
 #### Question 2.2: Safe Sum
-Try entering a negative integer to your functions. My guess is that something bad happens.
+Try entering negative integers as arguments to your functions. My guess is that something bad happens.
 
-Let us make `sum_digits` safe. Re-define `sum_digits` so that we can drop the assumption that \\(n\\) is nonnegative (but will still be an integer), correspondingly using the `Maybe` context to keep our function pure. Use the `Maybe` data structure that you have defined from earlier for the Python version, and use Haskell's `Maybe` in Prelude to do so. Example runs follow:
+Let us make `sum_digits` safe. Re-define `sum_digits` so that we can drop the assumption that \\(n\\) is nonnegative (but will still be an integer), correspondingly using the `Maybe` context to keep our function pure. Use the `Maybe` data structure that you have defined from earlier for the Python version, and use Haskell's built-in `Maybe` to do so. Example runs follow:
 
 ```python
 >>> sum_digits(1234)
@@ -206,6 +208,8 @@ ghci> split '.' "hello. world!. hah"
 ghci> split ' ' "a   b"
 ["a","","","b"]
 ```
+> Hint: The `split` function in Haskell was defined in the hands-on section in [Chapter 4.4 (Railway Pattern#Validation)](./validation.md).
+
 
 #### Question 3.2: CSV Parsing
 The Python `csv` library allows us to read CSV files to give us a list of rows, each row being a list of cells, and each cell is a string. Our goal is to do something similar using the list data structure.
@@ -226,7 +230,7 @@ ghci> csv "a,b,c\nd,e\nf,g,h"
 ```
 
 ## Question 4
-The notation \\(n\choose k\\) is incredibly useful and has applications in domains like ~gambling~probability and statistics, combinatorics etc. The way to compute \\(n\choose k\\) is straightforward:
+The formula \\(n\choose k\\) is incredibly useful and has applications in domains like ~~gambling~~probability and statistics, combinatorics etc. The way to compute \\(n\choose k\\) is straightforward:
 \\[\binom{n}{k} = \frac{n!}{k!(n - k)!}\\]
 
 #### Question 4.1: Factorial
@@ -247,7 +251,7 @@ ghci> factorial 5
 ```
 
 #### Question 4.2: Safe Factorial
-Just like we have done in Question 2, our goal is to make our functions safer! Re-define `factorial` so that we can drop the assumption that the integer is nonnegative. In addition, your function should receive a name of a variable so that more descriptive error messages can be emitted. Use the `Either` type. Example runs follow:
+Just like we have done in Question 2, our goal is to make our functions safer! Re-define `factorial` so that we can drop the assumption that the integer is nonnegative. In addition, your function should receive the name of a variable so that more descriptive error messages can be emitted. Use the `Either` type. Again, do so in Python and Haskell. Example runs follow:
 
 ```python
 >>> factorial(4, 'n')
@@ -322,3 +326,7 @@ Failure ["n - k cannot be negative!"]
 ```
 
 > Tip: With the `-XApplicativeDo` extension, you can actually use `do` notation on `Functor`s and `Applicative`s. Give it a try by defining `choose` using `do`-notation! For more information on the conditions for when you can use `Applicative` `do`-notation, see the [GHC Users Guide](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/applicative_do.html).
+
+> Note: `Validation` is not included in Haskell's Prelude. You can use the `Validation` datatype definition and its supporting typeclass instances as defined in the hands-on portion of [Chapter 4.4 (Railway Pattern#Validation)](./validation.md).
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

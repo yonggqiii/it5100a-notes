@@ -1,6 +1,7 @@
+![Updated][update-shield]
 # Functional Programming
 
-*Functional Programming* (FP) is a *declarative* *programming paradigm* where *functions* take centre stage. As a recap from IT5001, you might have learnt that programming paradigms are schools of thought for writing programs. IT5001 has very likely exposed you to *imperative* paradigms like *procedural* and *Object-Oriented Programming*. These are some of the more popular programming paradigms today.
+*Functional Programming* (FP) is a *declarative* *programming paradigm* where *functions* take centre stage. As a recap from IT5001, you might have learnt that programming paradigms are schools of thought for writing programs. IT5001 has very likely exposed you to *imperative* paradigms like *procedural* and *Object-Oriented Programming*. The following table shows other popular programming paradigms:
 
 | Imperative | Declarative|
 | --- | --- |
@@ -8,7 +9,7 @@
 |Object-Oriented | Functional|
 
 Object-Oriented Programming (OOP) has four principles as you might recall: *Abstraction*, *Inheritance*, *Encapsulation* and
-*Polymorphism*.[^1] Functional Programming, on the other hand, is centered around the following principles, which really are just principles of mathematical functions and the *lambda calculus*:
+*Polymorphism*.[^1] Functional Programming, on the other hand, is centered around the following principles, which really are just principles of mathematical functions and the \\(\lambda\\) *calculus*:[^4] 
 
 -   Immutability
 -   Pure Functions
@@ -20,10 +21,9 @@ Let's briefly describe what these principles entail.
 
 ## Immutability
 
-The idea of *immutability* is simple&mdash;only use **immutable** data. Let's look at an example of programming using only immutable data (and variables)! The following program fragment does not perform any mutation:
+The idea of *immutability* is simple&mdash;only use **immutable** data. For example, the following program fragment does not perform any mutation, not even on the variables:
 
 ``` python
-# Python
 def add_one(fraction):
     """fraction is a tuple of (numerator, denominator)"""
     old_num, den = fraction
@@ -47,7 +47,6 @@ Overall, immutability forces us to be disciplined with **state**.
 Contrast this with using **mutable** data structures and variables, such as in the following program fragment:
 
 ``` python
-# Python
 def f(ls):
   ls[0] = 4
   return ls
@@ -74,16 +73,15 @@ example, \\(f\\) below:
 \\[f(x) = x^2 + 2x + 3\\] 
 
 An equivalent implementation in Python would
-look like
+look like:
 
 ``` python
-# Python
 def f(x):
   return x ** 2 + 2 * x + 3
 ```
 
-The idea is that pure functions **only receive input and return
-output**. Pure functions do not produce side effects, and do not depend
+Pure functions **only receive input and return
+output**. They do not produce side effects, and do not depend
 on external state. And example of this is as follows:
 
 ``` python
@@ -108,7 +106,6 @@ makes reasoning about and optimizing programs much more straightforward.
 Contrast the behaviour of pure functions with that of impure functions:
 
 ``` python
-# Python
 def f():
   global ls
   x = ls # use of global variable
@@ -131,7 +128,6 @@ function into a pure one (removing all side-effects) makes its behaviour
 clearer and more transparent.
 
 ``` python
-# Python
 def f(ls):
   x = ls
   addend = x[-1] + 1
@@ -152,7 +148,6 @@ You have seen this before&mdash;use *recursive* functions to simulate loops.[^2]
 the numbers of a 2-dimensional list, using the `sum2D` function:
 
 ``` python
-# Python
 def sum2D(ls):
   total = 0
   for row in ls:
@@ -171,7 +166,6 @@ recursive formulation of the `sum2D` function from above would
 be like so:
 
 ``` python
-# Python
 def row_sum(row):
     return 0 if not row else \
            row[0] + row_sum(row[1:])
@@ -186,20 +180,20 @@ Again, the behaviour of the program has not changed: the
 2-dimensional list of integers. However, our function is still pure and
 does not mutate **any** data structure or variable.
 
-Recursive solutions can also be incredibly elegant to express,
+Recursive solutions can also be more elegant,
 especially when the problem or data structures used are (inherently)
 recursive. Take the example of obtaining the preorder of a binary tree.
 Binary trees are recursive data structures, if formulated the following
 way:
 
-> A (nonempty) tree is either:
+> A (nonempty) binary tree is either:
 >    - A node with a value, a left tree and a right tree; OR
 >    - A leaf with just a value
 
-As you can see, the definition of a node contains (sub)trees, making it
+As you can see, the definition of a node contains (sub)trees, making the binary tree
 a recursive data structure[^3]. Therefore, operations on trees can often be
 expressed elegantly using recursion. For example, the specification of
-getting the *preorder* of a tree can be like so:
+obtaining the *preorder* of a tree can be like so:
 
 1.  The preorder of a leaf is a list containing the leaf's value
 
@@ -210,7 +204,6 @@ getting the *preorder* of a tree can be like so:
 This specification written in code is concise and elegant:
 
 ``` python
-# Python 3.11
 from dataclasses import dataclass
  
 @dataclass
@@ -244,7 +237,6 @@ that the function **terminates**. In such an environment, we rarely have
 to worry whether our program gets stuck or crashes.
 
 ``` lean
--- Lean 4
 inductive Tree (α : Type) : Type where
   | node : α -> Tree α -> Tree α -> Tree α
   | leaf : α -> Tree α 
@@ -261,7 +253,7 @@ def myTree : Tree Nat := .node 1 (.leaf 2) (.leaf 3)
 The primary reason for this is that recursive functions can often be
 reasoned about via *induction*: 
 
-\\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Modus Ponens}\\]
+\\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Induction}\\]
 
 We have seen that factorial can be written recursively, and in fact we
 can prove its correctness (in a quite straightforward manner) via
@@ -284,7 +276,6 @@ to type information can be verified by a program.
 Observe the following program fragment.
 
 ``` python
-# Python
 x: int = 123
 # ...
 print(x + 5)
@@ -327,26 +318,24 @@ encapsulates this behaviour&mdash;making the function's effects obvious.
 To improve the program written earlier, let us try to create a data structure
 `Maybe` that is one of two things: `Just` a value, or
 `Nothing`. We can express this as dataclasses in Python (you
-may ignore the stuff involving `typing` and `Generic`s
+may ignore the stuff involving `typing` and all the square brackets
 for now, they will make sense later).
 
 ```python
-# Python 3.11
+from typing import Any
 from dataclasses import dataclass
-from typing import Generic, TypeVar, Any
-T = TypeVar('T', covariant=True)
- 
+
 @dataclass(frozen=True)
-class Maybe(Generic[T]):
+class Maybe[T]:
     """Represents computation that may result in nothing"""
     pass
  
 @dataclass(frozen=True)
-class Just(Maybe[T], Generic[T]):
+class Just[T](Maybe[T]):
     j: T
  
 @dataclass(frozen=True)
-class Nothing(Maybe[Any], Generic[T]):
+class Nothing(Maybe[Any]):
     pass
 ```
 
@@ -376,7 +365,7 @@ x: int = int(input())
 y: int = int(input())
 z: Maybe[int]
 match safe_div(x, y):
-    case Just(j=j):
+    case Just(j):
         z = Just(j + 1)
     case Nothing():
         z = Nothing()
@@ -384,9 +373,9 @@ match safe_div(x, y):
 
 Types and type systems are highly useful, not just for verification of
 type safety, but also more generally, program verification and theorem
-proving, etc. Types are backed by a rich theory (type theory) and is
-widely studied. As an example, interactive theorem provers may use
-advanced type systems (such as the calculus of constructions, which has
+proving etc. Types are backed by a rich theory (type theory) and is
+widely studied. As an example, interactive theorem provers may rely
+on systems with advanced type systems (such as the calculus of constructions, which has
 *dependent types*) to form the computational basis for proof assistance
 and proof checking. When these systems are baked into the language, we
 can write proof-carrying code and theorems (mathematical theorems or
@@ -415,7 +404,7 @@ def Vect.concat {α : Type} {n k : Nat} : Vect α n -> Vect α k -> Vect α (n +
 ### First-Class Functions
 
 You might have seen in IT5001 that in some languages, functions are
-*first-class* objects. This gives rise to higher-order functions which
+*first-class* objects.[^7] This gives rise to higher-order functions which
 support **code re-use**. *Higher-order functions* can receive functions
 as arguments and/or return functions as output. 
 
@@ -428,7 +417,6 @@ This way, adding 2 to the values of a tree is as simple as several
 function calls:
 
 ``` python
-# Python
 @dataclass(frozen=True)
 class Tree:
     def map(self, f):
@@ -458,7 +446,7 @@ x = Node(1, Leaf(2), Leaf(3))
 print(x.map(add(2))) # Node(3, Leaf(4), Leaf(5))
 ```
 
-Functional programming languages emphasize this fact and makes it easy
+Functional programming languages emphasize this fact and make it easy
 and ergonomic to define higher-order functions. For example, in Haskell,
 functions are automatically curried, and has higher-order functions like
 `map` built into the standard library. This makes, for
@@ -484,19 +472,7 @@ adopted in commonly-used imperative programming languages:
 
 -   Records in Java 14 etc.
 
-As such, learning functional programming features has direct carry-over
-to the work that you might do in the future. Of course, functional
-programming is more than just a set of programming language features and
-principles&mdash;learning functional programming is about **rethinking the way
-we solve problems**. As you have seen, some of the principles we have
-discussed impose restrictions on the programmer. Although these are
-meaningful restrictions, solving problems with them imposed can be quite
-challenging and will require different approaches. However, learning
-functional programming is worth it as it gives you an entirely new
-perspective of problem solving. The new skills you would gain from doing
-so allows you to grow into a more disciplined developer, and allows you
-to explore different solutions to problems you face in your day-to-day
-experience as a software engineer.
+Learning functional programming has a direct impact on your future work as a developer; functional programming is more than just a collection of language features and principles&mdash;it fundamentally encourages a new way of solving problem. As we’ve discussed, some of these principles impose meaningful constraints on programmers, which can make problem-solving more challenging and require innovative strategies. Nevertheless, mastering functional programming is invaluable, as it offers a fresh perspective on problem-solving. The skills you acquire will not only enhance your discipline as a developer but also empower you to explore diverse approaches to the challenges you encounter in your daily work.
 
 Our goal for this course is to therefore first learn how to write
 programs in a purely functional programming language (thus forcing you
@@ -506,10 +482,9 @@ in two languages: *Haskell* (a purely functional programming language)
 and Python (which you should all be relatively familiar with).
 
 ### Things You Need
-
 For this course, you will need the following software:
 
--   The Glasgow Haskell Compiler (GHC)
+-   The Glasgow Haskell Compiler (GHC) (recommended: GHC 9.4.8 or newer)
 
 -   Python 3.12 (note the version; we shall be using new features)
 
@@ -521,6 +496,8 @@ For this course, you will need the following software:
     different to the polymorphism in FP known as *parametric
     polymorphism*.
 
+[^4]: If you have not, you may want to read [a recap on the \\(\lambda\\) calculus](../../recap/sections/lambda.md) before continuing.
+
 [^2]: If you have not, you may want to read
     [a recap on recursion](../../recap/sections/recursion.md) before continuing.
 
@@ -528,3 +505,8 @@ For this course, you will need the following software:
     this, look at our definition of binary trees, and remove one subtree
     in the definition of a node (therefore, a node has a value and one
     subtree). This is now a singly-linked list.
+
+[^7]: If you have not, you may want to read a 
+    [a recap on first-class functions](../../recap/sections/first-class-functions.md) before continuing.
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Pattern Matching
 
 We have seen how we can write constructors for algebraic data types, and
@@ -8,11 +10,11 @@ example, if we defined a fraction type normally, how do we obtain a
 fraction's numerator and denominator?
 
 The answer to this question is to use *pattern matching*. It is a
-control structure just like if-else statements, except that we would
-execute different branches based on the value/structure of the data,
+control structure just like `if`-`then`-`else` expressions, except that we would
+execute different branches based on the _value/structure_ of the data,
 instead of a general condition.
 
-Let us define the factorial function using pattern matching instead of
+Let us define the `factorial` function using pattern matching instead of
 conditional expressions or guards. We use `case` expressions
 to do so:
 
@@ -24,11 +26,9 @@ fac n = case n of -- match n against these patterns:
 ```
 
 The nice thing about pattern matching is that we can also match against
-the *structure* of data, i.e. to match against constructors:
-
-Let us
-redefine the `fst` and `snd` functions which project
-a tuple into its component values:
+the *structure* of data, i.e. to match against constructors.
+Let us redefine the `fst` and `snd` functions which project
+a pair into its components:
 
 ``` haskell
 fst' :: (a, b) -> a
@@ -40,7 +40,7 @@ snd' p = case p of
     (_, y) -> y
 ```
 
-Let us write accessor functions to access the numerator and denominator of a
+Let us also write accessor functions to access the numerator and denominator of a
 fraction.
 
 ``` haskell
@@ -54,11 +54,8 @@ denominator f = case f of
 
 One nice thing about Haskell is that because we perform pattern matching
 over the arguments of functions so frequently, we can actually bring the
-patterns up to the definitions of the functions themselves.
-
-Let us define all of the functions we've just written using
-`case` expressions into more idiomatic uses of
-pattern matching.
+patterns up to the definitions of the functions themselves. Let us define all the functions we've just written using
+`case` expressions into more idiomatic uses of pattern matching.
 
 ``` haskell
 fac :: Int -> Int
@@ -85,9 +82,7 @@ roughly defined as such:
 data [a] = [] | a : [a]
 ```
 
-We can use this fact to pattern match against lists!
-
-The sum of a list of integers is 0 if the list is empty, otherwise its
+We can use this fact to pattern match against lists! For instance, the sum of a list of integers is 0 if the list is empty, otherwise its
 the head of the list plus the sum of the tail of the list.
 
 ``` haskell
@@ -95,7 +90,7 @@ sum' :: [Int] -> Int
 sum' [] = 0
 sum' (x : xs) = x + sum' xs
 ```
-The length of a list is 0 if the list is empty, otherwise it is 1 more
+Similarly, the length of a list is 0 if the list is empty, otherwise it is 1 more
 than the length of its tail.
 
 ``` haskell
@@ -133,8 +128,10 @@ emp [] = []
 
 Compile it to see the warning!
 
-```output warn
+```
 ghc Main.hs
+```
+```output warn
 Main.hs:3:1: warning: [-Wincomplete-patterns]
     Pattern match(es) are non-exhaustive
     In an equation for 'emp': Patterns of type '[a]' not matched: (_:_)
@@ -143,14 +140,14 @@ Main.hs:3:1: warning: [-Wincomplete-patterns]
   | ^^^^^^^^^^^
 ```
 
-This is one reason why pattern matching is so powerful; compilers can
+This is one reason why pattern matching is so powerful: compilers can
 check if you have covered all possible patterns of a given type. This is
-unlike usual if-else statements where it is much less straightforward to
+unlike the usual `if`-`else` statements in other languages where it is much less straightforward to
 check if you have covered all possible branches, especially if you omit
 `else` statements.
 
 One important point to highlight here is that pattern matching is done
-top-down. Thus, using pattern-matching is kind of similar to if-else
+top-down. Pattern-matching is kind of similar to `if`-`else`
 statements in that regard: your most specific condition should be
 defined first, then followed by more general or catch-all patterns.
 
@@ -161,19 +158,17 @@ function to never terminate:
 ``` haskell
 fac :: Int -> Int
 fac n = n * fac (n - 1)
-fac 0 = 1 -- redundant as pattern above matches all
-          -- possible integers
+fac 0 = 1 -- redundant as pattern above matches all possible integers
 ```
 
 With pattern matching, let us know fulfil our earlier promise of
 defining the `eval` function for the `Expr` GADT in
-[Chapter 2.3 (Algebraic Data Types)](./algebraic_data_types.md).
-
-In our Python formulation, we know that `eval` should have the
+[Chapter 2.3 (Algebraic Data Types)](./algebraic_data_types.md). In our Python formulation, we know that `eval` should have the
 type signature `Expr a -> a`. Let us then define how each
 expression should be evaluated with pattern matching.
 
 ``` haskell
+-- Main.hs
 eval :: Expr a -> a
 eval (LitNumExpr n)   = n
 eval (AddExpr a b)    = eval a + eval b
@@ -181,12 +176,14 @@ eval (EqExpr a b)     = eval a == eval b
 eval (CondExpr a b c) = if eval a then eval b else eval c
 ```
 
-This is highly straightforward! However, you might find that when this
+This seems straightforward. However, you might find that when this
 program is compiled, the compiler throws an error on the use of the
 `(==)` function:
 
-```output error
+```
 ghc Main.hs
+```
+```output error
 Main.hs:13:28: error:
     • Could not deduce (Eq a1) arising from a use of ‘==’
       from the context: a ~ Bool
@@ -206,7 +203,7 @@ Main.hs:13:28: error:
 The reason for this is Haskell is unable to determine that the type
 parameter `a` is amenable to equality comparisons. Solving this requires
 an understanding of *typeclasses*, which we will explore in the next
-lecture. For now, just include an `Eq a =>` constraint in our
+chapter. For now, just include an `Eq a =>` constraint in our
 GADT declaration.
 
 You might also get a warning about pattern matching on GADTs being
@@ -284,7 +281,7 @@ list, so it has no way of determining exhaustiveness. In the case of
 error is because we did not match against other possible subclasses of
 `Tree`.
 
-If we had formulated our `Tree` type using unions, pyright can determine
+If we had formulated our `Tree` type using unions, `pyright` can determine
 the exhaustiveness of our patterns:
 
 ``` python
@@ -326,8 +323,9 @@ rule of thumb is as follows:
 
 -   Otherwise, you are likely going with the more general case of doing
     different things based on the satisfiability of a condition, in
-    which case, rely on if-else statements, or in Haskell, conditional
+    which case, rely on `if`-`else` statements, or in Haskell, conditional
     expressions and/or guards.
 
 
-[^4]: The code snippet requires Python 3.12.
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
+

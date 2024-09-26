@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Applicative Functors
 
 What if we had 2 (or more) parallel railways and want to merge them? For example, by using `head`, we can easily retrieve the elements of the list and combine them together in whatever manner we wish:
@@ -49,7 +50,7 @@ f = fmap (+) x
 The question now is, how do we apply `f :: Maybe (Int -> Int)` above onto `y :: Maybe Int`? 
 
 ## Applicatives
-If a functor `f` has the ability to apply `f (a -> b)` onto a `f a` to give an `f b` makes it an _applicative functor_, which has the same laws of a _(lax-) closed (lax-) monoidal functor_. Although we could give the formal definition of these, it is quite a lot to unpack, and not necessary for understanding how to use them. Instead, let us directly show the `Applicative` typeclass and some _laws_ that govern these typeclass methods.
+If a functor `f` has the ability to apply `f (a -> b)` onto a `f a` to give an `f b`, then it is an _applicative functor_, which has the same laws of a _(lax-) closed (lax-) monoidal functor_ in category theory. Although we could give the formal definition of these, it is quite a lot to unpack, and not necessary for understanding how to use them. Instead, let us directly show the `Applicative` typeclass and some _laws_ that govern these typeclass methods.
 
 ```haskell
 class Functor f => Applicative f where
@@ -80,7 +81,7 @@ instance Applicative Maybe where
 ```
 As you can see, `pure` just raises a value into the `Maybe` context using the `Just` constructor, and `(<*>)` applies a function in context onto an argument in context when they exist. In other words, `pure` and `<*>` behave in the most obvious way.
 
-With this in mind, let us show how we can use `pure` and `<*>` for `Maybe`, but also, applicatives in general. Suppose we have `f :: a -> b -> c`, `x :: a` and `y :: b`. The, `f x y` would give us something of type `c`.
+With this in mind, let us show how we can use `pure` and `<*>` for `Maybe`, but also, applicatives in general. Suppose we have `f :: a -> b -> c`, `x :: a` and `y :: b`. Then, `f x y` would give us something of type `c`.
 
 However, Let us raise `x` and `y` into the `Maybe` context, i.e. `x :: Maybe a` and `y :: Maybe b`. Let's see how we can perform the same application (similar to `f x y`) to give us something of `Maybe c`.
 
@@ -100,7 +101,7 @@ Maybe a --<*>--> ━━━┓
 Maybe b --<*>--> ━━━┛
 ```
 
-However, recall from our very first example that we had attempted to use `fmap` to apply `(+)` onto a `Maybe Int` to give a `Maybe (Int -> Int)`. Now we know that we can directly use this result and apply it onto another `Maybe Int` to give us a `Maybe Int`, thereby applying `(+)` in context! This is a natural consequence of the applicative laws, there `pure f <*> x` is the same as `fmap f x`!
+However, recall from our very first example that we had attempted to use `fmap` to apply `(+)` onto a `Maybe Int` to give a `Maybe (Int -> Int)`. Now we know that we can directly use this result and apply it onto another `Maybe Int` to give us a `Maybe Int`, thereby applying `(+)` in context! This is a natural consequence of the applicative laws, where `pure f <*> x` is the same as `fmap f x`!
 
 ```haskell
 pure f <*> x == Just f <*> x
@@ -119,7 +120,7 @@ Therefore, instead of using `pure f <*> x`, we can just write `fmap f x` or `f <
 
 `pure f <*> x <*> y` = `fmap f x <*> y` = `f <$> x <*> y`
 
-Now let us revisit our earlier example again! Let us look at a naive approach to applying `(+)` onto `x` and `y`:
+Now let us revisit our earlier example again! Here is a naive approach to applying `(+)` onto `x` and `y`:
 
 ```haskell
 x, y, z :: Maybe Int
@@ -148,5 +149,8 @@ So far, you should have noticed that the functions and typeclasses presented per
 
 With these, here are some guidelines for when to use `fmap`, `pure` and `<*>`:
 - `f x` becomes `fmap f x` or `f <$> x` or `pure f <*> x` if `x` becomes in context
-- `f x` becomes `f <*> x` if both `f` and `x` becomes in context
+- `f x` becomes `f <*> x` if both `f` and `x` become in context
 - `f x y z` becomes `f <$> x <*> y <*> z` if `x`, `y` and `z` become in context
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

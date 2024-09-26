@@ -1,6 +1,7 @@
+![Updated][update-shield]
 # Context/Notions of Computation
 
-Many popular languages lie to you in many ways. An example is what we have seen earlier, where Python functions do not document exceptions in its type signature, and must be separately annotation as a docstrong to denote as such. This is not including the fact that Python type signatures are not enforced at all.
+Many popular languages lie to you in many ways. An example is what we have seen earlier, where Python functions do not document exceptions in its type signature, and must be separately annotated as a docstrong to denote as such. This is not including the fact that Python type annotations are not enforced at all.
 ```python
 def happy(x: int) -> int:
     raise Exception("sad!")
@@ -18,11 +19,13 @@ We can't lie in Haskell. In the first place, we _shouldn't_ lie in general. What
 
 Instead, what we can do is to create the right data structures that represent what is _actually_ returned by each function! In the Python example `happy`, what we really wanted to return was _either_ an `int`, _or_ an exception. Let us create a data structure that represents this:
 ```haskell
-data Either a b = Left a | Right b
+data Either a b = Left a  -- sad path
+                | Right b -- happy path
 ```
 Furthermore, instead of returning `null` like in Java, we can create a data structure that represents _either_ something, _or_ nothing:
 ```haskell
-data Maybe a = Just a | Nothing
+data Maybe a = Just a  -- happy path
+             | Nothing -- sad path
 ```
 
 This allows the `happy` and `something` functions to be written safely in Haskell as:
@@ -65,7 +68,7 @@ These data structures allow our functions to act as branching railways!
         ┗━━━━━ Nothing                  ┗━━━━━ Left String    -- sad path
 ```
 
-This is the inspiration behind the name "railway pattern", which is the pattern of using algebraic data types to describe the different possible outputs from a function! This is, in fact, a **natural** consequence of purely functional programming. Since functions must be pure, it is not possible to define functions that opaquely cause side-effects. Instead, function signatures must be made _transparent_ by using the right data structures.
+This is the inspiration behind the name "railway pattern", which is the pattern of using algebraic data types to describe the different possible outputs from a function! This is, in fact, a **natural consequence** of purely functional programming. Since functions must be pure, it is not possible to define functions that opaquely cause side-effects. Instead, function signatures must be made _transparent_ by using the right data structures.
 
 What, then, is the _right_ data structure to use? It all depends on the notion of computation that you want to express! If you want to produce nothing in some scenarios, use `Maybe`. If you want to produce something or something else (like an error), use `Either`, so on and so forth!
 
@@ -79,3 +82,4 @@ However, notice that having _functions as railways_ is not very convenient... wi
 
 How can we make the railway pattern _ergonomic_ enough for us to want to use them? 
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

@@ -1,19 +1,21 @@
+![Updated][update-shield]
 # Haskell
 
 Haskell is a *statically-typed*, *purely functional*
 *nonstrict-evaluation* programming language. Informally, static typing
 means that we can look at a program (without executing it) and tell what
-the type of any object or variable is. A purely-functional language is a
+the type of any term is. A purely-functional language is a
 language that supports only functional programming concepts (unlike
 multi-paradigm languages like Python). Nonstrict-evaluation means that
-there is no strict sequence of evaluating statements or expressions*lazy
-evaluation* can be employed and compilers are free to decide which
-expressions should be evaluated first. We will look at non-strict
-evaluation eventually; for now, understanding static typing and purely
+there is no strict sequence of evaluating statements or expressions, and compilers are free
+to decide which expressions should be evaluated first&mdash;*lazy
+evaluation* is where expressions are evaluated only when they are needed. 
+We will look at non-strict evaluation eventually; for now, understanding static typing and purely
 functional programming is more important.
 
 In a purely functional language like Haskell, you will miss the
-following programming language features:
+following programming language features that are present in virtually
+every general-purpose programming language:
 
 -   Mutation (even variables are immutable);
 
@@ -28,11 +30,11 @@ You might find it difficult to adjust to such a programming environment.
 However, you will find these restrictions meaningful as we have alluded
 to in the previous section.
 
-### Basic Expressions
+## Basic Expressions
 
 By this point you should have already installed GHC, which comes with
 two main parts: `ghc` itself (the compiler), and `ghci` the
-REPL/interpreter. For now, open `ghci` to start an interactive Haskell
+REPL/interpreter. For now, run `ghci` in the terminal to start an interactive Haskell
 shell, and enter some basic mathematical expressions!
 
 ``` haskell
@@ -42,21 +44,23 @@ ghci> 1 * 2 / 4
 0.5
 ghci> 5 ^ 2 `mod` 5
 0
+ghci> 5 `div` 2
+2
 ```
 
 Note some differences: `^` is exponentiation (just as you would normally
 type in a calculator), and there is no modulo operator. There is a
 modulo function called `mod`, and you can apply any binary
-function in an *infix* manner by surrounding the function in backticks.
-The operator precedence rules apply.
+function in an *infix* manner by surrounding the function in backticks. Integer
+division is a function `div`. The operator precedence rules apply.
 
 In a functional programming language like Haskell, it should come as no
 surprise that virtually everything is a function. Mathematical operators
 are actually just functions! In GHCI, we can observe the type of any
-object (functions are objects!) using `:t`, and we can show the type of
+term (terms are sort of like objects in Python; functions are terms!) using `:t`, and we can show the type of
 the function of the `+` operator by issuing `:t (+)` (when writing
-operators as a normal object, surround it in parentheses). We can in
-fact re-write an infix operator function call as a normal prefix
+operators as a term in the usual prefix notation, surround it in parentheses).
+We can in fact re-write an infix operator function call as a normal prefix
 function call. Note that in Haskell, `f x y z` is essentially
 the same as `f(x, y, z)` in languages like Python.
 
@@ -69,7 +73,7 @@ ghci> (+) 2 3
 5
 ```
 
-As we know, currying is the act of translating an $n$-ary function to a
+As we know, currying is the act of translating an \\(n\\)-ary function to a
 unary function that receives one parameter and returns a function that
 receives the remaining parameters (in curried form). In Haskell, all
 functions are curried, so even a function like `(+)` really
@@ -164,23 +168,15 @@ MyCode.hs:4:1: error:
 ```
 
 As you can see, you cannot redefine functions or variables. Everything
-is immutable in Haskell!
+is immutable in Haskell! Therefore, the statement `x = e` is **not** 
+an assignment statement. Rather, it is a _bind_ or a _definition_.
 
-### Control Structures
+## Control Structures
 
 In Haskell, you mainly write *expressions*, and not statements.
-Consequently, there are only if-else expressions, and no if-else
-statements. That means, that you cannot omit an else branch of an
-if-else expression, just like in Python:
-
-``` haskell
-ghci> x = 2 * (-1)
-ghci> y = if x == 2 then "positive" else "negative"
-ghci> y
-"negative"
-```
-
-In Python, this might look like[^4]:
+Consequently, there are only `if`-`else` expressions, and no `if`-`else`
+statements. That means that you cannot omit an `else` branch of an
+`if`-`else` expression, just like in Python:
 
 ``` python
 >>> x = 2 * -1
@@ -189,8 +185,17 @@ In Python, this might look like[^4]:
 'negative'
 ```
 
-Just like in Python, if-else expressions are *expressions* and therefore
-evaluate to the appropriate value:
+In Haskell, this would be (negative numbers must be surrounded by parentheses, otherwise Haskell thinks it is a partial function application of subtraction `(-)`):
+
+``` haskell
+ghci> x = 2 * (-1)
+ghci> y = if x == 2 then "positive" else "negative"
+ghci> y
+"negative"
+```
+
+Just like in Python, `if`-`then`-`else` expressions in Haskell are *expressions* and therefore
+evaluate to a term:
 
 ``` haskell
 ghci> (if 1 /= 2 then 3 else 4) + 5
@@ -220,16 +225,16 @@ ghci> y = if x == 2 then 2 else "negative"
     In an equation for 'y': y = if x == 2 then 2 else "negative"
 ```
 
-The reason is because we should not need to evaluate the truth of
-`x == 2` to determine what the type of the entire if-else
+The reason is that we should not need to evaluate the truth of
+`x == 2` to determine what the type of the entire `if`-`else`
 expression is. Thus, Haskell requires that the type of the expression in
-the if branch be the same as the type of the expression in the else
+the `if` branch be the same as the type of the expression in the `else`
 branch. This departs from Python which is *dynamically typed*, where
 types are determined at runtime, so expressions can freely be of
 different types based on the values they inherit at the time of program
 execution.
 
-### Functions
+## Functions
 
 Defining functions in Haskell looks like defining a variable. This
 should be expected since Haskell is centred around functions, so it
@@ -257,7 +262,7 @@ are no loops (we may later see loops being simulated with functions).
 Thus, for now we shall use recursion as it is often the most elegant way
 to solve problems.
 
-Recall that the familiar factorial function may be written iteratively
+Recall that the familiar `factorial` function may be written imperatively
 in Python as:
 
 ``` python
@@ -292,12 +297,14 @@ In fact, we can also express functions like this elegantly in Haskell
 with *guards*. Guards allow us to define expressions differently based
 on a condition.
 
-We know that the fibonacci function may be written like so:
-$$f(n) = \begin{cases}
+For example, we know that the Fibonacci function may be written like so:
+$$\textit{fib}(n) = \begin{cases}
             1 & \text{if } n = 0\\\\
               1 & \text{if }n = 1\\\\
-              f(n - 1) + f(n - 2) & \text{otherwise}
-            \end{cases}$$ And writing this function with regular if-else
+              \textit{fib}(n - 1) + \textit{fib}(n - 2) & \text{otherwise}
+            \end{cases}$$ 
+
+And writing this function with regular `if`-`else`
 expressions might look like: [^5]
 
 ``` haskell
@@ -308,7 +315,7 @@ ghci|         else fib (n - 1) + fib (n - 2)
 ghci| :}
 ```
 
-However, it might look clearer to define it this way with guards:
+However, it might look clearer to define it this way with guards (`otherwise` is just defined as `True`):
 
 ``` haskell
 ghci> :{
@@ -333,6 +340,7 @@ ghci> fib 5
 8
 ```
 
+## Auxiliary Bindings
 Thus far we have defined functions as a single expression; this is akin
 to writing a *lambda expression* in Python. As we know, that may not
 always be the most ergonomic considering that many functions can be
@@ -348,8 +356,8 @@ def weight_sum(n1, w1, n2, w2):
 
 While it is completely acceptable to define this function in one line,
 it is not as readable. In Haskell, functions indeed have to be written
-as a single expression, but we may add additional bindings for the
-expression using `let` bindings:
+as a single expression, but we can define local bindings for the
+expression using `let`:
 
 ``` haskell
 ghci> :{
@@ -411,7 +419,7 @@ stage. You are free to use either appropriately (use `let` where an
 expression is desired, using either `let` or `where` are both okay in
 other scenarios).
 
-### Data Types
+## Data Types
 
 We have looked at some simple data types so far: numbers like
 `1.2`, and strings like `"abc"`. Strings are
@@ -460,8 +468,8 @@ ghci> ['a'..'e'] ++ ['A'..'D'] -- ++ is concatentation
 ```
 
 As you know, a singly-linked list is one of two things: an empty list,
-or a node with a value (head) and a reference to the remaining part of
-the list (tail). Thus, one of the most frequently used operations is the
+or a node with a value (`head`) and a reference to the remaining part of
+the list (`tail`). Thus, one of the most frequently used operations is the
 *cons* operation (`:`) which builds (or de-structures) a list
 given its head and tail values. The `:` operator is
 right-associative.
@@ -477,7 +485,7 @@ ghci> 'a' : "bcde"
 ```
 
 One of the most interesting parts of Haskell is that it has
-nonstrict-evaluation. That means that the compiler is free to evaluate
+non-strict evaluation. That means that the compiler is free to evaluate
 any expression only when it is needed. This allows us to quite nicely
 define recursive data without running into infinite loops:
 
@@ -506,14 +514,12 @@ first element of a list, and `tail` is a function that returns
 the remainder of a list):
 
 ``` haskell
-sum' ls = 
-    if length ls == 0 then 
-        0
-    else 
-        head ls ++ sum' (tail ls)
+sum' ls = if length ls == 0
+          then 0
+          else head ls + sum' (tail ls)
 ```
 
-As a quick aside, the `:` operator is really a constructor for
+As a quick aside, the `:` operator is really a _constructor_ for
 lists, so in fact we can use pattern matching (again, we will discuss
 this in the future) to define the `sum'` function very
 elegantly.
@@ -559,10 +565,15 @@ ghci> snd (snd (1,(2,[3,4,5])))
 ```
 
 This should suffice for now. Now is your turn to try the exercises to
-get you started on your functional programming journey!
-
-[^4]: If you haven't realized, we show the Haskell shell with the prefix
-    `ghci>`, and the Python shell having the prefix `>>>`.
+get you started on your functional programming journey! Note that many
+of the functions we have used are built-in to Haskell, as defined in
+[Haskell's Prelude library](https://hackage.haskell.org/package/base-4.17.0.0/docs/Prelude.html). You may want to refer to this library when doing the exercises. A large
+portion of the Prelude documentation may be unreadable at this point, however, rest
+assured that many of the concepts presented in the documentation will
+be covered in this course.
 
 [^5]: Note that `:{` and `:}` are used only in GHCI to define blocks of
     code, and are not part of Haskell.
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Exercises
 
 ## Question 1
@@ -17,7 +19,7 @@ Without using GHCI, determine the types of the following expressions:
 Without the help of GHCI, describe the types of `eqLast`, `isPalindrome`, `burgerPrice` and `(@:)` which we defined in [Chapter 1.4 (Course Introduction#Exercises)](../../course_introduction/sections/exercises.md)
 
 ## Question 3
-Recall the following solution to [`burgerPrice`](../../course_introduction/sections/exercises.md):
+Recall the following definition of `burgerPrice`:
 
 ``` haskell
 burgerPrice burger 
@@ -41,7 +43,7 @@ compiler exhaustiveness checks, and may give us some additional warnings
 about `head` and `tail` being *partial*, despite their use being
 perfectly fine. The second problem is that we have allowed our burger to
 be any string, even though we should only allow strings that are
-composed of valid ingredientsthe compiler will not reject invocations of
+composed of valid ingredients&mdash;the compiler will not reject invocations of
 `burgerPrice` with bogus arguments like `"AbcDEF"`.
 
 Define a new type that represents valid burgers, and re-define
@@ -128,7 +130,7 @@ functions:
 3.  The function `sortedSet` that receives a list of elements and puts
     them all in a sorted set.
 
-4.  The function `in’` which determines if an element is in the sorted
+4.  The function `in'` which determines if an element is in the sorted
     set.
 
 Note that if any of your functions perform any comparison operations
@@ -160,7 +162,7 @@ In this question, we are going to demonstrate an example of the *expression
 problem* by writing FP-style data structures and functions, and OO-style
 classes, to represent the same problem. We shall use Haskell for the FP
 formulation, and Python for the OOP formulation. Ensure that your Python
-code is well-typed by checking it with pyright.
+code is well-typed by checking it with `pyright`.
 
 The problem is as such. We want to represent various shapes, and the
 facility to calculate the area of a shape. To start, we shall define two
@@ -178,7 +180,7 @@ method `area` which gives its area. Then, define two subclasses of
 constructors and methods appropriately.
 
 The *expression problem* essentially describes the phenomenon that it
-can either be easy to add new representations of a type, easy to add new
+can either be easy to add new representations of a type or easy to add new
 functions over types, but not both. To observe this, we are going to
 extend the code we've written in the following ways:
 
@@ -195,18 +197,13 @@ you do not have the source code of.
 ## Question 8
 Let us extend our Expressions GADT.
 Define the following expressions:
-
 1.  `LitBoolExpr` holds a boolean value (`True` or
     `False`)
-
 2.  `AndExpr` has two boolean expressions and evaluates to
     their conjunction
-
 3.  `OrExpr` has two boolean expressions and evaluates to
     their disjunction
-
 4.  `FuncExpr` holds a function
-
 5.  `FuncCall` receives a function and an argument, and
     evaluates to the function application to that argument
 
@@ -372,12 +369,10 @@ The first step in processing a bunch of operations on the accounts in
 our database is to create a data structure that represents the desired
 operation in the first place. For this, create an algebraic data type
 `Op` comprised of two classes:
-
 1.  `Transfer`: has a transfer amount, and credit bank account
     ID, and a debit bank account ID. This represents the operation where
     we are transferring the transfer amount from the credit account to
     the debit account.
-
 2.  `Compound`. This just tells the processor to compound all
     the bank accounts in the map. There should be no attributes in this
     class.
@@ -388,45 +383,44 @@ dictionary of bank accounts (keys are bank account IDs, and values are
 the corresponding bank accounts), and performs the operation on the bank
 accounts in the dictionary. As a result, the function returns a pair
 containing:
-
 1.  A boolean value to describe whether the operation has succeeded
-
 2.  The resulting dictionary containing the updated bank accounts after
-    the operations have been processed.
+    the operation has been processed.
 
 Take note that there are several ways in which a `Transfer`
 operation may fail:
-
-1.  If either account IDs do not exist in the dictionary, the transfer
+1.  If any of the account IDs do not exist in the dictionary, the transfer
     will fail
-
 2.  If the credit account does not have sufficient funds, the transfer
     will fail
-
 3.  Otherwise, the transfer should proceed as per normal
 
 Keep in mind that you should not mutate any data structure used. Example
 runs follow:
 
 ``` python
+# data
 >>> alice = NormalAccount('alice', 1000, 0.1)
 >>> bob = MinimalAccount('bob', 999, 0.1)
 >>> mp = {'alice': alice, 'bob': bob}
+
+# ops
 >>> c = Compound()
 >>> t1 = Transfer(1000, 'alice', 'bob')
 >>> t2 = Transfer(1000, 'bob', 'alice')
+
+# processing compound operation
 >>> process_one(c, mp)
-(True, {'alice': NormalAccount(account_id='alice', balance=1100.0, 
-  interest_rate=0.1), 'bob': MinimalAccount(account_id='bob', 
-  balance=1076.9, interest_rate=0.1)})
+(True, {'alice': NormalAccount('alice', 1100.0, 0.1), 
+        'bob': MinimalAccount('bob', 1076.9, 0.1)})
+
+# processing transfers
 >>> process_one(t1, mp)
-(True, {'alice': NormalAccount(account_id='alice', balance=0, 
-  interest_rate=0.1), 'bob': MinimalAccount(account_id='bob', 
-  balance=1999, interest_rate=0.1)})
+(True, {'alice': NormalAccount('alice', 0, 0.1), 
+        'bob': MinimalAccount('bob', 1999, 0.1)})
 >>> process_one(t2, mp)
-(False, {'alice': NormalAccount(account_id='alice', balance=1000, 
-  interest_rate=0.1), 'bob': MinimalAccount(account_id='bob', 
-  balance=999, interest_rate=0.1)})
+(False, {'alice': NormalAccount('alice', 1000, 0.1), 
+         'bob': MinimalAccount('bob', 999, 0.1)})
 ```
 
 #### Processing All Operations
@@ -434,35 +428,51 @@ Now let us finally define a function `process_all` that
 receives a list of operations and a dictionary of bank accounts (the
 keys are bank account IDs, and the values are bank accounts). As a
 result, the function returns a pair containing:
-
 1.  A list of booleans where the \\(i^\text{th}\\) boolean value describes
     whether the \\(i^\text{th}\\) operation has succeeded
-
 2.  The resulting dictionary containing the updated bank accounts after
     all the operations have been processed.
 
 Example runs follow:
 
 ``` python
+# data
 >>> alice = NormalAccount('alice', 1000, 0.1)
 >>> bob = MinimalAccount('bob', 999, 0.1)
 >>> mp = {'alice': alice, 'bob': bob}
+
+# op
 >>> c = Compound()
 >>> t1 = Transfer(1000, 'alice', 'bob')
 >>> t2 = Transfer(1000, 'bob', 'alice')
+
+# process
 >>> process_all([t2, c, t2, t1], mp)
-([False, True, True, True], {'alice': NormalAccount(account_id='alice', 
-  balance=1100.0, interest_rate=0.1), 'bob': 
-  MinimalAccount(account_id='bob', balance=1076.9, interest_rate=0.1)})
+([False, True, True, True], 
+ {'alice': NormalAccount(account_id='alice', balance=1100.0, interest_rate=0.1), 
+  'bob': MinimalAccount(account_id='bob', balance=1076.9, interest_rate=0.1)})
 ```
 
 #### Polymorphic Processing
-If you were careful with your
-implementation of `process_all`, you might notice that if we
-had parameterized all invocations of `process_one`, then
-nothing about the implementation of `process_all` depends on
+Let us assume that your `process_all` function invokes the `process_one` function. If you were careful with your implementation of `process_all`, you _should_ be able to lift your `proces_one` function as a parameter:
+
+```python
+def process_all(ops, mp):
+    # ...
+    process_one(...)
+    # ...
+
+# becomes
+
+def process_all(f, ops, mp):
+    # ...
+    f(...)
+    # ...
+```
+
+After which, nothing about the implementation of `process_all` depends on
 the types like `Op`, `dict[str, BankAccount]` or
-`bool`. Thus we should make this function polymorphic!
+`bool`. Thus, we should make this function polymorphic!
 
 Our goal is to write a polymorphic function `process` that can
 process any list over a state and produce the resulting list and an
@@ -472,16 +482,21 @@ should be the exact same as `process_all(ops, mp)` as you have
 defined earlier:
 
 ``` python
+# data
 >>> alice = NormalAccount('alice', 1000, 0.1)
 >>> bob = MinimalAccount('bob', 999, 0.1)
 >>> mp = {'alice': alice, 'bob': bob}
+
+# ops
 >>> c = Compound()
 >>> t1 = Transfer(1000, 'alice', 'bob')
 >>> t2 = Transfer(1000, 'bob', 'alice')
+
+# process
 >>> process(process_one, [t2, c, t2, t1], mp)
-([False, True, True, True], {'alice': NormalAccount(account_id='alice', 
-  balance=1100.0, interest_rate=0.1), 'bob': 
-  MinimalAccount(account_id='bob', balance=1076.9, interest_rate=0.1)})
+([False, True, True, True], 
+ {'alice': NormalAccount(account_id='alice', balance=1100.0, interest_rate=0.1),
+  'bob': MinimalAccount(account_id='bob', balance=1076.9, interest_rate=0.1)})
 ```
 
 Furthermore, the best part of this polymorphic function is that it can
@@ -531,3 +546,4 @@ above.
 and returns `D` is `Callable[[A, B, C], D]`. You will need to
 import `Callable` from `typing`.
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

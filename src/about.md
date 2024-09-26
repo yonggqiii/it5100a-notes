@@ -1,9 +1,9 @@
 
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
+![Updated][update-shield]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![CC License][license-shield]][license-url]
+![License][license-shield]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
@@ -36,36 +36,74 @@ Typed functional programming are becoming more widely adopted in industry, as ca
 ## About These Notes
 I hope that these notes can be used as good supplementary material for those looking to learn the concepts of Typed Functional Programming in more detail. Each of these chapters comes with exercises in Python and Haskell so that you're able to replicate some of the ideas from purely-functional languages in general-purpose multi-paradigm languages.
 
-## Contribution
-Please feel free to improve the quality of this content by submitting bug reports, feature requests and pull requests. A merged PR will make you appear in the contributor list. It will, however, be considered a donation of your work to this project. You are still bound by the conditions of the license, meaning that you are not considered an author or owner of the content once it has been merged in.
+Therefore, to avoid confusion, code blocks are annotated with the logo of the target programming language on the left. Examples below.
+
+#### Python
+```python
+this = 'is some Python code'
+```
+#### Haskell
+```haskell
+this :: String
+this = "is some Haskell code"
+```
+#### Java
+```java
+class This {
+    public static void main(String[] args) {
+        System.out.println("is some Java code");
+    }
+}
+```
+
+#### Lean 4
+```lean
+def this: String := "is some Lean 4 code"
+```
+
+### Updates
+This work is incomplete, and therefore will be regularly updated. As such, please run a hard refresh (`Ctrl` + `F5`) every time you visit the page.
+
+A badge is shown at the beginning of every page describing when it was last updated. The badge looks like this:
+
+![Updated][update-shield]
+
+Ensure that the badge displays the expected date of the last update.
+
+## Contributing
+This project is a single-author text, and is incomplete. Thus, this project is not open to pull requests without prior agreement. However, please feel free to improve the quality of this content by submitting bug reports and feature requests. All your contributions other than by the author will be considered a donation of your work to this project, and you are not considered an author or owner of the content once they have been incorporated.
+
+Please submit all requests for content and bugs either as a GitHub issue or contact the author directly.
 
 ## Contributors
 <a href="https://github.com/yonggqiii/it5100a-notes/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=yonggqiii/it5100a-notes" alt="contrib.rocks image" />
 </a>
 
+## License
+All rights to this project are reserved by the author. Unauthorized reproduction, distribution, or modification of this project, in whole or in part, is strictly prohibited without prior written permission. The author reserves the right to modify or change the licensing terms at any time and without prior notice. For inquiries regarding licensing or usage, please contact the author.
+
 ## Contact
-Foo Yong Qi - yongqi@nus.edu.sg
+Author: Foo Yong Qi - yongqi@nus.edu.sg
 
 &copy; 2024 Foo Yong Qi. All Rights Reserved.
 
 ---
 
 ## Release History
-### 2024 Sep 24
-The first draft of these notes have been released with the first three chapters and their solutions to exercises completed.
+### 2024
+#### 26 September 2024
+The first draft of these notes have been released with the first four chapters completed.
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [contributors-url]: https://github.com/yonggqiii/it5100a-notes/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yonggqiii/it5100a-notes.svg?style=for-the-badge
-[forks-url]: https://github.com/yonggqiii/it5100a-notes/network/members
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
 [stars-shield]: https://img.shields.io/github/stars/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [stars-url]: https://github.com/yonggqiii/it5100a-notes/stargazers
 [issues-shield]: https://img.shields.io/github/issues/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [issues-url]: https://github.com/yonggqiii/it5100a-notes/issues
-[license-shield]: https://img.shields.io/badge/LICENSE-NONE-aa5555?style=for-the-badge
-[license-url]: https://github.com/yonggqiii/it5100a-notes/blob/master/LICENSE
+[license-shield]: https://img.shields.io/badge/LICENSE-NONE-ff5040?style=for-the-badge
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/fooyongqi
 

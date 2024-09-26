@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Railways
 
 One of the core ideas in FP is _composition_, i.e. that to "do one computation after the other" is to _compose_ these computations. In mathematics, function composition is straightforward, given by:
@@ -37,7 +38,7 @@ class User:
     salary: int | float
 ```
 
-Now, we want to be able to parse user information that is provided as a string. However, note that this parsing may _fail_, therefore we raise exceptions if the input string cannot be parsed to the corresponding data structure.
+Now, we want to be able to parse user information that is provided as a string. However, note that this parsing may _fail_, therefore we raise exceptions if the input string cannot be parsed as the desired data structure.
 
 ```python
 def parse_email(s: str) -> Email:
@@ -68,9 +69,9 @@ def main():
     except:
         print('Some error occurred')
 ```
-As you can see, exceptions are being thrown everywhere, making it hard to keep track of exceptions, and to compose exceptional functions! Worse still, if the program is poorly documented (as is the case for our example), no one actually knows that `parse_salary` and `parse_email` will raise exceptions!
+As you can see, exceptions are being thrown everywhere. Generally, it is hard to keep track of which functions raise/handle execptions, and also hard to compose exceptional functions! Worse still, if the program is poorly documented (as is the case for our example), no one actually knows that `parse_salary` and `parse_email` will raise exceptions!
 
-In Haskell, there is a better way to do this&mdash;by using the _railway pattern_! Let us write the equivalent of the program above with idiomatic Haskell. First, the data structures:
+There is a better way to do this&mdash;by using the _railway pattern_! Let us write the equivalent of the program above with idiomatic Haskell. First, the data structures:
 
 ```haskell
 data Email = Email { emailUsername :: String
@@ -124,3 +125,5 @@ In this chapter, we describe some of the core facets of the railway pattern:
 
 ---
 [^1]: Wait... is this an _imperative_ program in Haskell?
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

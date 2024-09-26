@@ -36,5 +36,5 @@
 - [Solutions to Exercises]()
 - [Recap of Concepts](./recap/README.md)
     - [Recursion](./recap/sections/recursion.md)
-    - [First-Class Functions]()
-    - [Lambda Calculus]()
+    - [First-Class Functions](./recap/sections/first-class-functions.md)
+    - [Lambda Calculus](./recap/sections/lambda.md)

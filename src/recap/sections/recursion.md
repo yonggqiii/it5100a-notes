@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Recursion
 
 Something is recursive if it is defined using itself. A simple (albeit
@@ -43,18 +44,17 @@ functions by thinking *structural-inductively*.
 
 We shall begin by describing a *proof by induction* for a statement over
 the natural numbers. The principle of a proof by induction is as
-follows. Given a *predicate* \\(P(n)\\) over the natural numbers, if we can
+follows: given a *predicate* \\(P(n)\\) over the natural numbers, if we can
 show:
 
 1.  \\(P(0)\\) is true
-
 2.  \\(\forall n \in \mathbb{N}.~P(n)\to P(n + 1)\\) (for all natural
     numbers \\(n\\), \\(P(n)\\) implies \\(P(n + 1)\\))
 
 Then \\(P(n)\\) is true for all natural numbers \\(n\\). This works because of
-*modus ponens*:
+*modus ponens*.
 
-\\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Modus Ponens}\\]
+\\[\frac{p~~~~~~~~p\to q}{q} \\text{Modus Ponens}\\]
 
 *Modus Ponens* codifies the following idea: if a proposition \\(p\\) is
 true, and if \\(p\\) implies \\(q\\), then \\(q\\) is true. To show how this allows
@@ -64,6 +64,7 @@ also know that \\(P(0)\\) implies \\(P(0 + 1) = P(1)\\), by *modus ponens*,
 earlier \\(P(1)\\) is true, by *modus ponens*, \\(P(2)\\) is also true, and so
 on.
 
+\\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \\text{Induction}\\]
 Let us attempt to write a proof by induction. We start with an
 implementation of the factorial function, then prove that it is correct:
 
@@ -85,11 +86,11 @@ true.
 
 **Inductive**. Suppose for some natural number \\(k\\),
 `factorial(k)` returns
-\\(k! = k \times (k - 1) \times \dots \times 1\\). By definition of
-`factorial`, `factorial(k + 1)` returns
-`(k + 1) * factorial(k)`. By our supposition, this evaluates to
-\\((k + 1) \times k!\\), which is, by definition, \\((k + 1)!\\). Thus, if for
-some \\(k\\), `factorial(k)` returns \\(k!\\), then
+\\(k! = k \times (k - 1) \times \dots \times 1\\). 
+- By definition of `factorial`, `factorial(k + 1)` returns `(k + 1) * factorial(k)`. 
+- By our supposition, this evaluates to \\((k + 1) \times k!\\), which is, by definition, \\((k + 1)!\\). 
+
+Thus, if for some \\(k\\), `factorial(k)` returns \\(k!\\), then
 `factorial(k + 1)` returns \\((k + 1)!\\). In other words,
 \\(\forall k\in\mathbb{N}.~P(k) \to P(k + 1)\\).
 
@@ -105,7 +106,6 @@ of induction to write recursive functions?" As above, the recipe for a
 proof by induction involves (broadly) two steps:
 
 1.  Proof of the basis, e.g. \\(P(0)\\)
-
 2.  The inductive proof, e.g. \\(P(k)\to P(k + 1)\\). Typically, the
     inductive step is completed by **supposing** \\(P(k)\\) for some \\(k\\),
     and showing \\(P(k + 1)\\).
@@ -114,12 +114,10 @@ We can write recursive functions similarly by providing:
 
 1.  Non-recursive computation for the result of the base-case, e.g.
     \\(f(0)\\);
-
 2.  Recursive computation of \\(f(k + 1)\\) based on the result of \\(f(k)\\)
     **assuming** that \\(f(k)\\) gives the correct result.
 
-However, induction doesn't only work for the natural numbers. To see
-this, let us start with a simple description of the natural numbers:
+Let us start with a simple description of the natural numbers:
 $$\begin{aligned}
   0 &\in \mathbb{N} &&\triangleright~0\text{ is a natural number}\\\\
   n \in \mathbb{N} &\to S(n) \in \mathbb{N} && \triangleright~\text{if }n \text{ is a natural number then it has a successor that is also a natural number}
@@ -159,13 +157,17 @@ Succ(pred=Succ(pred=Succ(pred=Succ(pred=Succ(pred=Zero())))))
 
 We might decide to perform recursion on the first addend (doing so on
 the second addend is fine as well). In computing \\(m + n\\) there are two
-possibilities for what \\(m\\) could be: \\(0\\), or the successor of some
-natural number \\(k\\). The first case is straightforward since \\(0\\) itself
-is non-recursive (see the definition of `Zero` above), and \\(0 + n\\) is
+possibilities for what \\(m\\) could be: 
+- \\(0\\), or 
+- the successor of some natural number \\(k\\). 
+
+The first case is straightforward since \\(0\\) itself is non-recursive (see the definition of `Zero` above), and \\(0 + n\\) is
 just \\(n\\). In the other case of \\(m + n\\) where \\(m = S(k)= k + 1\\) for some
 \\(k\\), assuming (via our inductive hypothesis) that `add(k, n)`
 correctly gives \\(k + n\\), then \\(m + n\\) is \\((k + n) + 1\\) which can be done
-by `Succ(add(k, n))`. Therefore, we arrive at the following
+by `Succ(add(k, n))`. 
+
+Therefore, we arrive at the following
 solution:
 
 ``` python
@@ -209,9 +211,11 @@ Node(head=1,tail=Node(head=2,tail=Empty()))
 ```
 
 We can perform recursion over the structure of the list. There are two
-possible structures of the list, the first being the empty list, and the
-second being a node of a head element and a tail list. In the former we
-append to an empty list, which should give the singleton. Note once
+possible structures of the list:
+1. The empty list
+2. A node of a head element and a tail list 
+
+In the former, we append to an empty list, which should give the singleton. Note once
 again that because the empty list is non-recursive, our solution for
 appending to the empty list likewise requires no recursion. For the
 second case of \\([e_1, e_2,\dots,e_n]\\) (shorthand for
@@ -263,16 +267,15 @@ def reverse(ls):
 def reverse2(ls):
     match ls:
         case Empty(): return Empty()
-        case Node(e1, xs): return append(e1, reverse(xs))
+        case Node(e1, xs): return append(e1, reverse2(xs))
 ```
 
 By this point you should be able to see that recursion can be done via
 the following based on the structure of the data:
 
-1.  If the data is non-recursive, provide a non-recursive computation
+1.  If the structure of the data is non-recursive, provide a non-recursive computation
     that computes the result directly
-
-2.  If the data is recursive, recursively solve the problem on the
+2.  If the structure of the data is recursive, recursively solve the problem on the
     substructure(s) of the data (e.g. `pred` or `tail` of the natural
     number or list), and include its result in your main result
 
@@ -317,4 +320,6 @@ def sum_tree(t):
             return sum_tree(l) + v + sum_tree(r)
 ```
 
-Clearly, our recursive case can make more than one recursive call.
+In summary, our formulation of the natural numbers reveals that numbers are also structurally recursive, and therefore, are amenable to recursive computations. We can extend this idea to all recursive structures, which as you will see in these notes, is very common.
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

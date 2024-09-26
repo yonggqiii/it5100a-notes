@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Course Administration
 ## Course Coordinator
 Foo Yong Qi
@@ -55,3 +56,6 @@ Assignments are on programming... standard plagiarism rules apply.
 - Disciplinary action will be taken against students who violate NUS Student Code of Conduct
 - No part of your assignment can come from any other source
 - No discussion and sharing of solutions during exams
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

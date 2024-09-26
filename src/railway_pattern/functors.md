@@ -1,10 +1,11 @@
+![Updated][update-shield]
 # Category Theory
 
 We can borrow some ideas from a branch of mathematics, known as _Category Theory_, to improve the ergonomics of these structures. Part of the reason why we are able to do so is that all the types that we have described have kind `* -> *`, i.e. they "wrap" around another type. As such, they should be able to behave as _functors_, which we will formalize shortly.[^1]
 
-However, before we even talk about what a functor is and how the data structures we have described are functors, we first need to describe what category theory is. Intuitively, most theories (especially the algebraic ones) study mathematical structures that abstract over things; groups are abstractions of symmetries, and geometric spaces are abstractions of space. Category theory takes things one step further and study abstraction itself.
+However, before we even talk about what a functor is and how the data structures we have described are functors, we first need to describe what category theory is. Intuitively, most theories (especially the algebraic ones) study mathematical structures that abstract over things; _groups_ are abstractions of _symmetries_, and _geometric spaces_ are abstractions of _space_. Category theory takes things one step further and studies _abstraction itself_.
 
-Effectively the goal of category theory is to observe similar underlying structures between collections of mathematical structures. What is nice about this is that a result from category theory generalizes to all other theories that fit the structure of a category. As such it should be no surprise that computation can be studied in category theory too!
+Effectively the goal of category theory is to observe similar underlying structures between collections of mathematical structures. What is nice about this is that a result from category theory generalizes to all other theories that fit the structure of a category. As such it should be no surprise that computation can be, and is, studied through the lens of category theory too!
 
 On the other hand, the generality of category theory also makes it incredibly abstract and difficult to understand&mdash;this is indeed the case in our very first definition. As such, I will, as much as possible, show you "concrete" examples of each definition and reason about them if I can. With this in mind, let us start with the definition of a category, as seen in many sources.
 
@@ -52,8 +53,8 @@ Why do we care? Well, it turns out that types and functions in Haskell assemble 
 - Morphisms in \\(\mathcal{H}\\) are functions like `(+1)` and `head`
 
 Furthermore,
-- The composition of two functions with `(.)` is a new function
-- Every type has the identity function `id x = x`
+- The composition of two functions with `(.)` is also a function
+- Every type has the identity function `id x = x`, where for all functions `f`, `id . f` = `f . id` = `f`
 
 ```
     show
@@ -102,7 +103,7 @@ A ----> B                F(A) ----> F(B)
      -> C                         > F(C)
 ```
 
-What's so special about categories and functors, especially since categories are so abstract and have so little requirements for being one? This is precisely the beauty of category theory&mdash;it is abstract and simple enough for many things to assemble into one, yet the requirement of associativity and unity of the composition of morphisms and identities make categories behave in the _most obvious way_!
+What's so special about categories and functors, especially since categories are so abstract and have so little requirements for being one? This is precisely the beauty of category theory&mdash;it is abstract and simple enough for many things to assemble into one, yet the requirement of associativity and unity of the composition of morphisms and identities make things that assemble into categories behave in the _most obvious way_!
 
 ## Types as Functors
 There are two parts two a functor in \\(\mathcal{H}\\):
@@ -119,7 +120,7 @@ It is simple! Recall the `map` function:
 ...     return str(x + 2)
 >>> f(3)
 '5'
->>> map(f, [3])
+>>> list(map(f, [3]))
 ['5']
 ```
 ```haskell
@@ -171,7 +172,7 @@ ghci> maybeMap ((*2) . (+3)) (Just 1)
 Just 8
 ghci> maybeMap (id @Int) (Just 1)
 Just 1
-ghci> id @[Int] (Just 1)
+ghci> id @(Maybe Int) (Just 1)
 Just 1
 ```
 
@@ -242,3 +243,5 @@ That being said, we now have a very powerful tool, `fmap`, that allows us to per
 
 [^3]: We abuse the notation of set membership here. It is not necessary for the collections of objects and morphisms of a category to be sets, as is the case for the category of sets.
 
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

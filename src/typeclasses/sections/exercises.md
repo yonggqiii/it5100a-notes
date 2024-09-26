@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Exercises
 
 ### Question 1
@@ -82,7 +83,7 @@ ghci> descending :: [Size]
 ghci> average XS L
 S
 ```
-However, take note that your functions must _not_ only work on the `Size` type. Some of these functions can be implemented with the typeclass methods that `Size` derives. You should implement your solution based on these functions so that your function can be as general as possible. In particular, we should be able to define a new type which derives these typeclasses, and all your functions should still work on them as we should expect. An example is as follows:
+However, take note that your functions must _not_ only work on the `Size` type. Some of these functions can be implemented with the typeclass methods that `Size` derives. You should implement your solution based on these methods so that your function can be as general as possible. In particular, we should be able to define a new type which derives these typeclasses, and all your functions should still work on them as we should expect. An example is as follows:
 ```haskell
 ghci> :{
 ghci| data Electromagnet = Radio | Micro | IR | Visible | UV | X | Gamma
@@ -111,7 +112,7 @@ ghci> mergesort "edcba"
 
 ### Question 5
 
-Recall in [Chapter 2 (Types)](../../types/README.md) we defined a `Expr` GADT.
+Recall [Chapter 2.3 (Types#Algebraic Data Types)](../../types/sections/algebraic_data_types.md) where we defined an `Expr` GADT.
 
 ``` haskell
 data Expr a where
@@ -134,8 +135,7 @@ preserving functionality; the purpose of this being to keep the
 data LitNumExpr = -- ...
 data AddExpr = -- ...
 ```
-
-While still being able to apply `eval` on any of those
+while still being able to apply `eval` on any of those
 expressions:
 
 ``` haskell
@@ -174,10 +174,10 @@ In Python, a _sequence_ is a data structure that has a _length_ and a way to obt
 'c'
 ```
 
-Our goal is to create something similar in Haskell. However, instead of loosely defining what a _sequence_ is, like Python does, instead, we shall create a typeclass called `Sequence` and allow all types to become a sequence formally (at least, to the compiler)!
+Our goal is to create something similar in Haskell. However, instead of loosely defining what a _sequence_ is, like Python does, we shall create a typeclass called `Sequence` and allow all types that implements these methods to become a sequence formally (at least, to the compiler)!
 
 Proceed to define a typeclass called `Sequence` with two methods:
-- `(@)` does indexing, so `ls @ i` is just like `ls[i]` in Python; if the index `i` is out of bounds, the method should return `undefined` and panic
+- `(@)` does indexing, so `ls @ i` is just like `ls[i]` in Python; if the index `i` is out of bounds, the method should panic (you can let it return `undefined` in this case)
 - `len` produces the length of the sequence
 - `prepend` prepends an element onto the sequence
 
@@ -192,6 +192,10 @@ ghci> len x
 4
 ghci> x `prepend` 5
 [5, 1, 2, 3, 4]
+ghci> len "abcde"
+5
+ghci> "abcde" @ 0
+'a'
 ```
 What's really neat about using typeclasses instead of defining a separate `Sequence` data type is that _any_ type that conforms to the specification in our `Sequence` typeclass can become a valid sequence. For example, one sequence we might want is a sequence of `()` (the unit type, which only has one constructor with no arguments, and terms of this type signify "_nothing significant_", similar to `void` in other languages).[^1] Because each element of such a sequence carries no information, instead of creating such a sequence using a list, i.e. a list of type `[()]`, we can instead use `Int` as our sequence!
 
@@ -210,3 +214,6 @@ Proceed to define a typeclass instance for `Int` such that `Int`s are sequences 
 
 ---
 [^1]: This is an extremely contrived example. The main point we are driving home is that we can create very concise implementations of data structures based on domain-specific knowledge.
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

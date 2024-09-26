@@ -1,3 +1,4 @@
+![Updated][update-shield]
 # Ad-Hoc Polymorphism
 
 So far, we have learnt how to define algebraic data types, and
@@ -38,10 +39,9 @@ area' (H ls) = foldr ((+) . area) 0 ls
 ```
 
 Notice that we cannot, at this point, abstract `area` and
-`area'` into a single function&mdash;these functions work on
+`area'` into a single function because these functions work on
 specific types, and they have type-specific implementations. It is such
-a waste for us to have to use different names of to describe the same
-functionality.
+a waste for us to have to use different names to describe the same idea.
 
 The question then becomes, is it possible for us to define an
 `area` function that is polymorphic (not fully parametrically
@@ -77,9 +77,9 @@ class House:
 ```
 
 All of these disparate types can define an `area` method with
-its own type-specific implementation, this is known as method
+its own type-specific implementation, and this is known as method
 *overloading*. In fact, Python allows us to use them in an ad-hoc manner
-because Python does not enforce types. Therefore, a function like the
+because Python does not enforce types. Therefore, a program like the
 following will be totally fine.
 
 ``` python
@@ -123,8 +123,8 @@ above:
 ls = [Rectangle(1, 2), House([Rectangle(3, 4)])]
 ```
 
-`ls` cannot be given a suitable type that is useful. Great
-thing is, Python has support for Protocols that allow us to group
+based on what we know, `ls` cannot be given a suitable type that is useful. Great
+thing is, Python has support for _protocols_ that allow us to group
 classes that adhere to a common interface (without the need for class
 extension):
 
@@ -165,7 +165,7 @@ to completely decouple them, we would define methods as plain functions,
 and run into the same problems we have seen in the Haskell
 implementation of `area` and `area'` above.
 
-At the expense of type safety, let us attempt to properly decouple
+At the expense of type safety, let us attempt to decouple
 `area` and their implementing classes. The idea is to define an
 `area` function that receives a helper function that computes
 the type specific area of an object:
@@ -185,7 +185,7 @@ area(r, rectangle_area) # 2
 area(h, house_area) # 12
 ```
 
-This implementation is silly because we could easily one level of
+This implementation is silly because we could easily remove one level of
 indirection by invoking `rectangle_area` or
 `house_area` directly. However, notice that the implementations
 are specific to classes&mdash;or, types&mdash;thus, what we can do is to store
@@ -230,3 +230,4 @@ area(Triangle(5, 2)) # 5
 Unfortunately, all of these gains came at the cost of type safety. Is
 there a better way to do this? In Haskell, yes&mdash;with typeclasses!
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

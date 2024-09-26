@@ -1,3 +1,5 @@
+![Updated][update-shield]
+
 # Typeclasses {#typeclasses}
 
 Typeclasses are a type system construct that enables ad-hoc
@@ -13,8 +15,8 @@ instances. This time, a typeclass provides the
 interface/specification/contract for members of the typeclass to adhere
 to, and typeclass instances provide the actual type-specific
 implementations of functions specified in the typeclass. In essence, a
-typeclass constrains a type, and a typeclass instance is a witness that
-a type meets the constraints.
+typeclass is a constraint over types, and a typeclass instance is a witness that
+for types meeting those constraints.
 
 To build on intuition, pretend that there is a super cool magic club,
 and members of this club must have a magic assistant and a magic trick.
@@ -113,7 +115,7 @@ and receives an `a`, and returns a `Double`".
 
 Constrains on type variables are not limited to class methods. In fact,
 we can, and probably should, make functions that use `area`
-polymorphic over type variables, constrained by `HasArea`. Let
+polymorphically over type variables, constrained by `HasArea`. Let
 us consider a function that sums the area over a list of shapes, and
 another one over a list of rooms:
 
@@ -130,9 +132,9 @@ totalArea'' :: [Room] -> Double
 totalArea'' = sum . map area
 ```
 
-Notice that both `totalArea'` and `totalArea''` have
+Both `totalArea'` and `totalArea''` have
 precisely the same implementation, except that they operate over
-`Shape` and `Room` respectively. Notice that we can
+`Shape` and `Room` respectively. We can
 substitute these types for any type variable `a`, so long as
 there is an instance of `HasArea a`! Therefore, the most
 general type we should ascribe for this function would be
@@ -161,7 +163,7 @@ way&mdash;this is very difficult (if not impossible) to achieve in other
 languages like Python. The question then becomes: how does Haskell do
 it?
 
-The core idea behind typeclasses and typeclass instances are that
+The core idea behind typeclasses and typeclass instances is that
 typeclasses are implemented as regular algebraic data types, and
 typeclass instances are implemented as regular terms of typeclasses.
 Using our `area` example, we can define the typeclass as
@@ -216,3 +218,6 @@ automatically *infer* the helper term when a typeclass method is used,
 allowing us to omit them. This *term inference* that Haskell supports
 allow us to define and use ad-hoc polymorphic functions in a type-safe
 way.
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

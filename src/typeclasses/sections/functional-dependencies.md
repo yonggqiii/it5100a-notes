@@ -1,13 +1,15 @@
+![Updated][update-shield]
+
 # Functional Dependencies
 
-Observe the type signature of `(+)`:
+Observe the type of `(+)`:
 
 ``` haskell
 :t (+)
 (+) :: forall a. Num a => a -> a
 ```
 
-This behaviour is quite different in Python:
+This is quite different in Python:
 
 ```python-repl
 >>> type(1 + 1)
@@ -55,7 +57,7 @@ However, trying to use `(+#)` is very cumbersome:
 ``` haskell
 ghci> x :: Int = 1
 ghci> y :: Double = 2.0
-x +# y
+ghci> x +# y
 <interactive>:3:1: error:
     - No instance for (HAdd Int Double ()) arising from a use of 'it'
     - In the first argument of 'print', namely 'it'
@@ -65,7 +67,7 @@ ghci> x +# y :: Double
 ```
 
 This occurs because without specifying the return type `c`,
-Haskell has no idea what it is as it may be ambiguous! As per the
+Haskell has no idea what it is since it is ambiguous! As per the
 definition, no one is stopping us from defining another
 `instance HAdd Int Double String`! On the other hand, we know
 that adding an `Int` and a `Double` *must* result in
@@ -108,3 +110,4 @@ ghci| :}
       instance HAdd Int Double String -- Defined at <interactive>:21:10
 ```
 
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge

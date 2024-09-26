@@ -1,8 +1,9 @@
-# Type Systems
+![Updated][update-shield]
 
+# Type Systems
 As the course title suggests, Haskell is a typed functional programming
 language&mdash;in particular, it uses a statically-typed *type system*. This
-begs the question, \"what is a type system?\"
+begs the question, "what is a type system?"
 
 An online search for definitions might give you the following:
 
@@ -29,14 +30,14 @@ In the case of type systems, this usually means that the type system is
 used to prove the absence of type errors. The realm of program analysis
 is broken down into roughly two kinds: over-approximation analyses, and
 under-approximation analyses. Notice that both perform *approximations*
-of program behaviourthis is because obtaining a precise specification of
+of program behaviour&mdash;this is because obtaining a precise specification of
 any program is *undecidable*. Generally, static analyses, like type
 checking, perform an over-approximation of program behaviour. An analogy
 of how this works is as follows: assume true program behaviour is \\(x\\)
 and buggy behaviour is at \\(y\\) (these are all positive numbers, let's
 say). We then over-approximate the true program behaviour, giving us
 \\(x + \epsilon\\). If we can show that \\(x + \epsilon < y\\), then we can
-guarantee that \\(x < y\\).
+guarantee that \\(x < y\\), so the program is not buggy.
 
 A more concrete example is as follows. Let's suppose we have the following code snippet in Python:
 
@@ -63,7 +64,6 @@ may be the result, we can conclusively show that `y` will
 always be an `int`. Our over-approximation of program behaviour
 doesn't have type errors, meaning, that our actual program really does
 not have type errors.
-:::
 
 #### Kinds of values they compute
 
@@ -76,7 +76,7 @@ Simply put, a type system is a formal system that lets us show that
 there won't be type errors. As we have seen, the nature of
 \[statically-typed\] type systems forces us to program in a different
 way (at least compared to dynamically typed languages like Python), and
-this is what we will explore in this lecture.
+this is what we will explore in this chapter.
 
 ## Types
 
@@ -90,10 +90,10 @@ inkling of what types are. In Python, everything is an object. Thus, in
 Python, the type of an object is the *class* from which it was
 instantiated.
 
-Some sample output showing the types of various objects. The output of
+The following is some sample output showing the types of various objects. The output of
 all these function calls are classes.
 
-```python-repl
+```python
 >>> x = 1
 >>> type(x)
 <class 'int'>
@@ -118,13 +118,12 @@ parameters, since when we are investigating the type of a variable, what
 we are really doing is investigating the type of the object that is
 referred to by the variable. However, Python actually does allow us to
 annotate variables, function parameters etc with types to document
-\"suggestions\" as to what the types of the objects assigned to them
+"suggestions" as to what the types of the objects assigned to them
 should be.
 
 Observe the following program fragment.
 
 ``` python
-# Python
 def f(x: int) -> str:
     y: int = x * 2
     return f'{x} * 2 = {y}'
@@ -140,7 +139,7 @@ function header, we have a specification for `f` to receive an
 annotations make sense, then passing an `int` into `f`
 will always result in a `str`. In the function body, we also
 have an annotation for the variable `y` stating that it is also
-an `int`. This makes senseif `x` is an `int`,
+an `int`. This makes sense&mdash;if `x` is an `int`,
 then so will `x * 2`. Actually, the type of `y` can be
 *inferred* (a type checker can determine the type of `y`
 automatically), so our type annotation for it is not necessary. Outside
@@ -191,8 +190,8 @@ Haskell has roots in formal systems, in particular, System \\(F_C\\), which
 is a dialect of System \\(F\omega\\) (without type lambdas). Thus, the types
 of terms can be described formally. Knowing the formal typing rules of
 Haskell is not required, but may give you some insight as to how it
-works. Below we show the typing rules for function declarationmore
-specifically, lambda abstraction.
+works. Below we show the typing rules for function declarations, more
+accurately, lambda abstractions.
 
 \\[\frac{\Gamma,x:S\vdash e: T}{\Gamma\vdash\lambda x.e : S \to T}\text{T-Abs}\\]
 
@@ -238,7 +237,7 @@ This is (more or less) the type of `(+)` in Haskell, which
 `->` is right-associative, so `Int -> Int -> Int` is
 the same as `Int -> (Int -> Int)`.
 
-In Haskell, the types of everything is **fixed**. This should be
+In Haskell, the types of everything are **fixed**. This should be
 unsurprising since everything in Haskell is immutable, but it is a
 restriction that can also be found in other less restrictive languages
 like Java and C++. In this environment, we have to, perhaps ahead of
@@ -361,11 +360,10 @@ Overall, we have seen that we
 successfully determined the types of every expression in the program
 fragment, and concluded that it is well-typed.
 
-Now that you are familiar with the basic typing rules and how (roughly)
+Now that you are familiar with the basic typing rules and (roughly) how
 types are inferred, the next step is to get comfortable writing programs
 with static types. Generally this comes with practice, but one great way
-to get you started with typeful programming is to try letting the types
-guide your programming.
+to get you started with typeful programming is to try letting the _types guide your programming_.
 
 Suppose we are trying to define a function `f` that receives
 an integer `x` and returns a string showing the result of
@@ -399,7 +397,7 @@ can rely on the `show` function.
 
 Now we have all the numbers we need in `String` form, we need
 to concatenate them together. For this, we can rely on our trusty
-`(++)` function that receives two `String` and
+`(++)` function that receives two `String`s and
 returns a `String`. Using this allows us to concatenate all
 our desired strings together. Since our original function `f`
 was meant to return a `String`, we can return it as our final
@@ -416,18 +414,16 @@ f x =
 
 This is a simple example of using
 types to guide your programming. While seemingly trivial, this skill can
-be incredibly useful for defining recursive functions!
+be incredibly useful for defining **recursive** functions!
 
 Suppose we are trying to define a function that sums the integers in a
-list. Let us attempt to define this function recursively.
-
-As always, we must decide what the type of this function is. As per our
+list. As always, we must decide what the type of this function is. As per our
 definition, it receives a list of integers and returns the final sum,
 which should be an integer as well. This gives us the type declaration
 `sum' :: [Int] -> Int`.
 
 First, let us define the base case. We should be quite clear on what the
-condition for the base case: it should be when the input list is empty.
+condition for the base case is: it should be when the input list is empty.
 What should we return in the base case? By our type declaration, we must
 return an `Int`, so we must express our base result in that
 type. The result is `0`, which matches our type declaration.
@@ -442,18 +438,17 @@ expression; as per the type declaration, the result is an
 We also know that we want to add the head of the input list to the
 result of the recursive call. In doing so we get an `Int`.
 
-Finally, we can sum the results together, giving us an `Int`,
+Finally, we can add the results together, giving us an `Int`,
 which matches our return type.
 
 ``` haskell
 sum' :: [Int] -> Int
 sum' ls = 
-    if null ls then
-      0
-    else
-      let r  :: Int = sum' (tail ls)
-          hd :: Int = head ls
-      in  hd + r
+    if null ls
+    then 0
+    else let r  :: Int = sum' (tail ls)
+             hd :: Int = head ls
+         in  hd + r
 ```
 
 By getting used to types, having a statically-typed system no longer
@@ -462,16 +457,16 @@ support system that makes everything you are doing clear! Many
 developers (including myself) love statically-typed programming
 languages for this very reason, so much so that people have gone to
 great lengths to add static typing to otherwise dynamically typed
-languages like JavaScript.
+languages like JavaScript (the typed variant of JavaScript is TypeScript).
 
 Python is no different. Several static type checkers are out there to
 help us analyze the well-typedness of our program. One of the most
-popular analyzers is mypy, which was heavily developed by Dropbox.
-However, I recommend pyright because at the time of writing, it has
+popular analyzers is `mypy`, which was heavily developed by Dropbox.
+However, I recommend `pyright` because at the time of writing, it has
 implemented bleeding edge features that we need for further discussion
 of types which we shall see very shortly.
 
-Let's try to see if pyright works correctly. Let's write an ill-typed
+Let's see `pyright` in action. We shall write an ill-typed
 program and see if it catches the potential bug:
 
 ``` python
@@ -480,6 +475,11 @@ def f(x: int, y: int) -> int:
     z = x / y
     return z
 ```
+Running `pyright` on this program will reveal an error message:
+```
+pyright main.py
+```
+
 ```output error
 pyright main.py
 /home/main.py
@@ -491,8 +491,8 @@ pyright main.py
 ``````
 Great! This makes sense because assuming `x` and `y`
 are of type `int`, the type of `z` should actually be
-`float`! Let's correct the program and try running pyright
-against it:
+`float`! Let's correct the program and try running `pyright`
+against the new program:
 
 ```python
 # main.py
@@ -507,13 +507,16 @@ pyright main.py
 ```
 Very well! We have now learnt how to program with types in Haskell and
 in Python, and since Python does not come with a type-checker, we are
-able to use tools like pyright to do the type checking for us!
+able to use tools like `pyright` to do the type checking for us!
 
-One additional great feature about pyright is that it is actually also a
-language server. As such, you can include pyright in your favourite text
+One additional great feature about `pyright` is that it is actually also a
+language server. As such, you can include `pyright` in your favourite text
 editors so that it can catch bugs while writing programs!
 
 ---
 
 [^1]: Python doesn't have arrow types. The actual type of the function
     is `Callable[[int], int]`.
+
+
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
