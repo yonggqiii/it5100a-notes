@@ -3,7 +3,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![CC License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
@@ -36,6 +36,14 @@ Typed functional programming are becoming more widely adopted in industry, as ca
 ## About These Notes
 I hope that these notes can be used as good supplementary material for those looking to learn the concepts of Typed Functional Programming in more detail. Each of these chapters comes with exercises in Python and Haskell so that you're able to replicate some of the ideas from purely-functional languages in general-purpose multi-paradigm languages.
 
+## Contribution
+Please feel free to improve the quality of this content by submitting bug reports, feature requests and pull requests. A merged PR will make you appear in the contributor list. It will, however, be considered a donation of your work to this project. You are still bound by the conditions of the license, meaning that you are not considered an author or owner of the content once it has been merged in.
+
+## Contributors
+<a href="https://github.com/yonggqiii/it5100a-notes/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yonggqiii/it5100a-notes" alt="contrib.rocks image" />
+</a>
+
 ## Contact
 Foo Yong Qi - yongqi@nus.edu.sg
 
@@ -56,8 +64,8 @@ The first draft of these notes have been released with the first three chapters 
 [stars-url]: https://github.com/yonggqiii/it5100a-notes/stargazers
 [issues-shield]: https://img.shields.io/github/issues/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [issues-url]: https://github.com/yonggqiii/it5100a-notes/issues
-[license-shield]: https://img.shields.io/github/license/yonggqiii/it5100a-notes.svg?style=for-the-badge
-[license-url]: https://github.com/yonggqiii/it5100a-notes/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/badge/LICENSE-NONE-aa5555?style=for-the-badge
+[license-url]: https://github.com/yonggqiii/it5100a-notes/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/fooyongqi
 
