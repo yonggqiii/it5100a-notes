@@ -144,7 +144,7 @@ ghci> [1, 2] >>= (\x -> [3] >>= (\y -> >>= return (x, y)))
 The last function can be written a little more clearly. Suppose we want to write a function that produces the "cartesian product" of two lists. Writing this function using the monad methods can look unwieldy, but will ultimately pay off as you will see shortly:
 
 ```haskell
-cartesian_product :: [a] -> [a] -> [(a, a)]
+cartesian_product :: [a] -> [b] -> [(a, b)]
 cartesian_product xs ys = xs >>= (\x -> 
                           ys >>= (\y -> 
                           return (x, y)))
@@ -160,7 +160,7 @@ ghci> cartesian_product [1,2] [3]
 The definition of `cartesian_product` above is hard to read. However, this form of programming is (as you will surely see) very common&mdash;we bind each `x` from `xs`, then bind each `y` from `ys`, and return `(x, y)`. Why not let us write the same implementation in this way:
 
 ```haskell
-cartesian_product :: [a] -> [a] -> [(a, a)]
+cartesian_product :: [a] -> [b] -> [(a, b)]
 cartesian_product xs ys = do
     x <- xs
     y <- ys
@@ -186,6 +186,28 @@ def cartesian_product(xs, ys):
             yield (x, y)
 ```
 What we have done was to **recover imperative programming with do-notation**! Even better: while `for` loops in Python only work on iterables, `do` notation in Haskell works on **any monad**!
+
+```haskell
+-- do notation with lists
+pairs :: [a] -> [(a, a)]
+pairs ls = do x <- ls
+              y <- ls
+              return (x, y)
+
+-- do notation with Maybe
+z :: Maybe Int
+z = do y <- 123 `safeDiv` 4
+       y `safeDiv` 5
+
+-- do notation with Either
+parseUser :: String -> String -> String -> Either String User
+parseUser name email salary
+  = do e <- parseEmail email
+       s <- parseSalary salary
+       return $ User name e s
+```
+
+Other languages like Python, C etc. define keywords like `for`, `while`, `if`-`else` as part of the language so that programmers can use different meanings of what _and then_ means. For example, a `while` loop lets you write programs like (1) check condition, _and then_ (2) if its true do the loop body, _and then_ (3) check the condition again, etc. In Functional Programming languages like Haskell, it is _monads_ that decide what _and then_ means&mdash;this is great because **you** get to define your own monads and decide what composition of computation means!
 
 ```haskell
 cartesian_product :: Monad m => m a -> m b -> m (a, b)
@@ -217,4 +239,4 @@ As you can tell, each monad has its own way of composing computation in context 
 [^2]: Many popular languages call this `flatMap`.
 [^3]: Just like how languages like C, C++ and Java have `;` to separate statements, i.e. a program like `A;B` means do `A` and then do `B`, `>>=` allows us to _overload_ what _and then_ means!
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge

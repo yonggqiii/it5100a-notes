@@ -98,10 +98,10 @@ code.language-lean:before {
   color: #bbb8ff;
 }
 .rust .hljs-op {
-  color: white;
+  color: #008a8f;
 }
 
 .light .hljs-op {
-  color: white;
+  color: #008a8f;
 }
 

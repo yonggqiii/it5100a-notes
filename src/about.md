@@ -36,7 +36,7 @@ Typed functional programming are becoming more widely adopted in industry, as ca
 ## About These Notes
 I hope that these notes can be used as good supplementary material for those looking to learn the concepts of Typed Functional Programming in more detail. Each of these chapters comes with exercises in Python and Haskell so that you're able to replicate some of the ideas from purely-functional languages in general-purpose multi-paradigm languages.
 
-Therefore, to avoid confusion, code blocks are annotated with the logo of the target programming language on the left. Examples below.
+Therefore, to avoid confusion, code blocks are annotated with the logo of the target programming language on the left. Examples below. (Readers on mobile might have to rotate their phones to landscape to view the logos.)
 
 #### Python
 ```python
@@ -83,6 +83,8 @@ Please submit all requests for content and bugs either as a GitHub issue or cont
 ## License
 All rights to this project are reserved by the author. Unauthorized reproduction, distribution, or modification of this project, in whole or in part, is strictly prohibited without prior written permission. The author reserves the right to modify or change the licensing terms at any time and without prior notice. For inquiries regarding licensing or usage, please contact the author.
 
+Logos and other external assets used in this project do not belong to the author.
+
 ## Contact
 Author: Foo Yong Qi - yongqi@nus.edu.sg
 
@@ -92,13 +94,15 @@ Author: Foo Yong Qi - yongqi@nus.edu.sg
 
 ## Release History
 ### 2024
+#### 28 September 2024
+Additional writeups and bug fixes in the Monads chapter, bug fixes in operator highlighting in code blocks in light modes, and the addition of a recap on first-class functions.
 #### 26 September 2024
 The first draft of these notes have been released with the first four chapters completed.
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [contributors-url]: https://github.com/yonggqiii/it5100a-notes/graphs/contributors
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge
 [stars-shield]: https://img.shields.io/github/stars/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [stars-url]: https://github.com/yonggqiii/it5100a-notes/stargazers
 [issues-shield]: https://img.shields.io/github/issues/yonggqiii/it5100a-notes.svg?style=for-the-badge

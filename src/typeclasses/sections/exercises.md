@@ -216,4 +216,4 @@ Proceed to define a typeclass instance for `Int` such that `Int`s are sequences 
 [^1]: This is an extremely contrived example. The main point we are driving home is that we can create very concise implementations of data structures based on domain-specific knowledge.
 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge

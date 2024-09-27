@@ -580,4 +580,4 @@ the future. In the next section, we will show you how we can write
 functions against algebraic data types and GADTs, including how we can
 implement the `eval` function.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge

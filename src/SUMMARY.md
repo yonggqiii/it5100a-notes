@@ -19,6 +19,7 @@
     - [Typeclasses](./typeclasses/sections/typeclasses.md)
     - [Commonly-Used Typeclasses](./typeclasses/sections/commonly-used-typeclasses.md)
     - [Functional Dependencies](./typeclasses/sections/functional-dependencies.md)
+    - [Existential Typeclass Antipattern]()
     - [Exercises](./typeclasses/sections/exercises.md)
 - [Railway Pattern](./railway_pattern/README.md)
     - [Context/Notions of Computation](./railway_pattern/context.md)
@@ -29,6 +30,9 @@
     - [Railway Pattern in Python](./railway_pattern/railway_python.md)
     - [Exercises](./railway_pattern/exercises.md)
 - [Monads]()
+    - [More on Monads]()
+    - [Commonly-Used Monads]()
+    - [Monad Transformers]()
 - [Concurrent and Parallel Programming]()
 
 ---
