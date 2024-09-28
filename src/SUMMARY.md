@@ -37,7 +37,13 @@
 
 ---
 # Appendices
-- [Solutions to Exercises]()
+- [Solutions to Exercises](./solutions/README.md)
+    - [Chapter 1](./solutions/course_introduction.md)
+    - [Chapter 2](./solutions/types.md)
+    - [Chapter 3](./solutions/typeclasses.md)
+    - [Chapter 4](./solutions/railway.md)
+    - [Chapter 5]()
+    - [Chapter 6]()
 - [Recap of Concepts](./recap/README.md)
     - [Recursion](./recap/sections/recursion.md)
     - [First-Class Functions](./recap/sections/first-class-functions.md)

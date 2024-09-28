@@ -95,7 +95,7 @@ Author: Foo Yong Qi - yongqi@nus.edu.sg
 ## Release History
 ### 2024
 #### 28 September 2024
-Additional writeups and bug fixes in the Monads chapter, bug fixes in operator highlighting in code blocks in light modes, and the addition of a recap on first-class functions.
+Additional writeups and bug fixes in the Monads chapter, bug fixes in operator highlighting in code blocks in light modes, and the addition of a recap on first-class functions. Solutions to exercises for the first four chapters have also been introduced.
 #### 26 September 2024
 The first draft of these notes have been released with the first four chapters completed.
 

@@ -288,6 +288,7 @@ split delim (x : xs)
 -- validation
 data Validation err a = Success a
                       | Failure err
+    deriving (Eq, Show)
 
 instance Functor (Validation err) where
     fmap :: (a -> b) -> Validation err a -> Validation err b

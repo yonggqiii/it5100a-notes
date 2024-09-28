@@ -123,13 +123,10 @@ functions:
 1.  The function `@+` that receives a sorted set and an element, and
     returns the sorted set with the element added (unless it is already
     in the sorted set).
-
 2.  The function `setToList` that receives a sorted set and returns it
     as a list (in sorted order)
-
 3.  The function `sortedSet` that receives a list of elements and puts
     them all in a sorted set.
-
 4.  The function `in'` which determines if an element is in the sorted
     set.
 
