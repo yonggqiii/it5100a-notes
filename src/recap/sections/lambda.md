@@ -183,7 +183,7 @@ For example, in our calculus we can show that \\(\lambda x: \mathtt{int}\to\math
 \frac{\Gamma, x: \mathtt{int} \to \mathtt{int} \vdash (\lambda y: \mathtt{int}. x ~ y) : \mathtt{int}\to\mathtt{int}}{\Gamma\vdash (\lambda x: \mathtt{int} \to \mathtt{int}.\lambda y: \mathtt{int}. x ~ y) : (\mathtt{int}\to\mathtt{int})\to\mathtt{int}\to\mathtt{int}}
 \\]
 
-That means the following lambda expression in Python (assuming only `int` and `bool` exist as base types) will have the same type:
+That means the following lambda expression in Python (assuming only `int` exists as a base type) will have the same type:
 ```python
 >>> f = lambda x: lambda y: x(y) # (int -> int) -> int -> int
 >>> my_fn = lambda x: x + 1 # int -> int
