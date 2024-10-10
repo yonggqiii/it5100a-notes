@@ -19,7 +19,7 @@
     - [Typeclasses](./typeclasses/sections/typeclasses.md)
     - [Commonly-Used Typeclasses](./typeclasses/sections/commonly-used-typeclasses.md)
     - [Functional Dependencies](./typeclasses/sections/functional-dependencies.md)
-    - [Existential Typeclass Antipattern]()
+    - [Existential Typeclass Antipattern](./typeclasses/sections/existential.md)
     - [Exercises](./typeclasses/sections/exercises.md)
 - [Railway Pattern](./railway_pattern/README.md)
     - [Context/Notions of Computation](./railway_pattern/context.md)

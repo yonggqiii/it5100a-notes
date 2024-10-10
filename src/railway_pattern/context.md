@@ -82,4 +82,4 @@ However, notice that having _functions as railways_ is not very convenient... wi
 
 How can we make the railway pattern _ergonomic_ enough for us to want to use them? 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge

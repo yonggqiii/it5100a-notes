@@ -5,4 +5,4 @@ Two of the most important aspects of software engineering design are _decoupling
 In this chapter, we discuss how Haskell allows us to decouple types and functions, and in some sense, making data types extensible, without compromising on type-safety. Haskell does so with a programming feature not common to many languages, known as typeclasses.
 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge

@@ -126,4 +126,4 @@ In this chapter, we describe some of the core facets of the railway pattern:
 ---
 [^1]: Wait... is this an _imperative_ program in Haskell?
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-28%20SEP%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
