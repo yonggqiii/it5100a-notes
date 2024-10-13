@@ -322,4 +322,4 @@ def sum_tree(t):
 
 In summary, our formulation of the natural numbers reveals that numbers are also structurally recursive, and therefore, are amenable to recursive computations. We can extend this idea to all recursive structures, which as you will see in these notes, is very common.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

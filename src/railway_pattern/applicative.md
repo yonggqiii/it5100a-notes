@@ -153,4 +153,4 @@ With these, here are some guidelines for when to use `fmap`, `pure` and `<*>`:
 - `f x y z` becomes `f <$> x <*> y <*> z` if `x`, `y` and `z` become in context
 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

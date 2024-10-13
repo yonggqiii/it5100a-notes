@@ -251,4 +251,4 @@ If we had used `flat_map` instead, we would get the same mapping of integers int
 ---
 [^1]: The term _lambda expression_ is inspired from the \\(\lambda\\)-calculus.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

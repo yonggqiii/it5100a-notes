@@ -239,4 +239,4 @@ As you can tell, each monad has its own way of composing computation in context 
 [^2]: Many popular languages call this `flatMap`.
 [^3]: Just like how languages like C, C++ and Java have `;` to separate statements, i.e. a program like `A;B` means do `A` and then do `B`, `>>=` allows us to _overload_ what _and then_ means!
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

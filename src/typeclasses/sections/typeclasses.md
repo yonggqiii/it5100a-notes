@@ -220,4 +220,4 @@ allow us to define and use ad-hoc polymorphic functions in a type-safe
 way.
 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

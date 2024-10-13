@@ -105,3 +105,8 @@ code.language-lean:before {
   color: #008a8f;
 }
 
+.cite {
+  font-size: 0.8em;
+  line-height: 0;
+}
+

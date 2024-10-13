@@ -198,4 +198,4 @@ class <'int'>
 ---
 [^1]: The actual untyped \\(\lambda\\) calculus does not have atoms like numbers, booleans etc. However, for simplicity's sake we shall include them in the language. The version we present is frequently termed the _applied_ \\(\lambda\\) _calculus_, in contrast with usual presentations known as the _pure_ \\(\lambda\\) _calculus_ which omits atoms.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge

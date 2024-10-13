@@ -509,4 +509,4 @@ For this course, you will need the following software:
 [^7]: If you have not, you may want to read a 
     [a recap on first-class functions](../../recap/sections/first-class-functions.md) before continuing.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-10%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
