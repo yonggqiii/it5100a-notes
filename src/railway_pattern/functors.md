@@ -237,7 +237,7 @@ That being said, we now have a very powerful tool, `fmap`, that allows us to per
 
 ---
 
-[^1]: We do not cover category theory in too much detail since it is not _required_ for functional programming, although an appreciation of it can help with understanding. For a more detailed walkthrough of the connections between functional programming and category theory, see my [article on category theory](https://yongqi.foo/papers/fun/Monads.pdf).
+[^1]: We do not cover category theory in too much detail since it is not _required_ for functional programming, although an appreciation of it can help with understanding. For a more detailed walkthrough of the connections between functional programming and category theory, see my [article on category theory](https://yongqi.foo/blog/posts/monads/).
 
 [^2]: Not really... due to the laziness of Haskell and functions like `seq`, the types and functions in Haskell do not actually assemble in to a category. However, just to put some ideas across, we shall assume that they do.
 
