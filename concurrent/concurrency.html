@@ -1,0 +1,443 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Concurrent Programming - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html" class="active"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="concurrent-programming"><a class="header" href="#concurrent-programming">Concurrent Programming</a></h1>
+<p>In a usual <em>sequential</em> program, we do one thing completely after another. For example, if there are two tasks to do, <code>A</code> and <code>B</code>, then we will do <code>A</code> until completion, then do <code>B</code> until completion:</p>
+<pre><code>do A completely
+do B completely
+</code></pre>
+<p>In a <em>concurrent</em> program, we do a little bit of either, arbitrarily:</p>
+<pre><code>work on A for 2ms
+work on B for 1ms
+work on A for 3ms
+work on B for 6ms
+work on A for 1ms
+...
+</code></pre>
+<p>One of the advantages of writing concurrent programs (even in the presence of only a single operating system process) is that it would appear to the user that both tasks are executed simultaneously, making the program feel more fluid and have lower latency.</p>
+<p>Typically, most programming languages provide building blocks for writing concurrent programs in the form of independent <em>threads of control</em>. Haskell is no exception. In Haskell, a thread is an I/O action that executes independently of other threads. To create a thread, we import the <code>Control.Concurrent</code> module and use the <code>forkIO</code> function. In the following example, we have one I/O action that writes <code>Hello World!</code> to a new file called <code>it5100a-notes.md</code>, and use <code>forkIO</code> to independently execute that I/O action in a separate thread immediately.</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Concurrent
+ghci&gt; :t forkIO
+forkIO :: IO () -&gt; IO ThreadId
+ghci&gt; import System.Directory
+ghci&gt; forkIO (writeFile "it5100a-notes.md" "Hello World!") &gt;&gt; doesFileExist "it5100a-notes.md"
+False
+</code></pre>
+<p>The Haskell runtime does not specify an order in which threads are executed. Thus, the file <code>it5100a-notes.md</code> created by the new thread may or may not have been created by the time the original thread checks for its existence. If we try this example once, and then remove <code>it5100a-notes.md</code> and try again, we may get a different result the second time. In general, concurrent programs are <em>nondeterministic</em>.</p>
+<p>From earlier, we stated that concurrent programs can "hide" the latency of programs by executing multiple tasks concurrently. This makes applications more responsive. For example, a web browser needs to process user input (like button clicks etc.) and page loads or running JavaScript processes. If a web browser were programmed sequentially, then the page must load completely before the user can interact with the browser at all. In addition, JavaScript processes will usually be running in the background, and while it is doing so, the user cannot interact with the browser either. However, since web browsers are (almost always) concurrent, the user can continue to interact with them while background processes are running, even if the browser is only running on a single CPU core.</p>
+<p>A toy example demonstrating this is as follows. We shall write a program that receives some user input and creates a large file with user specified contents:</p>
+<pre><code class="language-haskell">import Data.List
+
+writeContents :: String -&gt; String -&gt; IO ()
+writeContents file_name contents = do
+  let c = intercalate "\n" $ replicate 1000000 (intercalate "" $ replicate 100 contents)
+  writeFile file_name c
+  putStrLn $ file_name ++ " written"
+
+main :: IO ()
+main = do
+  putStrLn "Enter filename:"
+  x &lt;- getLine
+  if x == "exit"
+  then return ()
+  else do putStrLn "Enter file contents:"
+          y &lt;- getLine
+          forkIO $ writeContents x y
+          main
+</code></pre>
+<p>Observe the <code>main</code> I/O action. All <code>main</code> does is to read user input. The logic for writing the user input to a file is done by <code>writeContents</code>, which is done on a separate thread. This way, <code>main</code> can read user input immediately after <code>writeContents</code> is forked, and is ready to read more user input again, without having to wait for <code>writeContents</code> to complete its task first. If we hadn't used <code>forkIO</code>, <code>main</code> would perform the writing on the same thread completely, which may take a while, before being able to read user input again.</p>
+<h2 id="communication-between-threads"><a class="header" href="#communication-between-threads">Communication Between Threads</a></h2>
+<p>The simplest way to share information between two threads is to let them both use a variable. In our file generation, the main thread shares both the name of a file and its contents with the other thread. Because Haskell data is immutable by default, this poses no risks: neither thread can modify the other's view of the file's name or contents. However, we will often need to have threads actively communicating with each other. For example, GHC does not provide a way for one thread to emit data to another thread, or let another thread know that it is still executing or has terminated.</p>
+<h3 id="mvars"><a class="header" href="#mvars"><code>MVar</code>s</a></h3>
+<p>The way we do this in Haskell is to use a synchronizing variable called the <code>MVar</code>. An <code>MVar</code> is essentially a mutable variable holding a value. You can put something in a variable making it full, and take out the value from a full <code>MVar</code>, making it empty.</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Concurrent.MVar
+ghci&gt; :t putMVar
+putMVar :: MVar a -&gt; a -&gt; IO ()
+ghci&gt; :t takeMVar
+takeMVar :: MVar a -&gt; IO a
+</code></pre>
+<p>Importantly, using <code>putMVar</code> on a full <code>MVar</code> causes the thread to <em>block</em> until the <code>MVar</code> becomes empty; dually, using <code>takeMVar</code> on an empty <code>MVar</code> causes the thread to <em>block</em> until the <code>MVar</code> becomes full.</p>
+<p>An example of using <code>MVar</code>s is as follows. We are going to use the same toy example from earlier, except we are going to ensure that only one thread can perform file writing. This is so that we do not hog computing resources from other parts of our system (which there aren't, but suppose there are):</p>
+<pre><code class="language-haskell">import Data.List
+import Control.Concurrent.MVar
+
+writeContents :: String -&gt; String -&gt; MVar () -&gt; IO ()
+writeContents file_name contents lock = do
+  takeMVar lock 
+  putStrLn $ "Write to " ++ file_name ++ " started"
+  let !c = intercalate "\n" $ replicate 1000000 (intercalate "" $ replicate 500 contents)
+  writeFile file_name c
+  putStrLn $ file_name ++ " written"
+  putMVar lock ()
+
+mainLoop :: MVar () -&gt; IO ()
+mainLoop lock = do
+  putStrLn "Enter filename:"
+  x &lt;- getLine
+  if x == "exit"
+  then do takeMVar lock
+          return ()
+  else do putStrLn "Enter file contents:"
+          y &lt;- getLine
+          forkIO $ writeContents x y lock
+          mainLoop lock
+
+main :: IO ()
+main = do
+  lock &lt;- newMVar ()
+  mainLoop lock
+</code></pre>
+<p>Upon executing this program, the <code>main</code> I/O action initializes a single <code>MVar</code> which is then passed onto other parts of the program. The <code>mainLoop</code> action does the same as before, except that it receives the <code>lock</code> from <code>main</code>. Note the <code>then</code> branch in <code>mainLoop</code>—if the user enters <code>exit</code>, it waits for the <code>lock</code> to be filled with a value, signalling the completion of file writing, before exiting the program. Importantly, <code>takeMVar</code> wakes up in FIFO order. In other words, we are guaranteed that no more threads of <code>writeContents</code> will be waiting to be executed at this point, because <code>takeMVar</code> will only wake up the <code>mainLoop</code> thread once all earlier <code>writeContents</code> threads have been executed. The <code>writeContents</code> action performs the actual file writing as per usual; however, it first acquires the shared <code>lock</code> before executing the file writing operation, before putting back the <code>lock</code> value. This is so that only one thread can perform <code>writeContents</code> at any time.</p>
+<h3 id="channels"><a class="header" href="#channels">Channels</a></h3>
+<p>Aside from <code>MVar</code>s, we can also provide one-way communication channels via the <code>Chan</code> type. Threads can write to channels (without blocking), and can read from channels (blocking if the channel is empty):</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Concurrent.Chan
+ghci&gt; :t writeChan
+writeChan :: Chan a -&gt; a -&gt; IO ()
+ghci&gt; :t readChan
+readChan :: Chan a -&gt; IO a
+</code></pre>
+<p>An example is as follows:</p>
+<pre><code class="language-haskell">import Data.List
+import Control.Concurrent.Chan
+
+writeContents :: Chan String -&gt; IO ()
+writeContents chan = do
+  file_name &lt;- readChan chan
+  contents  &lt;- readChan chan
+  putStrLn $ "Write to " ++ file_name ++ " started"
+  let !c = intercalate "\n" $ replicate 1000000 (intercalate "" $ replicate 500 contents)
+  writeFile file_name c
+  putStrLn $ file_name ++ " written"
+  writeContents chan
+
+mainLoop :: Chan String -&gt; IO ()
+mainLoop chan = do
+  putStrLn "Enter filename:"
+  x &lt;- getLine
+  if x == "exit"
+  then return ()
+  else do putStrLn "Enter file contents:"
+          y &lt;- getLine
+          writeChan chan x
+          writeChan chan y
+          mainLoop chan
+
+main :: IO ()
+main = do
+  chan &lt;- newChan :: IO (Chan String)
+  forkIO $ writeContents chan
+  mainLoop chan
+</code></pre>
+<p>In this example, only two threads are ever spawned: (1) the main thread which runs <code>main</code> and <code>mainLoop</code>, which, like before, only reads user input and passes the file name and contents to the other thread, which performs file writing. <code>main</code> initializes the channel and forks another thread to <code>writeContents</code>. <code>mainLoop</code> receives user input and passes them through the channel, which is read by <code>writeContents</code> for file writing.</p>
+<h2 id="more-cores"><a class="header" href="#more-cores">More Cores!</a></h2>
+<p>Thus far, we have only discussed how the Haskell runtime is able to spark new threads of control. As said before, this does not guarantee that the program is actually running on multiple cores. In fact, by default, the program only runs on a single core. We can inspect this by using the <code>numCapabilities</code> function:</p>
+<pre><code class="language-haskell">import GHC.Conc
+main :: IO ()
+main = print numCapabilities
+</code></pre>
+<pre><code class="language-output info">&gt; ghc Main.hs
+&gt; ./Main
+1
+</code></pre>
+<p>There is in fact, a way to set the number of CPU cores being used by the Haskell runtime. This can be done using the <code>setNumCapabilities</code> function.</p>
+<pre><code class="language-haskell">import Control.Concurrent
+main :: IO ()
+main = do setNumCapabilities 4
+          print numCapabilities
+</code></pre>
+<p>However, compiling and running this program gives a warning:</p>
+<pre><code class="language-output info">ghc Main.hs
+./Main
+Main: setNumCapabilities: not supported in the non-threaded RTS
+1
+</code></pre>
+<p>The reason for this is because Haskell uses two runtime systems: (1) a non-threaded runtime, and (2) a threaded runtime. By default, compiling our program with <code>ghc</code> links the non-threaded runtime, which is not able to leverage multiple cores. Therefore, if we want to use multiple cores, we have to use the threaded runtime instead. This can be done by compiling the program with the <code>-threaded</code> option.</p>
+<pre><code class="language-output info">ghc Main.hs -threaded
+./Main
+4
+</code></pre>
+<p>Another way to specify the number of cores being used is to provide the <code>+RTS -Nx</code> option, where <code>x</code> is the number of cores we would like to use.</p>
+<p>If we are using <code>cabal</code> to build our project, we can provided <code>-threaded</code> as a GHC option via the <code>ghc-options</code> setting:</p>
+<pre><code class="language-haskell">executable playground
+    -- ...
+    ghc-options: -threaded
+</code></pre>
+<p>And execute it with <code>cabal run -- +RTS -Nx</code>.</p>
+<p>Let's give this a try!</p>
+<pre><code class="language-haskell">import Data.List
+import Control.Concurrent
+
+writeContents :: String -&gt; String -&gt; Chan () -&gt; IO ()
+writeContents file_name contents chan = do
+  putStrLn $ "Write to " ++ file_name ++ " started"
+  let !c = intercalate "\n" $ replicate 1000000 (intercalate "" $ replicate 500 contents)
+  writeFile file_name c
+  putStrLn $ file_name ++ " written"
+  writeChan chan ()
+
+main :: IO ()
+main = do
+  n &lt;- getNumCapabilities
+  putStrLn $ "Number of cores: " ++ show n
+  chan &lt;- newChan :: IO (Chan ())
+  forkIO $ writeContents "abc" "def" chan
+  forkIO $ writeContents "def" "ghi" chan
+  _ &lt;- readChan chan
+  _ &lt;- readChan chan
+  return ()
+</code></pre>
+<p>This program is simple. The <code>main</code> I/O action creates a channel and passes them to two threads that perform file writing. Once each thread has completed writing the file, they will also write to the channel, signalling completion. The <code>main</code> I/O action will only terminate once both threads have completed.</p>
+<p>Let's try timing our program with different runtime options. The first execution command runs our program with 4 cores, while the second one only uses 1. We use the <code>time</code> shell command to time the execution of each program:</p>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N4
+Number of cores: 4
+Write to abc started
+Write to def started
+abc written
+def written
+
+________________________________________________________
+Executed in    6.44 secs    fish           external
+   usr time   10.76 secs  379.00 micros   10.76 secs
+   sys time    1.15 secs  137.00 micros    1.15 secs
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run
+Number of cores: 1
+Write to def started
+Write to abc started
+def written
+abc written
+
+________________________________________________________
+Executed in   12.02 secs    fish           external
+   usr time   10.78 secs    0.00 micros   10.78 secs
+   sys time    0.84 secs  560.00 micros    0.84 secs
+</code></pre>
+<p>Notice that the <code>usr</code> and <code>sys</code> times for both are roughly similar. This is not surprising, because <code>usr</code> and <code>sys</code> times reflect CPU execution time; loosely, if the CPU spends 1s executing on one core and 1s executing on another core, then the total of <code>usr</code> and <code>sys</code> time reported with be 2s. This is to be expected, because the same amount of work needs to be done to write to our files. However, what we really want to profile is the <em>real</em> or <em>wall clock</em> time, i.e. how much time had elapsed on the clock. As you can see, the multicore execution ran roughly 2x faster than the single core execution, since we have two files we can write in parallel!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../concurrent/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../concurrent/parallel.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../concurrent/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../concurrent/parallel.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

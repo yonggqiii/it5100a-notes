@@ -1,0 +1,681 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Haskell - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html" class="active"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="haskell"><a class="header" href="#haskell">Haskell</a></h1>
+<p>Haskell is a <em>statically-typed</em>, <em>purely functional</em>
+<em>nonstrict-evaluation</em> programming language. Informally, static typing
+means that we can look at a program (without executing it) and tell what
+the type of any term is. A purely-functional language is a
+language that supports only functional programming concepts (unlike
+multi-paradigm languages like Python). Nonstrict-evaluation means that
+there is no strict sequence of evaluating statements or expressions, and compilers are free
+to decide which expressions should be evaluated first—<em>lazy
+evaluation</em> is where expressions are evaluated only when they are needed.
+We will look at non-strict evaluation eventually; for now, understanding static typing and purely
+functional programming is more important.</p>
+<p>In a purely functional language like Haskell, you will miss the
+following programming language features that are present in virtually
+every general-purpose programming language:</p>
+<ul>
+<li>
+<p>Mutation (even variables are immutable);</p>
+</li>
+<li>
+<p>Loops;</p>
+</li>
+<li>
+<p>Objects (classes etc.);</p>
+</li>
+<li>
+<p>Dynamic typing (e.g. <code>x</code> can be an <code>int</code> now, and
+a <code>str</code> later);</p>
+</li>
+</ul>
+<p>You might find it difficult to adjust to such a programming environment.
+However, you will find these restrictions meaningful as we have alluded
+to in the previous section.</p>
+<h2 id="basic-expressions"><a class="header" href="#basic-expressions">Basic Expressions</a></h2>
+<p>By this point you should have already installed GHC, which comes with
+two main parts: <code>ghc</code> itself (the compiler), and <code>ghci</code> the
+REPL/interpreter. For now, run <code>ghci</code> in the terminal to start an interactive Haskell
+shell, and enter some basic mathematical expressions!</p>
+<pre><code class="language-haskell">ghci&gt; 1 + 2 - 3
+0
+ghci&gt; 1 * 2 / 4
+0.5
+ghci&gt; 5 ^ 2 `mod` 5
+0
+ghci&gt; 5 `div` 2
+2
+</code></pre>
+<p>Note some differences: <code>^</code> is exponentiation (just as you would normally
+type in a calculator), and there is no modulo operator. There is a
+modulo function called <code>mod</code>, and you can apply any binary
+function in an <em>infix</em> manner by surrounding the function in backticks. Integer
+division is a function <code>div</code>. The operator precedence rules apply.</p>
+<p>In a functional programming language like Haskell, it should come as no
+surprise that virtually everything is a function. Mathematical operators
+are actually just functions! In GHCI, we can observe the type of any
+term (terms are sort of like objects in Python; functions are terms!) using <code>:t</code>, and we can show the type of
+the function of the <code>+</code> operator by issuing <code>:t (+)</code> (when writing
+operators as a term in the usual prefix notation, surround it in parentheses).
+We can in fact re-write an infix operator function call as a normal prefix
+function call. Note that in Haskell, <code>f x y z</code> is essentially
+the same as <code>f(x, y, z)</code> in languages like Python.</p>
+<pre><code class="language-haskell">ghci&gt; :t (+)
+Num a =&gt; a -&gt; a -&gt; a
+ghci&gt; 2 + 3
+5
+ghci&gt; (+) 2 3
+5
+</code></pre>
+<p>As we know, currying is the act of translating an \(n\)-ary function to a
+unary function that receives one parameter and returns a function that
+receives the remaining parameters (in curried form). In Haskell, all
+functions are curried, so even a function like <code>(+)</code> really
+looks something like this in Python:</p>
+<pre><code class="language-python">def add(x):
+    return lambda y: x + y
+</code></pre>
+<p>This is automatically done in Haskell. Thus we might be able to write
+our Python equivalent of <code>add(2)</code> directly in Haskell as
+<code>(+2)</code>:</p>
+<pre><code class="language-haskell">ghci&gt; y = (+2)              
+ghci&gt; y 3
+5
+</code></pre>
+<p>which in Python, looks like:</p>
+<pre><code class="language-python">&gt;&gt;&gt; def add(x): return lambda y: x + y
+&gt;&gt;&gt; y = add(2)
+&gt;&gt;&gt; y(3)
+5
+</code></pre>
+<p>Therefore, to be more specific, <code>f x y z</code> in Haskell is more
+like <code>f(x)(y)(z)</code> in Python.</p>
+<p>We can also load Haskell source files into GHCI. Python source files
+have the <code>.py</code> extension; Haskell source files instead have the <code>.hs</code>
+extension. Let us try writing a simple Haskell program. Create a new
+file like <code>MyCode.hs</code> and write in the following:</p>
+<pre><code class="language-haskell">-- MyCode.hs
+main :: IO () -- entry point to the program
+main = putStrLn "Hello World!"
+</code></pre>
+<p>We will look at what the first line means in the future. For now, try
+compiling and running your code by issuing the following commands in
+your terminal (windows users might have to run <code>./MyCode.exe</code>):</p>
+<pre><code>ghc MyCode.hs
+./MyCode
+</code></pre>
+<p>The first command invokes GHC to <em>compile</em> your source file.
+<em>Compilation</em> translates your source file into an <em>executable</em> file that
+your computer that understand. The compilation process will also perform
+a bunch of compile-time checks, such as type-checking etc. It may also
+perform some optimizations. The outcome of invoking that command is an
+executable (probably called <code>MyCode</code>) along with other files (which we
+shall not talk about for now). The second command then executes that
+executable, and you should see <code>Hello World!</code> shown in the terminal.</p>
+<pre><code class="language-output info">Hello World!
+</code></pre>
+<p>We shall ignore compiling source files for now and temporarily focus on
+working with GHCI. In GHCI, we can load files by issuing <code>:l MyFile.hs</code>,
+which loads the source into the shell. For now, write the following code
+in <code>MyCode.hs</code>:</p>
+<pre><code class="language-haskell">-- MyCode.hs
+z = 1 -- ok
+y = 2 -- ok
+y = 3 -- not ok!
+</code></pre>
+<p>As we have described earlier, everything in Haskell is immutable.
+Therefore, re-defining what <code>y</code> is should be disallowed! Let's try
+loading <code>MyCode.hs</code> into GHCI:</p>
+<pre><code class="language-output error">ghci&gt; :l MyCode.hs
+[1 of 2] Compiling Main ( MyCode.hs, interpreted )
+
+MyCode.hs:4:1: error:
+    Multiple declarations of 'y'
+    Declared at: MyCode.hs:3:1
+                 MyCode.hs:4:1
+  |
+4 | y = 3 -- not ok!
+  | ^
+</code></pre>
+<p>As you can see, you cannot redefine functions or variables. Everything
+is immutable in Haskell! Therefore, the statement <code>x = e</code> is <strong>not</strong>
+an assignment statement. Rather, it is a <em>bind</em> or a <em>definition</em>.</p>
+<h2 id="control-structures"><a class="header" href="#control-structures">Control Structures</a></h2>
+<p>In Haskell, you mainly write <em>expressions</em>, and not statements.
+Consequently, there are only <code>if</code>-<code>else</code> expressions, and no <code>if</code>-<code>else</code>
+statements. That means that you cannot omit an <code>else</code> branch of an
+<code>if</code>-<code>else</code> expression, just like in Python:</p>
+<pre><code class="language-python">&gt;&gt;&gt; x = 2 * -1
+&gt;&gt;&gt; y = 'positive' if x == 2 else 'negative'
+&gt;&gt;&gt; y
+'negative'
+</code></pre>
+<p>In Haskell, this would be (negative numbers must be surrounded by parentheses, otherwise Haskell thinks it is a partial function application of subtraction <code>(-)</code>):</p>
+<pre><code class="language-haskell">ghci&gt; x = 2 * (-1)
+ghci&gt; y = if x == 2 then "positive" else "negative"
+ghci&gt; y
+"negative"
+</code></pre>
+<p>Just like in Python, <code>if</code>-<code>then</code>-<code>else</code> expressions in Haskell are <em>expressions</em> and therefore
+evaluate to a term:</p>
+<pre><code class="language-haskell">ghci&gt; (if 1 /= 2 then 3 else 4) + 5
+8
+</code></pre>
+<p>Note that <em>not equals</em> looks like <code>/=</code> in Haskell but <code>!=</code> in Python.
+The equivalent expression in Python might be:</p>
+<pre><code class="language-python">&gt;&gt;&gt; (3 if 1 != 2 else 4) + 5
+8
+</code></pre>
+<p>Importantly, the type of any expression is fixed, or at least, we should
+be able to determine what the type of every expression is unambiguously
+just by looking at it. Therefore, writing the following expression in
+Haskell will throw an error:</p>
+<pre><code class="language-haskell">ghci&gt; x = 2 * (-1)
+ghci&gt; y = if x == 2 then 2 else "negative"
+&lt;interactive&gt;:2:20: error:
+  - No instance for (Num String) arising from the literal '2'
+  - In the expression: 2
+    In the expression: if x == 2 then 2 else "negative"
+    In an equation for 'y': y = if x == 2 then 2 else "negative"
+</code></pre>
+<p>The reason is that we should not need to evaluate the truth of
+<code>x == 2</code> to determine what the type of the entire <code>if</code>-<code>else</code>
+expression is. Thus, Haskell requires that the type of the expression in
+the <code>if</code> branch be the same as the type of the expression in the <code>else</code>
+branch. This departs from Python which is <em>dynamically typed</em>, where
+types are determined at runtime, so expressions can freely be of
+different types based on the values they inherit at the time of program
+execution.</p>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<p>Defining functions in Haskell looks like defining a variable. This
+should be expected since Haskell is centred around functions, so it
+should come as no surprise that functions do not need to be defined with
+any special syntax.</p>
+<pre><code class="language-haskell">ghci&gt; oddOrEven x = if even x then "even" else "odd"
+ghci&gt; oddOrEven 1
+"odd"
+ghci&gt; oddOrEven 2
+"even"
+
+ghci&gt; quadratic c2 c1 c0 x = c2 * x ^ 2 + c1 * x + c0
+ghci&gt; f = quadratic 1 2 3 -- x^2 + 2x + 3
+ghci&gt; f 4
+27
+ghci&gt; f 5
+38
+</code></pre>
+<p>We might then ask: how do we write a loop in Haskell? Like we said
+earlier, Haskell is a purely functional programming language, so there
+are no loops (we may later see loops being simulated with functions).
+Thus, for now we shall use recursion as it is often the most elegant way
+to solve problems.</p>
+<p>Recall that the familiar <code>factorial</code> function may be written imperatively
+in Python as:</p>
+<pre><code class="language-python">def fac(n):
+    res = 1
+    for i in range(2, n + 1):
+        res *= i
+    return res
+</code></pre>
+<p>As we know, the factorial function can be defined recursively as such:
+$$n! = \begin{cases}
+1 &amp; \text{if }n=0\\
+n \times (n - 1)!&amp; \text{otherwise}
+\end{cases}$$ And in Python:</p>
+<pre><code class="language-python">def fac(n):
+    return 1 if n == 0 else \
+           n * fac(n - 1)
+</code></pre>
+<p>In Haskell, we are free to do the same:</p>
+<pre><code class="language-haskell">ghci&gt; fac n = if n == 0 then 1 else n * fac (n - 1)
+ghci&gt; fac 4
+24
+</code></pre>
+<p>In fact, we can also express functions like this elegantly in Haskell
+with <em>guards</em>. Guards allow us to define expressions differently based
+on a condition.</p>
+<p>For example, we know that the Fibonacci function may be written like so:
+$$\textit{fib}(n) = \begin{cases}
+1 &amp; \text{if } n = 0\\
+1 &amp; \text{if }n = 1\\
+\textit{fib}(n - 1) + \textit{fib}(n - 2) &amp; \text{otherwise}
+\end{cases}$$</p>
+<p>And writing this function with regular <code>if</code>-<code>else</code>
+expressions might look like: <sup class="footnote-reference"><a href="#5">1</a></sup></p>
+<pre><code class="language-haskell">ghci&gt; :{
+ghci| fib n = if n == 0 || n == 1 
+ghci|         then 1 
+ghci|         else fib (n - 1) + fib (n - 2)
+ghci| :}
+</code></pre>
+<p>However, it might look clearer to define it this way with guards (<code>otherwise</code> is just defined as <code>True</code>):</p>
+<pre><code class="language-haskell">ghci&gt; :{
+ghci| fib n
+ghci|   | n == 0    = 1
+ghci|   | n == 1    = 1
+ghci|   | otherwise = fib (n - 1) + fib (n - 2)
+ghci| :}
+ghci&gt; fib 5
+8
+</code></pre>
+<p>Even better, we can use <em>pattern matching</em> to define such functions much
+more easily. We will look at pattern matching in more detail in the
+future:</p>
+<pre><code class="language-haskell">ghci&gt; fib 0 = 1
+ghci&gt; fib 1 = 1
+ghci&gt; fib n = fib (n - 1) + fib (n - 2)
+ghci&gt; fib 5
+8
+</code></pre>
+<h2 id="auxiliary-bindings"><a class="header" href="#auxiliary-bindings">Auxiliary Bindings</a></h2>
+<p>Thus far we have defined functions as a single expression; this is akin
+to writing a <em>lambda expression</em> in Python. As we know, that may not
+always be the most ergonomic considering that many functions can be
+better defined with several 'statements' that lead into a final
+expression. One example would be the following in Python:</p>
+<pre><code class="language-python">def weight_sum(n1, w1, n2, w2):
+    x = n1 * w1
+    y = n2 * w2
+    return x + y
+</code></pre>
+<p>While it is completely acceptable to define this function in one line,
+it is not as readable. In Haskell, functions indeed have to be written
+as a single expression, but we can define local bindings for the
+expression using <code>let</code>:</p>
+<pre><code class="language-haskell">ghci&gt; :{
+ghci| weightSum n1 w1 n2 w2 =
+ghci|   let x = n1 * w1
+ghci|       y = n2 * w2
+ghci|   in  x + y
+ghci| :}
+ghci&gt; weightSum 2 3 4 5
+26
+</code></pre>
+<p>The <code>let</code> binding allows us to introduce the definitions of
+<code>x</code> and <code>y</code> which are used in the expression after
+the <code>in</code> clause. These make writing larger expressions more readable.</p>
+<p><code>let</code> bindings are (more-or-less) <em>syntax sugar</em> for function calls:</p>
+<pre><code class="language-haskell">weightSum n1 w1 n2 w2 = 
+    let x = n1 * w1
+        y = n2 * w2
+    in  x + y
+ 
+-- same as
+ 
+weightSum n1 w1 n2 w2 =
+    f (n1 * w1) (n2 * w2)
+
+f x y = x + y
+</code></pre>
+<p>Importantly, <code>let</code> bindings are expressions; they therefore evaluate to
+a value, as seen in this example:</p>
+<pre><code class="language-haskell">ghci&gt; (let x = 1 + 2 in x * 3) + 4
+13
+</code></pre>
+<p>This is different to <code>where</code> bindings, which also allow us to write
+auxiliary definitions that support the main definition:</p>
+<pre><code class="language-haskell">weightSum n1 w1 n2 w2 = 
+    let x = n1 * w1
+        y = n2 * w2
+    in  x + y
+ 
+-- same as
+
+weightSum n1 w1 n2 w2 = x + y
+    where x = n1 * w1
+          y = n2 * w2
+</code></pre>
+<p>Other differences between <code>let</code> and <code>where</code> are not so apparent at this
+stage. You are free to use either appropriately (use <code>let</code> where an
+expression is desired, using either <code>let</code> or <code>where</code> are both okay in
+other scenarios).</p>
+<h2 id="data-types"><a class="header" href="#data-types">Data Types</a></h2>
+<p>We have looked at some simple data types so far: numbers like
+<code>1.2</code>, and strings like <code>"abc"</code>. Strings are
+actually <strong>lists</strong> of characters! Strings are surrounded by double
+quotes, and characters are surrounded by single quotes, like
+<code>'a'</code>.</p>
+<p>Lists in Haskell are <em>singly-linked list</em> with homogenous data. That
+means that the types of the elements in the list must be the same. We
+can write lists using very familiar syntax, e.g. <code>[1, 2, 3]</code>
+being a list containing the numbers 1, 2 and 3. Indexing a list can be
+done with the <code>!!</code> function.</p>
+<pre><code class="language-haskell">ghci&gt; x = [1, 2, 3]
+ghci&gt; x !! 1 -- indexing, like x[1]
+2
+</code></pre>
+<p>We can also construct ranges of numbers, or any enumerable type (such as
+characters). The syntax for creating such lists is straightforward as
+shown in the examples below.</p>
+<pre><code class="language-haskell">ghci&gt; y = [1,3..7] -- list(range(1, 8, 2))
+ghci&gt; y
+[1,3,5,7]
+ghci&gt; z = [1..10]  -- list(range(1, 11))
+ghci&gt; z
+[1,2,3,4,5,6,7,8,9,10]
+ghci&gt; inflist = [1..] -- 1,2,3,...
+ghci&gt; inflist !! 10
+11
+</code></pre>
+<p>As we stated earlier, strings are lists of characters, we can even build
+ranges of characters which result in strings.</p>
+<pre><code class="language-haskell">ghci&gt; ['h', 'e', 'l', 'l', 'o']
+"hello"
+ghci&gt; ['a'..'e']
+"abcde"
+ghci&gt; ['a'..'e'] ++ ['A'..'D'] -- ++ is concatentation
+"abcdeABCD"
+</code></pre>
+<p>As you know, a singly-linked list is one of two things: an empty list,
+or a node with a value (<code>head</code>) and a reference to the remaining part of
+the list (<code>tail</code>). Thus, one of the most frequently used operations is the
+<em>cons</em> operation (<code>:</code>) which builds (or de-structures) a list
+given its head and tail values. The <code>:</code> operator is
+right-associative.</p>
+<pre><code class="language-haskell">ghci&gt; x = [1, 2, 3]
+ghci&gt; 0 : x
+[0,1,2,3]
+ghci&gt; 0 : 1 : 2 : 3 : []
+[0,1,2,3]
+ghci&gt; 'a' : "bcde"
+"abcde"
+</code></pre>
+<p>One of the most interesting parts of Haskell is that it has
+non-strict evaluation. That means that the compiler is free to evaluate
+any expression only when it is needed. This allows us to quite nicely
+define recursive data without running into infinite loops:</p>
+<pre><code class="language-haskell">ghci&gt; y = 1 : y
+ghci&gt; take 5 y
+[1,1,1,1,1]
+</code></pre>
+<p>As we know, performing recursion over a list frequently requires us to
+get a head element and then recursively calling the function over the
+remaining list. This is nicely supported without any performance costs
+unlike in Python, where <code>ls[1:]</code> runs in \(O(n)\). For example,
+writing a function that sums a list of numbers might look like the
+following in Python:</p>
+<pre><code class="language-python">def sum(ls):
+    if len(ls) == 0:
+        return 0
+    return ls[0] + sum(ls[1:])
+</code></pre>
+<p>Haskell is very similar (<code>head</code> is a function that returns the
+first element of a list, and <code>tail</code> is a function that returns
+the remainder of a list):</p>
+<pre><code class="language-haskell">sum' ls = if length ls == 0
+          then 0
+          else head ls + sum' (tail ls)
+</code></pre>
+<p>As a quick aside, the <code>:</code> operator is really a <em>constructor</em> for
+lists, so in fact we can use pattern matching (again, we will discuss
+this in the future) to define the <code>sum'</code> function very
+elegantly.</p>
+<pre><code class="language-haskell">sum' [] = 0
+sum' (x : xs) = x + sum' xs
+</code></pre>
+<p>Python also supports <em>list comprehension</em> as you may recall:</p>
+<pre><code class="language-python">&gt;&gt;&gt; x = [1, 2, 3]
+&gt;&gt;&gt; y = 'abc'
+&gt;&gt;&gt; [(i, j) for i in x for j in y if i % 2 == 1]
+[(1, 'a'), (1, 'b'), (1, 'c'), (3, 'a'), (3, 'b'), (3, 'c')]
+</code></pre>
+<p>Haskell also provides the same facility, with different syntax:</p>
+<pre><code class="language-haskell">ghci&gt; x = [1, 2, 3]
+ghci&gt; y = "abc"
+ghci&gt; [(i, j) | i &lt;- x, j &lt;- y, odd i]
+[(1,'a'),(1,'b'),(1,'c'),(3,'a'),(3,'b'),(3,'c')]
+</code></pre>
+<p>At this junction it would be most appropriate to discuss tuples. Like
+Python, the fields of a tuple can be of different types. However, tuples
+in Haskell are <strong>not</strong> sequences. Tuples behave more like the product of
+several types, as is usually the case in many domains.</p>
+<p>As such, there are not many operations we can do on tuples. One of the
+only special cases is pairs, which have functions to project each value:</p>
+<pre><code class="language-haskell">ghci&gt; fst (1,"abc")
+1
+ghci&gt; snd (1,(2,[3,4,5]))
+(2,[3,4,5])
+ghci&gt; snd (snd (1,(2,[3,4,5])))
+[3,4,5]
+</code></pre>
+<p>This should suffice for now. Now is your turn to try the exercises to
+get you started on your functional programming journey! Note that many
+of the functions we have used are built-in to Haskell, as defined in
+<a href="https://hackage.haskell.org/package/base-4.17.0.0/docs/Prelude.html">Haskell's Prelude library</a>. You may want to refer to this library when doing the exercises. A large
+portion of the Prelude documentation may be unreadable at this point, however, rest
+assured that many of the concepts presented in the documentation will
+be covered in this course.</p>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">1</sup>
+<p>Note that <code>:{</code> and <code>:}</code> are used only in GHCI to define blocks of
+code, and are not part of Haskell.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../course_introduction/sections/functional_programming.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../course_introduction/sections/exercises.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../course_introduction/sections/functional_programming.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../course_introduction/sections/exercises.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

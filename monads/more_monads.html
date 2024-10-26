@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>More on Monads - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html" class="active"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="more-on-monads"><a class="header" href="#more-on-monads">More on Monads</a></h1>
+<p>Recall from <a href="../railway_pattern/monad.html">Chapter 4.5 (Railway Pattern#Monads)</a> that monads support <em>composition in context</em>. This idea extends beyond the composition of functions that each branch out to happy and sad paths in the railway pattern. As you have seen, other types like <code>[]</code> don't have much to do with the railway pattern, but is still a monad. This because as long as a type describes some <em>notion of computation</em>, it can be a monad which supports composition in context. We have also seen how this can be useful when the programming language supports easy monadic computations, for example, with Haskell's <code>do</code> notation.<sup class="footnote-reference"><a href="#1">1</a></sup></p>
+<p>However, if you observe the definition of the <code>Monad</code> type class carefully (see <a href="https://hackage.haskell.org/package/base-4.17.0.0/docs/Control-Monad.html">GHC Base: Control.Monad</a>), you might notice that there are more methods and monadic operations than just <code>return</code> and <code>&gt;&gt;=</code>.</p>
+<h2 id="ignoring-values"><a class="header" href="#ignoring-values">Ignoring values</a></h2>
+<p>In an imperative programming language like Python, we can write standalone expressions as statements, primarily to perform some side-effects. For example:</p>
+<pre><code class="language-python">def my_function(x):
+    print(x) # standalone statement
+    return x
+</code></pre>
+<p>We can, in fact, write the <code>print</code> statement in the style of <code>z &lt;- print x</code> in Haskell, although that would be useless since that variable's value is not used at all and is not meaningful to begin with:</p>
+<pre><code class="language-python">def my_function(x):
+    z = print(x) # why?
+    return x
+</code></pre>
+<p>Therefore, monads also have a method <code>&gt;&gt;</code> that basically discards the result of a monadic action. This method has the following type signature, which, in comparing with that of <code>&gt;&gt;=</code> should make this more apparent:</p>
+<pre><code class="language-haskell">class Applicative m =&gt; Monad m where
+    return :: a -&gt; m a
+    (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+    (&gt;&gt;)  :: m a -&gt;       m b  -&gt; m b
+</code></pre>
+<p>As you can tell, unlike <code>&gt;&gt;=</code>, the second argument to <code>&gt;&gt;</code> is not a function, but is just another term of the monad. It ignores whatever <code>a</code> is in context in the first argument, and only uses it for sequencing with the second argument of type <code>m b</code>.</p>
+<p>Thus, <code>do</code> notation actually uses <code>&gt;&gt;</code> when composing monadic operations when the result of an operation is to be discarded. We give some more rules of <code>do</code> notation, including the rules for translating <code>let</code> binds, which allows <em>pure</em> bindings, in contrast with <code>&lt;-</code> which defines a monadic bind. Note that in <code>do</code> notation, there is no need to write <code>in</code> for <code>let</code> binds:</p>
+<pre><code>do s           ==&gt;    s                         -- plain
+
+do e1 &lt;- e2    ==&gt;    e2 &gt;&gt;= (\e1 -&gt; do s)      -- monadic bind
+   s
+
+do e           ==&gt;    e &gt;&gt; do s                 -- monadic bind, ignore
+   s
+
+do let x = e   ==&gt;    let x = e in do s         -- pure bind
+   s
+</code></pre>
+<p>For example, we have seen how <code>&gt;&gt;=</code> on lists performs a <code>for</code> loop of sorts. For lists, <code>&gt;&gt;</code> does more or less the same thing, except that the values in the previous list cannot be accessed. For example,</p>
+<pre><code class="language-haskell">ghci&gt; [1, 2] &gt;&gt;= (\x -&gt; [(x, 3)])
+[(1, 3), (2, 3)]
+ghci&gt; [1, 2] &gt;&gt;= (\_ -&gt; [3])
+[3, 3]
+ghci&gt; [1, 2] &gt;&gt; [3]
+[3, 3]
+</code></pre>
+<p>Of course, <code>&gt;&gt;</code> on lists is not particularly useful, but we shall see some uses of <code>&gt;&gt;</code> for other monads shortly.</p>
+<h2 id="monadic-equivalents-of-functions"><a class="header" href="#monadic-equivalents-of-functions">Monadic Equivalents of Functions</a></h2>
+<p>Due to the prevalence of monads, many of the familiar functions like <code>map</code> and <code>filter</code> have monadic equivalents. These are usually written with a postfix <code>M</code>, such as <code>mapM</code> or <code>filterM</code>. In addition, such functions can also ignore results and are written with a postfix <code>_</code>, such as <code>mapM_</code> or <code>filterM_</code>. We show what we mean by "monadic equivalent" by juxtaposing the type signatures of some familiar functions and their monadic counterparts:</p>
+<pre><code class="language-haskell">map      ::            (a -&gt; b)   -&gt; [a] -&gt; [b]
+mapM @[] :: Monad m =&gt; (a -&gt; m b) -&gt; [a] -&gt; m [b]
+
+filter  ::            (a -&gt; Bool)   -&gt; [a] -&gt; [a]
+filterM :: Monad m =&gt; (a -&gt; m Bool) -&gt; [a] -&gt; m [a]
+</code></pre>
+<p>Let us see some examples of <code>mapM</code> in action:</p>
+<pre><code class="language-haskell">ghci&gt; map (+2) [1, 2, 3]
+[3, 4, 5]
+ghci&gt; map (Just . (+2)) [1, 2, 3]
+[Just 3, Just 4, Just 5]
+ghci&gt; mapM (Just . (+2)) [1, 2, 3]
+Just [3, 4, 5]
+</code></pre>
+<p>One example of <code>mapM</code> over lists and <code>Maybe</code>s is with validation. Let us suppose we want to read a list of strings as a list of integers. To start with, we can use a function <code>readMaybe</code> that attempts to parse a <code>String</code> into a desired data type:</p>
+<pre><code class="language-haskell">ghci&gt; import Text.Read
+ghci&gt; :{
+ghci| toInt :: String -&gt; Maybe Int
+ghci| toInt = readMaybe
+ghci| :}
+ghci&gt; toInt "123"
+Just 123
+ghci&gt; toInt "hello"
+Nothing
+</code></pre>
+<p>The <code>mapM</code> function allows us to ensure that all elements of a list of strings can be converted into <code>Int</code>s!</p>
+<pre><code class="language-haskell">ghci&gt; mapM toInt ["1", "2", "3"]
+Just [1, 2, 3]
+ghci&gt; mapM toInt ["hello", "1", "2"]
+Nothing
+</code></pre>
+<h2 id="monadic-controls"><a class="header" href="#monadic-controls">Monadic Controls</a></h2>
+<p>Another useful tool that comes with monads are control functions. For example, in an imperative program we might write something like the following:</p>
+<pre><code class="language-python">def f(x):
+    if x &gt; 10:
+        print(x)
+    return x
+</code></pre>
+<p>In Haskell, since <code>if</code>-<code>else</code> statements are actually expressions and must have an <code>else</code> branch, we might have to write something like the following:</p>
+<pre><code class="language-haskell">f x = do
+    if x &gt; 10
+    then someAction x
+    else return () -- basically does nothing
+    return x
+</code></pre>
+<p>Notice the <code>return ()</code> expression. Because every "statement" in a <code>do</code> block must be monadic, we must write a monadic expression in every branch. In addition, we are clearly using <code>someAction</code> for its monadic effects, so the "returned" value is completely useless, likely just <code>()</code> (the unit type, which means nothing significant). Therefore, the corresponding <code>else</code> branch must also evaluate to <code>m ()</code> for whatever monad <code>m</code> we are working with. This is a chore and much less readable!</p>
+<p>Instead, we can use regular functions to simulate <code>if ... then ...</code> statements in a monadic expression. This is the <code>when</code> function defined in <code>Control.Monad</code><sup class="footnote-reference"><a href="#2">2</a></sup>:</p>
+<pre><code class="language-haskell">when :: Applicative f =&gt; Bool -&gt; f () -&gt; f ()
+</code></pre>
+<p>As you can tell, <code>when</code> receives a boolean condition and one monadic action and gives you a monadic action. Importantly, the monad wraps around <code>()</code>, which means that this operation is useful for some monadic effect, such as <code>IO</code>. This allows our function above to be written as:</p>
+<pre><code class="language-haskell">import Control.Monad
+f x = do
+    when (x &gt; 10) (someAction x)
+    return x
+</code></pre>
+<p>Although later we will see that the monadic action <code>someAction</code> can actually cause side effects, it is not necessarily the case that side effects are the only reason why a monadic action <code>m ()</code> is useful. Another example of this is the <code>guard</code> function:</p>
+<pre><code class="language-haskell">guard :: Alternative f :: Bool -&gt; f ()
+</code></pre>
+<p>If the monad you are working with is also an <code>Alternative</code>, the <code>guard</code> function, essentially, places a guard (like guards in imperative programming) based on a condition, returning the sad path immediately if the condition fails. To see this in action, let us see how we can use <code>guard</code> to implement <code>safeDiv</code>:</p>
+<pre><code class="language-haskell">import Control.Monad
+
+safeDiv1 :: Int -&gt; Int -&gt; Maybe Int
+safeDiv1 x y = if y == 0
+               then Nothing
+               else Just (x `div` y)
+
+safeDiv2 :: Int -&gt; Int -&gt; Maybe Int
+safeDiv2 x y
+    = do guard (y /= 0)
+         return $ x `div` y
+</code></pre>
+<p>An <code>Alternative</code> is an applicative structure that has an <code>empty</code> case. For example, an <code>empty</code> list is <code>[]</code>, and an <code>empty</code> <code>Maybe</code> is <code>Nothing</code>. The definition of <code>guard</code> makes this really simple:</p>
+<pre><code class="language-haskell">guard :: Alterative f =&gt; Bool -&gt; f ()
+guard True = pure ()
+guard False = empty
+</code></pre>
+<p>Notice how <code>guard</code> works in <code>safeDiv2</code>. If <code>y</code> is not <code>0</code>, then <code>guard (y /= 0)</code> evaluates to <code>Just ()</code>. Sequencing <code>Just ()</code> with <code>return $ x `div` y</code> gives <code>Just (x `div` y)</code>. However, if <code>y</code> is equal to <code>0</code>, then <code>guard (y /= 0)</code> evaluates to <code>Nothing</code>. We know that <code>Nothing &gt;&gt;= f</code> for any <code>f</code> will always give <code>Nothing</code>, so <code>Nothing &gt;&gt; x</code> will also always give <code>Nothing</code>. Therefore, <code>Nothing &gt;&gt; return (x `div` y)</code> will give us <code>Nothing</code>. As you can see, <code>guard</code> makes monadic control easy!</p>
+<p>As before, <code>guard</code> works on any <code>Alternative</code>. For this reason, let us see how <code>guard</code> works in the <code>[]</code> monad:</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Monad
+ghci&gt; ls = [-2, -1, 0, 1, 2]
+ghci&gt; :{
+ghci&gt; ls2 = do x &lt;- ls
+ghci|          guard (x &gt; 0)
+ghci|          return x
+ghci| :}
+ghci&gt; ls2
+[1, 2]
+</code></pre>
+<p>As you can see, <code>guard</code> essentially places a filter on the elements of the list! This is because <code>[()] &gt;&gt; ls</code> just gives <code>ls</code>, whatever <code>ls</code> is, and <code>[] &gt;&gt; ls</code> just gives <code>[]</code>. In fact, <code>&gt;&gt;</code> over lists somewhat like the following function using a <code>for</code> loop in Python:</p>
+<pre><code class="language-python">&gt;&gt;&gt; def myfunction(ls2, ls):
+...     x = []
+...     for _ in ls2:
+...         x.extend(ls)
+...     return x
+&gt;&gt;&gt; my_function([()], [1, 2, 3])
+[1, 2, 3]
+&gt;&gt;&gt; my_function([], [1, 2, 3])
+[]
+</code></pre>
+<p>As you can tell, if <code>f</code> is <code>False</code>, then <code>guard f &gt;&gt; ls</code> will give <code>[]</code>; otherwise, it will just give <code>ls</code> itself. This makes it such that we now have a way to filter elements of a list! Better still, if we combined this with something else:</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Monad
+ghci&gt; ls = [-2, -1, 0, 1, 2]
+ghci&gt; :{
+ghci&gt; ls2 = do x &lt;- ls
+ghci|          guard (x &gt; 0)
+ghci|          return $ x * 2
+ghci| :}
+ghci&gt; ls2
+[2, 4]
+</code></pre>
+<p>Notice how we have just recovered list comprehension! The definition of <code>ls2</code> can also be written as the following:</p>
+<pre><code class="language-haskell">ghci&gt; ls = [-2, -1, 0, 1, 2]
+ghci&gt; ls2 = [x * 2 | x &lt;- ls, x &gt; 0]
+ghci&gt; ls2
+[2, 4]
+</code></pre>
+<p>Thus, as you can see, list comprehensions are just monadic binds and guards specialized to lists! Even better, <code>do</code> notation allows you to use <code>guards</code>, monadic binds etc. in any order and over any monad, giving you maximum control over how you write monadic programs.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Other languages like Scala also have similar facilities for writing monadic computations. In fact, the Lean 4 programming language takes Haskell's <code>do</code> notation much further <a href="#do-unchained">(Ullrich and de Moura; 2022)</a>.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>The monadic control functions described in this section are defined in the <code>Control.Monad</code> module in Haskell's <code>base</code> library, i.e., they need to be imported, but do not need to be installed (just like the <code>math</code> library in Python).</p>
+</div>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<p><a id="do-unchained" class="cite">Sebastian Ullrich and Leonardo de Moura. 2022. <code>do</code> Unchained: Embracing Local Imperativity in a Purely Functional Language (Functional Pearl). <i>Proceedings of the ACM on Programming Languages (PACMPL)</i>. 6(ICFP) Article 109 (August 2022), 28 pages. URL: <a class="cite" href="https://doi.org/10.1145/3547640">https://doi.org/10.1145/3547640</a>.</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../monads/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../monads/common_monads.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../monads/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../monads/common_monads.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

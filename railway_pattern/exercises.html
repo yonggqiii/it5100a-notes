@@ -1,0 +1,509 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Exercises - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html" class="active"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="exercises"><a class="header" href="#exercises">Exercises</a></h1>
+<p>These exercises have questions that will require you to write code in Python and Haskell. All your Python code should be written in a purely-functional style.</p>
+<h2 id="question-1"><a class="header" href="#question-1">Question 1</a></h2>
+<p>Create the following ADTs in Python:</p>
+<ul>
+<li>A singly linked list</li>
+<li>A <code>Maybe</code>-like type, with "constructors" <code>Just</code> and <code>Nothing</code></li>
+<li>An <code>Either</code>-like type, with "constructors" <code>Left</code> and <code>Right</code></li>
+<li>A <code>Validation</code>-like type, with "constructors" <code>Success</code> and <code>Failure</code>. Because Python does not have higher-kinds, you may assume that <code>Failure</code>s always hold a list of strings.</li>
+</ul>
+<p>Then define methods on all these types so that they are all functors, applicatives and monads (<code>Validation</code> does not need to be a monad). <code>fmap</code> can be called <code>map</code>, <code>&lt;*&gt;</code> can be called <code>ap</code>, <code>return</code> can just be <code>pure</code>, and <code>&gt;&gt;=</code> can be called <code>flatMap</code>.</p>
+<p>Due to Python's inexpressive type system, you are free to omit type annotations.</p>
+<p><strong>Try not to look at Haskell's definitions when doing this exercise to truly understand how these data structures work!</strong></p>
+<p>Example runs for each data structure follow:</p>
+<h4 id="lists"><a class="header" href="#lists">Lists</a></h4>
+<pre><code class="language-python"># lists
+&gt;&gt;&gt; my_list = Node(1, Node(2, Empty()))
+
+# map
+&gt;&gt;&gt; my_list.map(lambda x: x + 1)
+Node(2, Node(3, Empty()))
+
+# pure
+&gt;&gt;&gt; List.pure(1)
+Node(1, Empty())
+
+# ap
+&gt;&gt;&gt; Node(lambda x: x + 1, Empty()).ap(my_list)
+Node(2, Node(3, Empty()))
+
+# flatMap
+&gt;&gt;&gt; my_list.flatMap(lambda x: Node(x, Node(x + 1, Empty())))
+Node(1, Node(2, Node(2, Node(3, Empty()))))
+</code></pre>
+<h4 id="maybe"><a class="header" href="#maybe">Maybe</a></h4>
+<pre><code class="language-python">&gt;&gt;&gt; my_just = Just(1)
+&gt;&gt;&gt; my_nothing = Nothing()
+
+# map
+&gt;&gt;&gt; my_just.map(lambda x: x + 1)
+Just(2)
+&gt;&gt;&gt; my_nothing.map(lambda x: x + 1)
+Nothing()
+
+# pure
+&gt;&gt;&gt; Maybe.pure(1)
+Just(1)
+
+# ap
+&gt;&gt;&gt; Just(lambda x: x + 1).ap(my_just)
+Just(2)
+&gt;&gt;&gt; Just(lambda x: x + 1).ap(my_nothing)
+Nothing()
+&gt;&gt;&gt; Nothing().ap(my_just)
+Nothing()
+&gt;&gt;&gt; Nothing().ap(my_nothing)
+Nothing()
+
+# flatMap
+&gt;&gt;&gt; my_just.flatMap(lambda x: Just(x + 1))
+Just(2)
+&gt;&gt;&gt; my_nothing.flatMap(lambda x: Just (x + 1))
+Nothing()
+</code></pre>
+<h4 id="either"><a class="header" href="#either">Either</a></h4>
+<pre><code class="language-python">&gt;&gt;&gt; my_left = Left('boohoo')
+&gt;&gt;&gt; my_right = Right(1)
+
+# map
+&gt;&gt;&gt; my_left.map(lambda x: x + 1)
+Left('boohoo')
+&gt;&gt;&gt; my_right.map(lambda x: x + 1)
+Right(2)
+
+# pure
+&gt;&gt;&gt; Either.pure(1)
+Right(1)
+
+# ap
+&gt;&gt;&gt; Left('sad').ap(my_right)
+Left('sad')
+&gt;&gt;&gt; Left('sad').ap(my_left)
+Left('sad')
+&gt;&gt;&gt; Right(lambda x: x + 1).ap(my_right)
+Right(2)
+&gt;&gt;&gt; Right(lambda x: x + 1).ap(my_left)
+Left('boohoo')
+
+# flatMap
+&gt;&gt;&gt; my_right.flatMap(lambda x: Right(x + 1))
+Right(2)
+&gt;&gt;&gt; my_left.flatMap(lambda x: Right(x + 1))
+Left('boohoo')
+</code></pre>
+<h4 id="validation"><a class="header" href="#validation">Validation</a></h4>
+<pre><code class="language-python">&gt;&gt;&gt; my_success = Success(1)
+&gt;&gt;&gt; my_failure = Failure(['boohoo'])
+
+# map
+&gt;&gt;&gt; my_failure.map(lambda x: x + 1)
+Failure(['boohoo'])
+&gt;&gt;&gt; my_success.map(lambda x: x + 1)
+Right(2)
+
+# pure
+&gt;&gt;&gt; Validation.pure(1)
+Right(1)
+
+# ap
+&gt;&gt;&gt; Failure(['sad']).ap(my_success)
+Failure(['sad'])
+&gt;&gt;&gt; Failure(['sad']).ap(my_failure)
+Failure(['sad', 'boohoo'])
+&gt;&gt;&gt; Success(lambda x: x + 1).ap(my_success)
+Success(2)
+&gt;&gt;&gt; Success(lambda x: x + 1).ap(my_failure)
+Failure(['boohoo'])
+</code></pre>
+<h2 id="question-2"><a class="header" href="#question-2">Question 2</a></h2>
+<h4 id="question-21-unsafe-sum"><a class="header" href="#question-21-unsafe-sum">Question 2.1: Unsafe Sum</a></h4>
+<p>Recall Question 6 in <a href="../course_introduction/sections/exercises.html">Chapter 1.4 (Exercises)</a> where we defined a function <code>sumDigits</code> in Haskell. Now write a function <code>sum_digits(n)</code> that does the same, i.e. sums the digits of a nonnegative integer \(n\), in Python. Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; sum_digits(1234)
+10
+&gt;&gt;&gt; sum_digits(99999)
+45
+</code></pre>
+<p>Your Haskell definition should also run similarly:</p>
+<pre><code class="language-haskell">ghci&gt; sumDigits 1234
+10
+ghci&gt; sumDigits 99999
+45
+</code></pre>
+<h4 id="question-22-safe-sum"><a class="header" href="#question-22-safe-sum">Question 2.2: Safe Sum</a></h4>
+<p>Try entering negative integers as arguments to your functions. My guess is that something bad happens.</p>
+<p>Let us make <code>sum_digits</code> safe. Re-define <code>sum_digits</code> so that we can drop the assumption that \(n\) is nonnegative (but will still be an integer), correspondingly using the <code>Maybe</code> context to keep our function pure. Use the <code>Maybe</code> data structure that you have defined from earlier for the Python version, and use Haskell's built-in <code>Maybe</code> to do so. Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; sum_digits(1234)
+Just(10)
+&gt;&gt;&gt; sum_digits(99999)
+Just(45)
+&gt;&gt;&gt; sum_digits(-1)
+Nothing
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; sumDigits 1234
+Just 10
+ghci&gt; sumDigits 99999
+Just 45
+ghci&gt; sumDigits (-1)
+Nothing
+</code></pre>
+<h4 id="question-23-final-sum"><a class="header" href="#question-23-final-sum">Question 2.3: Final Sum</a></h4>
+<p>Now define a function <code>final_sum(n)</code> that repeatedly calls <code>sum_digit</code> until a single-digit number arises. Just like your safe implementation of <code>sum_digit</code>, <code>final_sum</code> should also be safe. Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; final_sum(1234)
+Just(1)
+&gt;&gt;&gt; final_sum(99999)
+Just(9)
+&gt;&gt;&gt; final_sum(-1)
+Nothing()
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; finalSum 1234
+Just 1
+ghci&gt; finalSum 99999
+Just 9
+ghci&gt; finalSum (-1)
+Nothing
+</code></pre>
+<blockquote>
+<p>Tip: Use <code>do</code>-notation in your Haskell implementation!</p>
+</blockquote>
+<h2 id="question-3"><a class="header" href="#question-3">Question 3</a></h2>
+<h4 id="question-31-splitting-strings"><a class="header" href="#question-31-splitting-strings">Question 3.1: Splitting Strings</a></h4>
+<p>Define a function <code>split</code> that splits a string delimited by a character. This is very similar to <code>s.split(c)</code> in Python. However, the returned result should be a singly-linked list—in Python, this would be the singly-linked-list implementation you defined in Question 1, and in Haskell, this would be just <code>[String]</code>.</p>
+<p>Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; split('.', 'hello. world!. hah')
+Node('hello', Node(' world!', Node(' hah', Empty())))
+&gt;&gt;&gt; split(' ', 'a   b')
+Node('this', Node('', Node('', Node('is', Empty()))))
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; split '.' "hello. world!. hah"
+["hello"," world!"," hah"]
+ghci&gt; split ' ' "a   b"
+["a","","","b"]
+</code></pre>
+<blockquote>
+<p>Hint: The <code>split</code> function in Haskell was defined in the hands-on section in <a href="./validation.html">Chapter 4.4 (Railway Pattern#Validation)</a>.</p>
+</blockquote>
+<h4 id="question-32-csv-parsing"><a class="header" href="#question-32-csv-parsing">Question 3.2: CSV Parsing</a></h4>
+<p>The Python <code>csv</code> library allows us to read CSV files to give us a list of rows, each row being a list of cells, and each cell is a string. Our goal is to do something similar using the list data structure.</p>
+<p>A CSV-string is a string where each row is separated by <code>\n</code>, and in each row, each cell is separated by <code>,</code>. Our goal is to write a function <code>csv</code> that receives a CSV-string and puts all the cells in a two-dimensional list. Example runs follow.</p>
+<pre><code class="language-python">&gt;&gt;&gt; csv('a,b,c\nd,e\nf,g,h')
+Node(Node('a', Node('b', Node('c', Empty()))), 
+Node(Node('d', Node('e', Empty())), 
+Node(Node('f', Node('g', Node('h', Empty()))), 
+Empty())))
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; csv "a,b,c\nd,e\nf,g,h"
+[["a","b","c"],["d","e"],["f","g","h"]]
+</code></pre>
+<h2 id="question-4"><a class="header" href="#question-4">Question 4</a></h2>
+<p>The formula \(n\choose k\) is incredibly useful and has applications in domains like <del>gambling</del>probability and statistics, combinatorics etc. The way to compute \(n\choose k\) is straightforward:
+\[\binom{n}{k} = \frac{n!}{k!(n - k)!}\]</p>
+<h4 id="question-41-factorial"><a class="header" href="#question-41-factorial">Question 4.1: Factorial</a></h4>
+<p>Clearly, being able to compute factorials would make computing \(\binom{n}{k}\) more convenient. Therefore, write a function <code>factorial</code> that computes the factorial of a nonnegative integer. Do so in Python and Haskell. Example runs follow.</p>
+<pre><code class="language-python">&gt;&gt;&gt; factorial(4)
+24
+&gt;&gt;&gt; factorial(5)
+120
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; factorial 4
+24
+ghci&gt; factorial 5
+120
+</code></pre>
+<h4 id="question-42-safe-factorial"><a class="header" href="#question-42-safe-factorial">Question 4.2: Safe Factorial</a></h4>
+<p>Just like we have done in Question 2, our goal is to make our functions safer! Re-define <code>factorial</code> so that we can drop the assumption that the integer is nonnegative. In addition, your function should receive the name of a variable so that more descriptive error messages can be emitted. Use the <code>Either</code> type. Again, do so in Python and Haskell. Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; factorial(4, 'n')
+Right(24)
+&gt;&gt;&gt; factorial(5, 'k')
+Right(120)
+&gt;&gt;&gt; factorial(-1, 'n')
+Left('n cannot be negative!')
+&gt;&gt;&gt; factorial(-1, 'k')
+Left('k cannot be negative!')
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; factorial 4 "n"
+Right 24
+ghci&gt; factorial 5 "k"
+Right 120
+ghci&gt; factorial (-1) "n"
+Left "n cannot be negative!"
+ghci&gt; factorial (-1) "k"
+Left "k cannot be negative!"
+</code></pre>
+<h4 id="question-43-safe-n-choose-k"><a class="header" href="#question-43-safe-n-choose-k">Question 4.3: Safe n choose k</a></h4>
+<p>Now let us use <code>factorial</code> to define \(n\choose k\)! Use the formula described at the beginning of the question and our <code>factorial</code> functions to define a function <code>choose</code> that receives integers \(n\) and \(k\) and returns \(n\choose k\). Example runs follow:</p>
+<pre><code class="language-python">&gt;&gt;&gt; choose(5, 2)
+Right(10)
+&gt;&gt;&gt; choose(-1, -3)
+Left('n cannot be negative!')
+&gt;&gt;&gt; choose(1, -3)
+Left('k cannot be negative!')
+&gt;&gt;&gt; choose(3, 6)
+Left('n - k cannot be negative!')
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; choose 5 2
+Right 10
+ghci&gt; choose (-1) (-3)
+Left "n cannot be negative!"
+ghci&gt; choose 1 (-3)
+Left "k cannot be negative!"
+ghci&gt; choose 3 6
+Left "n - k cannot be negative!"
+</code></pre>
+<h4 id="question-44-n-choose-k-with-validation"><a class="header" href="#question-44-n-choose-k-with-validation">Question 4.4: n choose k With Validation</a></h4>
+<p>Notice that several things could go wrong with \(n\choose k\)! Instead of using <code>Either</code>, change the implementation of <code>factorial</code> so that it uses the <code>Validation</code> applicative instead. This is so that all the error messages are collected. Your <code>choose</code> function definition should not change, aside from its type. Example runs follow.</p>
+<pre><code class="language-python">&gt;&gt;&gt; choose(5, 2)
+Success(10)
+&gt;&gt;&gt; choose(-1, -3)
+Failure(['n cannot be negative!', 'k cannot be negative!'])
+&gt;&gt;&gt; choose(1, -3)
+Failure(['k cannot be negative!'])
+&gt;&gt;&gt; choose(3, 6)
+Failure(['n - k cannot be negative!'])
+</code></pre>
+<pre><code class="language-haskell">ghci&gt; choose 5 2
+Success 10
+ghci&gt; choose (-1) (-3)
+Failure ["n cannot be negative!","k cannot be negative!"]
+ghci&gt; choose 1 (-3)
+Failure ["k cannot be negative!"]
+ghci&gt; choose 3 6
+Failure ["n - k cannot be negative!"]
+</code></pre>
+<blockquote>
+<p>Tip: With the <code>-XApplicativeDo</code> extension, you can actually use <code>do</code> notation on <code>Functor</code>s and <code>Applicative</code>s. Give it a try by defining <code>choose</code> using <code>do</code>-notation! For more information on the conditions for when you can use <code>Applicative</code> <code>do</code>-notation, see the <a href="https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/applicative_do.html">GHC Users Guide</a>.</p>
+</blockquote>
+<blockquote>
+<p>Note: <code>Validation</code> is not included in Haskell's Prelude. You can use the <code>Validation</code> datatype definition and its supporting typeclass instances as defined in the hands-on portion of <a href="./validation.html">Chapter 4.4 (Railway Pattern#Validation)</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../railway_pattern/railway_python.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../monads/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../railway_pattern/railway_python.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../monads/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

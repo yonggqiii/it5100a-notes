@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Software Transactional Memory - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html" class="active"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="software-transactional-memory"><a class="header" href="#software-transactional-memory">Software Transactional Memory</a></h1>
+<p>Concurrency and parallelism is, generally, <em>really hard</em>. This is because the ordering of concurrent and parallel evaluation is <em>nondeterministic</em>, and the traditional threaded model of concurrent programming with threads make working with concurrent operations and <em>composing</em> them is very difficult and error-prone. <code>MVar</code>s and Haskell's runtime make this slightly safer (if you have done concurrency in other languages like C before, you might be able to see why), but are still vulnerable to the same issues that plague concurrent and parallel programs.</p>
+<p>To give you a toy example, suppose we have two threads, one which acquires two <code>MVar</code>s <code>a</code> and <code>b</code> and adds the value of <code>a</code> to <code>b</code>, and another which swaps their values. One possible implementation might be the following, with a deadly vulnerability hidden in plain sight:</p>
+<pre><code class="language-haskell">swap :: MVar a -&gt; MVar a -&gt; Chan () -&gt; IO ()
+swap a b chan = do
+    x &lt;- takeMVar a
+    y &lt;- takeMVar b
+    putMVar a y
+    putMVar b x
+    writeChan chan () -- signal done
+
+addToMVar :: Num a =&gt; MVar a -&gt; MVar a -&gt; Chan () -&gt; IO ()
+addToMVar a b chan = do
+    y &lt;- takeMVar b
+    x &lt;- takeMVar a
+    let z = x + y
+    putMVar b z
+    putMVar a x
+    writeChan chan () -- signal done
+
+main :: IO ()
+main = do
+    a &lt;- newMVar 1 :: IO (MVar Int)
+    b &lt;- newMVar 2 :: IO (MVar Int)
+    chan &lt;- newChan :: IO (Chan ())
+    forkIO $ addToMVar a b chan
+    forkIO $ swap a b chan
+    _ &lt;- readChan chan
+    _ &lt;- readChan chan
+    x &lt;- takeMVar a
+    y &lt;- takeMVar b
+    print x
+    print y
+    return ()
+</code></pre>
+<p>In this program, several things could happen:</p>
+<ul>
+<li><code>swap</code> starts first, and is able to acquire the values from both <code>MVar</code>s <code>a</code> and <code>b</code>, thus executing completely and putting new values to <code>a</code> and <code>b</code> for <code>addToMVar</code> to use</li>
+<li><code>addToMVar</code> starts first and is able to acquire the values from both <code>MVar</code>s <code>a</code> and <code>b</code>, thus executing completely and putting new values to <code>a</code> and <code>b</code> for <code>swap</code> to use</li>
+<li><code>swap</code> starts first and acquires <code>a</code>, shortly thereafter <code>addToMVar</code> begins and acquires <code>b</code>. Now <code>swap</code> is waiting for <code>b</code>, and <code>addToMVar</code> is waiting for <code>a</code>.</li>
+<li><code>addToMVar</code> starts first and acquires <code>b</code>, shortly thereafter <code>swap</code> begins and acquires <code>a</code>. Now <code>swap</code> is waiting for <code>b</code>, and <code>addToMVar</code> is waiting for <code>a</code>.</li>
+</ul>
+<p>The last two scenarios result in something known as a <em>deadlock</em> and causes all these threads to wait and to be unable to continue. In particular, this deadlock was caused by a <em>lock ordering inversion</em>, a very common mistake that is usually undetectable by the compiler, and only starts causing problems at runtime! Scenarios like these are known as <em>race conditions</em>, and yes, while there are tools to detect <em>race conditions</em>, detecting <em>all</em> race conditions is <em>undecidable</em>, and thus is an impossible problem to solve. Are there tools to help us reduce of likelihood of running into race conditions?</p>
+<p>Haskell supports something known as <em>software transactional memory</em> (STM) <a href="#stm">(Harris et al.; 2005)</a>, which is very similar to <em>transactions</em> in databases with ACID guarantees. Notice that this deadlock situation could go away if <code>swap</code> and <code>addToMVar</code> acquired both locks in one atomic operation, so that neither thread can interleave an <code>MVar</code> acquisition! STM provides such facilities to allow us to define, compose and work with atomic transactions. All we need to do is to install the <a href="https://hackage.haskell.org/package/stm"><code>stm</code></a> package!</p>
+<h2 id="key-ideas"><a class="header" href="#key-ideas">Key Ideas</a></h2>
+<p>Instead of working with the <code>IO</code> monad, STM constructs work within the <code>STM</code> monad. Under the hood, the <code>stm</code> implementation handles all the coordination, so as programmers, as long as we are working within the <code>STM</code> monad, we can regard these operations as atomic. In other words, an STM transaction appears to take place indivisibly. All transactional operations are within <code>STM</code>, and can only be escaped to <code>IO</code> using <code>atomically</code>:</p>
+<pre><code class="language-haskell">ghci&gt; import Control.Concurrent.STM
+ghci&gt; :t atomically
+atomically :: STM a -&gt; IO a
+</code></pre>
+<p>An <code>atomically</code> block is treated as a single I/O operation, so the <code>STM</code> operations cannot interleave. In addition, the <code>atomically</code> block executes a transaction entirely, or not at all.</p>
+<p>Now let us try using <code>STM</code> for communications between threads. We are going to create a transaction for atomically acquiring both <code>MVar</code>s. Of course, instead of <code>MVar</code>, which operates in the <code>IO</code> monad, the <code>Control.Concurrent.STM</code> module exposes a <code>TMVar</code>, sort of like a <em>transactional</em> <code>MVar</code> that lives in the <code>STM</code> monad. Let us write this transaction:</p>
+<pre><code class="language-haskell">takeBothTMVars :: TMVar a -&gt; TMVar b -&gt; STM (a, b)
+takeBothTMVars a b = do
+  x &lt;- takeTMVar a
+  y &lt;- takeTMVar b
+  return (x, y)
+</code></pre>
+<p>As you can see, this looks just like an equivalent version written for <code>MVar</code>s:</p>
+<pre><code class="language-haskell">takeBothMVars :: MVar a -&gt; MVar b -&gt; IO (a, b)
+takeBothMVars a b = do
+  x &lt;- takeMVar a
+  y &lt;- takeMVar b
+  return (x, y)
+</code></pre>
+<p>Now let us rewrite our original deadlocked program using <code>TMVar</code>s and <code>STM</code>, focusing temporarily on the <code>swap</code> function. Recall that we want to take both <code>TMVar</code>s as a single atomic operation, hence we defined an <code>STM</code> operation <code>takeBothTMVars</code> that does so. To actually perform this operation as a single I/O action, we have to use <code>atomically</code> which performs the transaction, atomically:</p>
+<pre><code class="language-haskell">swap :: TMVar a -&gt; TMVar a -&gt; Chan () -&gt; IO ()
+swap a b chan = do
+    (x, y) &lt;- atomically $ takeBothTMVars a b
+    -- ...
+</code></pre>
+<p>This way, the transaction is done in one fell swoop, and if either <code>TMVar</code>s are empty, the thread running <code>swap</code> will block until both become available. We can do the same for <code>addToMVar</code>, but this time, we are going to introduce lock-order inversion again by swapping the arguments to <code>takeBothTMVars</code>:</p>
+<pre><code class="language-haskell">addToMVar :: Num a =&gt; TMVar a -&gt; TMVar a -&gt; Chan () -&gt; IO ()
+addToMVar a b chan = do
+    (y, x) &lt;- atomically $ takeBothTMVars b a
+</code></pre>
+<p>Although we swapped the arguments to <code>takeBothTMVars</code>, thereby introducing lock-order inversion, operationally, there is no difference, since <code>takeBothTMVars</code> is regarded as a single atomic operation anyway. We then continue defining the rest of the program which should be similar to before. Importantly, note that to create a new <code>TMVar</code> within <code>IO</code> for coordination, we use the <code>newTMVarIO</code> function;</p>
+<pre><code class="language-haskell">import Control.Concurrent
+import Control.Concurrent.Chan
+import Control.Concurrent.STM
+
+takeBothTMVars :: TMVar a -&gt; TMVar b -&gt; STM (a, b)
+takeBothTMVars a b = do
+  x &lt;- takeTMVar a
+  y &lt;- takeTMVar b
+  return (x, y)
+
+putBothTMVars :: TMVar a -&gt; a -&gt; TMVar b -&gt; b -&gt; STM ()
+putBothTMVars a x b y = do
+  putTMVar a x
+  putTMVar b y
+
+swap :: TMVar a -&gt; TMVar a -&gt; Chan () -&gt; IO ()
+swap a b chan = do
+    (x, y) &lt;- atomically $ takeBothTMVars a b 
+    atomically $ putBothTMVars a y b x
+    writeChan chan ()
+
+addToMVar :: Num a =&gt; TMVar a -&gt; TMVar a -&gt; Chan () -&gt; IO ()
+addToMVar a b chan = do
+    (y, x) &lt;- atomically $ takeBothTMVars b a
+    let z = x + y
+    atomically $ putBothTMVars a x b z
+    writeChan chan ()
+
+main :: IO ()
+main = do
+    a &lt;- newTMVarIO 1 :: IO (TMVar Int)
+    b &lt;- newTMVarIO 2 :: IO (TMVar Int)
+    chan &lt;- newChan :: IO (Chan ())
+    forkIO $ addToMVar a b chan
+    forkIO $ swap a b chan
+    _ &lt;- readChan chan
+    _ &lt;- readChan chan
+    x &lt;- atomically $ takeTMVar a
+    y &lt;- atomically $ takeTMVar b
+    print x
+    print y
+</code></pre>
+<p>We don't have to only use STM for coordination between threads (although that is certainly a great use case). As long as we want atomic memory transactions, it is highly likely that STM is applicable.</p>
+<p>For example, suppose we have some in-memory shared state, such as a counter, and users (perhaps across the network) can modify this counter. Modifying the counter requires two things: (1) reading the existing counter, (2) modifying the read value, (3) updating the counter with the modified value. To prevent data races, we want all these operations to be done in one fell swoop (i.e. as a single transaction).</p>
+<pre><code class="language-haskell">incVar :: TVar Int -&gt; STM Int
+incVar v = do
+  x &lt;- readTVar v
+  let y = x + 1
+  writeTVar v y
+  return y
+</code></pre>
+<p>Now we're not afraid to compose <code>incVar</code> with other STM operations, even if they are done concurrently!</p>
+<pre><code class="language-haskell">import Control.Concurrent
+import Control.Concurrent.STM
+
+-- Increments a 'TVar'
+incVar :: TVar Int -&gt; STM Int
+incVar v = do
+  x &lt;- readTVar v
+  let y = x + 1
+  writeTVar v y
+  return y
+
+-- IO Action that increments a TVar five times
+aIncVar :: TVar Int -&gt; IO ()
+aIncVar v = aux 5 where
+  aux :: Int -&gt; IO ()
+  aux 0 = return ()
+  aux n = do
+    r &lt;- atomically $ incVar v
+    print r
+    aux (n - 1)
+
+main :: IO ()
+main = do
+    n &lt;- getNumCapabilities
+    putStrLn $ "Number of cores: " ++ show n
+    -- Initialize the counter
+    counter &lt;- newTVarIO 0 :: IO (TVar Int)
+    -- For example, run four threads that increment the counter 5 times
+    forkIO $ aIncVar counter
+    forkIO $ aIncVar counter
+    forkIO $ aIncVar counter
+    forkIO $ aIncVar counter
+    -- Sleep so we can wait for the other threads to complete
+    threadDelay 1000000
+</code></pre>
+<p>When executing this program, you should notice that the counter is being incremented correctly, with a final value of <code>20</code>.</p>
+<p>The <code>stm</code> library provides many other useful facilities for writing transactional programs. Refer to the library documentation or the original paper for more details.</p>
+<h2 id="concurrent-and-parallel-programming-in-haskell"><a class="header" href="#concurrent-and-parallel-programming-in-haskell">Concurrent and Parallel Programming in Haskell</a></h2>
+<p>In summary, concurrent and parallel programming in Haskell is, generally, not too dissimilar to that in other general-purpose languages. However, because Haskell is a purely functional and non-strict evaluation language, there are several neat things at our disposable. For one, it is relatively straightforward to fork an I/O action to be performed concurrently, and to use synchronizing variables like <code>MVar</code> for communication between threads. Importantly, the Haskell runtime ensures that <code>MVar</code>s are only taken from or put by one thread, so synchronization is inherent in its implementation. However, using <code>MVar</code>s alone can get cumbersome especially when dealing with multiple concurrent operations that do not compose well; hence, the introduction of STM for atomic transactions to reduce the likelihood of accidentally introducing race conditions and deadlocks. In addition, because Haskell has non-strict evaluation, parallelizing it is fairly straightforward, by simply annotating the functions with <code>par</code> and <code>pseq</code> function applications to describe what operation should be done in parallel with what else.</p>
+<p>Most importantly, ideas like I/O actions, STM transactions and even parallel evaluation strategies are all exposed as monads, and programs that are written with these can make use of all the guarantees and conveniences that monads have to offer. As before, monads are some of the most powerful concepts in programming, and it helps dramatically to have programming languages that make working with them easy.</p>
+<p>Lastly, concurrency and parallelism are huge topics in Computer Science in and of itself. Since many of what is described in this course are not as generally applicable to other general-purpose languages, many of the details are omitted. More information is readily available online and in the original papers describing the various systems like Concurrent and Parallel Haskell, and STM. This may be useful if you are interested in a pursuing a career involving Haskell development, or wish to learn, more deeply, about some of the ideas we have presented.</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<a id="stm" class="cite">
+Tim Harris, Simon Marlow, Simon Peyton-Jones, and Maurice Herlihy. 2005. Composable memory transactions. In <i>Proceedings of the tenth ACM SIGPLAN symposium on Principles and practice of parallel programming (PPoPP '05)</i>. Association for Computing Machinery, New York, NY, USA, 48–60. <a class="cite" href="https://doi.org/10.1145/1065944.1065952">https://doi.org/10.1145/1065944.1065952</a>.
+</a>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../concurrent/parallel.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../solutions/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../concurrent/parallel.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../solutions/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

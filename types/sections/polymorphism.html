@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Polymorphism - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html" class="active"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="sec:polymorphism"><a class="header" href="#sec:polymorphism">Polymorphism</a></h1>
+<p>In FP, functions describe computation and applying functions perform
+said computation. For example, given a function \(f\):
+$$f(x) = x \times 2$$
+\(f\) describes what computation is to be done
+(multiplying the parameter by 2), and applying \(f\) onto a value (such as
+\(f(2)\)) performs the computation that gives the result, which is \(4\).
+Importantly, you might also find that applying it onto a different input
+may give you a different outcome. In this case, \(f(2)=4\neq f(3)=6\). The
+output depends on the input, i.e. we have <em>terms that depend on terms</em>.
+This may at first glance seem like a trivial observation because that is
+what functions are designed to do: if functions are always constant like
+\(g(x) = 1\) then we can always replace all applications of the function
+with the result and no computation needs to be done.</p>
+<p>However, now that we have learnt about types, we get a much more
+interesting avenue for extending this idea of dependence. In fact, we
+now have three orthogonal directions to explore<sup class="footnote-reference"><a href="#2">1</a></sup>:</p>
+<ol>
+<li>
+<p>Can terms depend on types?</p>
+</li>
+<li>
+<p>Can types depend on types?</p>
+</li>
+<li>
+<p>Can types depend on terms?</p>
+</li>
+</ol>
+<p>The answer to the first two questions is yes! This phenomenon is known
+as [parametric] <em>polymorphism</em>, i.e. where types and terms can depend
+on types<sup class="footnote-reference"><a href="#3">2</a></sup>.</p>
+<h2 id="polymorphic-types"><a class="header" href="#polymorphic-types">Polymorphic Types</a></h2>
+<p>Let us motivate this need with an example. Suppose we are trying to
+create a wrapper class called <code>Box</code>, that contains a single
+value. As per usual, we have to think about the type of the value it
+contains. At this point we cannot simply allow the value to be
+<em>anything</em>, so we shall fix the type of the value to something, say,
+<code>int</code>.</p>
+<pre><code class="language-python"># Python
+@dataclass
+class IntBox:
+    value: int
+</code></pre>
+<p>However, we may later want a <code>Box</code> that stores strings. In this
+case, we will have to define a new class that does so.</p>
+<pre><code class="language-python"># Python
+@dataclass
+class StrBox:
+    value: str
+</code></pre>
+<p>Recall one of the core principles in programming: whenever you see a
+pattern in your code, <em>retain similarities</em> and <em>parameterize</em>
+differences. Looking at the two <code>Box</code> implementations, you should be
+able to see that the implementation is virtually identical, and the only
+difference is the <em>type</em> of <code>value</code>. We have previously been able to
+parameterize values (regular function parameters), parameterize
+behaviour (higher-order functions), however, can we parameterize
+<em>types</em>?</p>
+<p>Yes! We can define <code>Box</code> to receive a <em>type parameter</em> <code>a</code>, and allow
+the value in the box to be of that type <code>a</code>.</p>
+<pre><code class="language-python">@dataclass
+class Box[a]:
+    value: a
+</code></pre>
+<p>This class is a generalized <code>Box</code> class that can be <em>specialized</em> into a
+specific <code>Box</code>. For example, by replacing <code>a</code> with <code>int</code> then
+we recover our <code>IntBox</code> class with an <code>int</code> value;
+replacing <code>a</code> with <code>str</code> recovers our <code>StrBox</code> class
+with a <code>str</code> value.</p>
+<pre><code class="language-python">x: Box[int] = Box[int](1)
+y: Box[str] = Box[str]('a')
+z: Box[Box[int]] = Box(Box(1))
+bad: Box[int] = Box[int]('a')
+</code></pre>
+<p>In Python and many Object-Oriented languages, <code>Box</code> is called a
+<em>generic</em> or <em>parametrically polymorphic</em> class/type. This is one
+example of a <em>type depending on a type</em>.</p>
+<h2 id="polymorphic-functions"><a class="header" href="#polymorphic-functions">Polymorphic Functions</a></h2>
+<p>The same principle can be applied to <em>terms depending on types</em>. Suppose
+we have a function <code>singleton</code> that is to receive an object and puts
+that object in a list. In the same vein, we have to decide what the type
+of the parameter is, which dictates the corresponding return type. For
+example, may define this function that works on <code>int</code>s, and
+separately, another function that works on <code>str</code>s:</p>
+<pre><code class="language-python">def singleton_int(x: int) -&gt; list[int]:
+    return [x]
+def singleton_str(x: str) -&gt; list[str]:
+    return [x]
+</code></pre>
+<p>Once again, we can observe that the implementations of these functions
+are identical, and only the types are different. Let us combine these
+implementations into a single function where the types are
+parameterized!</p>
+<pre><code class="language-python"># Python 3.12
+def singleton[a](x: a) -&gt; list[a]:
+    return [x]
+x: list[int] = singleton(1)
+y: list[str] = singleton('a')
+bad: list[bool] = singleton(2)
+</code></pre>
+<p><code>singleton</code> is what is known as a <em>polymorphic function</em>: a
+function that depends on the type!</p>
+<h2 id="polymorphic-functions-in-haskell"><a class="header" href="#polymorphic-functions-in-haskell">Polymorphic Functions in Haskell</a></h2>
+<p>How would we define the type of polymorphic functions in Haskell? That
+is pretty straightforward: type parameters are lowercase. For example,
+the <code>singleton</code> function can be defined like so:</p>
+<pre><code class="language-haskell">singleton :: a -&gt; [a]
+singleton x = [x]
+</code></pre>
+<p>In fact we can see the type signatures of some built-in polymorphic
+functions:</p>
+<pre><code class="language-haskell">ghci&gt; :t head
+head :: [a] -&gt; a
+ghci&gt; :t (.)
+(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</code></pre>
+<p>Not sure what the type parameters are? Or, want to make your type
+parameters explicit? We can use <code>forall</code> to introduce a
+polymorphic function type, with the variables succeeding
+<code>forall</code> being the type parameters to the function.</p>
+<pre><code class="language-haskell">ghci&gt; :set -fprint-explicit-foralls
+ghci&gt; :t head
+head :: forall a. [a] -&gt; a
+ghci&gt; :t (.)
+(.) :: forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+ghci&gt; :{
+ghci| singleton :: forall a. a -&gt; [a]
+ghci| singleton x = [x]
+ghci| :}
+ghci&gt; singleton 2
+[2]
+ghci&gt; singleton 'a'
+"a"
+</code></pre>
+<p>Let's inspect the type signature of <code>(.)</code>. Recall that this
+function performs function composition; the implementation of
+<code>(.)</code> might look something like this:</p>
+<pre><code class="language-haskell">(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+(.) g f x = g (f x)
+</code></pre>
+<p>We have three terms, <code>g</code>, <code>f</code> and <code>x</code>. We know that <code>g</code> and <code>f</code> must be
+functions since we are calling them, thus we are going to let the types
+of <code>g</code> and <code>f</code> to be <code>d -&gt; c</code> and <code>a -&gt; b</code>
+respectively. Additionally, <code>x</code> is just some other term, and we will let
+its type be <code>e</code>. Thus for now, we shall let the type signature of
+<code>(.)</code> be the following, assuming the function ultimately returns
+<code>r</code>:</p>
+<pre><code class="language-haskell">(.) :: (d -&gt; c) -&gt; (a -&gt; b) -&gt; e -&gt; r
+</code></pre>
+<p>Now notice the following: for <code>f x</code> to be well-typed, the type
+of <code>x</code> must be the same as the type of the parameter to <code>f</code>, which is
+<code>a</code>. Thus, more accurately, <code>x</code> must be of type <code>a</code>:</p>
+<pre><code class="language-haskell">(.) :: (d -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; r
+</code></pre>
+<p>We can now see that <code>f x</code> is well-typed, and this expression is of type
+<code>b</code>. We then pass this result into <code>g</code>. For this to be well-typed,
+again, the parameter type of <code>g</code> must match the type of <code>f x</code>. Thus, <code>g</code>
+must actually be of type <code>b -&gt; c</code> for some <code>c</code>:</p>
+<pre><code class="language-haskell">(.) :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; r
+</code></pre>
+<p>Finally, <code>g (f x)</code> has type <code>c</code>, which is what is returned from the
+function. As such, the return type of <code>(.) g f x</code> should also
+be <code>c</code>. This recovers the type signature shown by GHCI.</p>
+<blockquote>
+<p>You might be surprised to know that the process of recovering or
+reconstructing the types is known as type inference, which as stated in
+earlier chapters, is also done by GHC! When you omit the type signature
+of any binding, GHC goes through this same process and helps us
+determine what the type of that binding is.</p>
+</blockquote>
+<h2 id="programming-with-polymorphic-typesfunctions"><a class="header" href="#programming-with-polymorphic-typesfunctions">Programming with Polymorphic Types/Functions</a></h2>
+<p>When should we define polymorphic types or functions? As we have shown,
+when the implementations of classes, data types, functions etc. are the
+same except for the types, then we are able to parameterize the
+differing types which makes the class/data type/function polymorphic!
+Knowing immediately when to create polymorphic types/functions takes
+some practice, so to start, just create specialized versions of those
+types/functions, and as the need arises, make them polymorphic by
+parameterizing the appropriate types.</p>
+<p>For example, suppose we
+are trying to create a <code>Tree</code> class that represents binary trees. Should
+this class be polymorphic? For now, let's ignore this fact and proceed
+to create a naive implementation of this class. Further suppose we are
+expecting to create a tree of integers, so we shall let that be the type
+of the values of our tree.</p>
+<pre><code class="language-python">@dataclass
+class IntTree:
+    pass
+@dataclass
+class IntNode(IntTree):
+    left: IntTree
+    value: int
+    right: IntTree
+@dataclass
+class IntLeaf(IntTree):
+    value: int
+</code></pre>
+<p>Looks great! From this class we are able to create binary trees of
+integers, for example, <code>IntNode(IntLeaf(1), 2, IntLeaf(3))</code>
+gives a binary tree with preorder 2, 1 and 3.</p>
+<p>Further suppose later on we need to store strings in a binary tree.
+Again, let's naively implement a separate class that does so:</p>
+<pre><code class="language-python">@dataclass
+class StrTree:
+    pass
+@dataclass
+class StrNode(StrTree):
+    left: StrTree
+    value: str
+    right: StrTree
+@dataclass
+class StrLeaf(StrTree):
+    value: str
+</code></pre>
+<p>Once again, notice that the implementations of the classes are
+identical, and the only difference is in the types! This is one clear
+example where we should make our class polymorphic!</p>
+<pre><code class="language-python">@dataclass
+class Tree[a]:
+    pass
+@dataclass
+class Node[a](Tree[a]):
+    left: Tree[a]
+    value: a
+    right: Tree[a]
+@dataclass
+class Leaf[a](Tree[a]):
+    value: a
+</code></pre>
+<p>Now from this one class, we are able to create all kinds of trees!</p>
+<p>As another example, suppose we are trying to define a function that reverses a list. Once
+again, we have to be specific with the type of this function.
+Temporarily, we shall create a function that works on lists of integers:</p>
+<pre><code class="language-python">def reverse_int(ls: list[int]) -&gt; list[int]:
+    return [] if not ls else \
+           reverse_int(ls[1:]) + [ls[0]]
+</code></pre>
+<p>Then, later on we might have to define a similar function that reverses
+lists of strings:</p>
+<pre><code class="language-python">def reverse_str(ls: list[str]) -&gt; list[str]:
+    return [] if not ls else \
+           reverse_str(ls[1:]) + [ls[0]]
+</code></pre>
+<p>Once again, we can see that the implementations of the two functions are
+identical, and only the types are different. Make this function
+polymorphic!</p>
+<pre><code class="language-python">def reverse[a](ls: list[a]) -&gt; list[a]:
+    return [] if not ls else \
+           reverse(ls[1:]) + [ls[0]]
+</code></pre>
+<p>The two examples above give us some scenarios where
+we discover that we have to make a class or function polymorphic. More
+importantly, we see that the implementations across the specialized
+versions of the class/function are equal, and only the types differ. One
+key insight we can draw from this is: a class/function should be made
+polymorphic if its implementation is <em>independent</em> of the type(s) it is
+representing/acting on.</p>
+<hr />
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">1</sup>
+<p>These are the three axes that form the <em>lambda cube</em>, with the
+simply typed lambda calculus only having terms that depend on terms,
+and the Calculus of Constructions having types and terms depending
+on types and terms.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">2</sup>
+<p>The word <em>polymorphism</em> can be broken down into <em>poly</em> (many) and
+<em>morphism</em> (shape). The word is not just used in Computer Science,
+but in other areas like biology and pharmacology. Within Computer
+Science itself there are several kinds of polymorphism, and we shall
+investigate the most common ones in this lecture and in later
+lectures too. Finally, polymorphism in Computer Science is really
+about things taking on different forms, but I suspect that our
+description of parametric polymorphism gives a pretty good picture
+of what it entails.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../types/sections/type_systems.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../types/sections/algebraic_data_types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../types/sections/type_systems.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../types/sections/algebraic_data_types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Applicative Functors - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html" class="active"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="applicative-functors"><a class="header" href="#applicative-functors">Applicative Functors</a></h1>
+<p>What if we had 2 (or more) parallel railways and want to merge them? For example, by using <code>head</code>, we can easily retrieve the elements of the list and combine them together in whatever manner we wish:</p>
+<pre><code>        head         (+)
+[Int] -------&gt; Int ━━━┓
+                      ┣━━━ Int
+[Int] -------&gt; Int ━━━┛
+        head
+</code></pre>
+<pre><code class="language-haskell">x, y, z :: Int
+x = head [1, 2, 3]
+y = head [4, 5, 6]
+z = x + y -- 5
+</code></pre>
+<p>However, when we are using <code>head'</code>, combining them is not so easy!</p>
+<pre><code>       head'               ???
+[Int] -------&gt; Maybe Int ━━━┓
+                            ┣━━━ ???
+[Int] -------&gt; Maybe Int ━━━┛
+       head'
+</code></pre>
+<pre><code class="language-haskell">x, y :: Maybe Int
+x = head' [1, 2, 3]
+y = head' [4, 5, 6]
+z = x + y -- ???
+</code></pre>
+<p>As a first attempt, let us try mapping <code>(+)</code> onto <code>x</code>:</p>
+<pre><code class="language-haskell">x, y :: Maybe Int
+x = head' [1, 2, 3]
+y = head' [4, 5, 6]
+
+f :: Maybe (Int -&gt; Int)
+f = fmap (+) x
+</code></pre>
+<p>The question now is, how do we apply <code>f :: Maybe (Int -&gt; Int)</code> above onto <code>y :: Maybe Int</code>?</p>
+<h2 id="applicatives"><a class="header" href="#applicatives">Applicatives</a></h2>
+<p>If a functor <code>f</code> has the ability to apply <code>f (a -&gt; b)</code> onto a <code>f a</code> to give an <code>f b</code>, then it is an <em>applicative functor</em>, which has the same laws of a <em>(lax-) closed (lax-) monoidal functor</em> in category theory. Although we could give the formal definition of these, it is quite a lot to unpack, and not necessary for understanding how to use them. Instead, let us directly show the <code>Applicative</code> typeclass and some <em>laws</em> that govern these typeclass methods.</p>
+<pre><code class="language-haskell">class Functor f =&gt; Applicative f where
+    -- pure computation in context
+    pure :: a -&gt; f a 
+    -- function application in context
+    (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b
+</code></pre>
+<p>These methods are subject to:</p>
+<ul>
+<li>Identity: <code>pure id &lt;*&gt; v</code> = <code>v</code></li>
+<li>Homomorphism: <code>pure f &lt;*&gt; pure x</code> = <code>pure (f x)</code></li>
+<li>Interchange: <code>u &lt;*&gt; pure y</code> = <code>pure ($ y) &lt;*&gt; u</code></li>
+<li>Composition: <code>pure (.) &lt;*&gt; u &lt;*&gt; v &lt;*&gt; w</code> = <code>u &lt;*&gt; (v &lt;*&gt; w)</code></li>
+</ul>
+<p>The four laws above, again, govern <code>Applicatives</code> to behave in the obvious way. However, as we shall see, there is more than one <em>obvious way</em>, therefore, whenever you're using instances of <code>Functor</code>s, <code>Applicative</code>s and some of the other typeclasses, ensure you read their documentation to understand <em>which</em> obvious way it behaves.</p>
+<p>Let us look at an example <code>Applicative</code> instance:</p>
+<pre><code class="language-haskell">instance Applicative Maybe where
+    pure :: a -&gt; Maybe a
+    pure = Just
+
+    (&lt;*&gt;) :: Maybe (a -&gt; b) -&gt; Maybe a -&gt; Maybe b
+    Nothing &lt;*&gt; _ = Nothing
+    _ &lt;*&gt; Nothing = Nothing
+    Just f &lt;*&gt; Just x = Just $ f x
+</code></pre>
+<p>As you can see, <code>pure</code> just raises a value into the <code>Maybe</code> context using the <code>Just</code> constructor, and <code>(&lt;*&gt;)</code> applies a function in context onto an argument in context when they exist. In other words, <code>pure</code> and <code>&lt;*&gt;</code> behave in the most obvious way.</p>
+<p>With this in mind, let us show how we can use <code>pure</code> and <code>&lt;*&gt;</code> for <code>Maybe</code>, but also, applicatives in general. Suppose we have <code>f :: a -&gt; b -&gt; c</code>, <code>x :: a</code> and <code>y :: b</code>. Then, <code>f x y</code> would give us something of type <code>c</code>.</p>
+<p>However, Let us raise <code>x</code> and <code>y</code> into the <code>Maybe</code> context, i.e. <code>x :: Maybe a</code> and <code>y :: Maybe b</code>. Let's see how we can perform the same application (similar to <code>f x y</code>) to give us something of <code>Maybe c</code>.</p>
+<p>To start, we know that we have <code>&lt;*&gt;</code> which applies a function in context with an argument in context. Therefore, we first raise <code>f</code> into the <code>Maybe</code> context using <code>pure</code>, then apply it onto <code>x</code> using <code>&lt;*&gt;</code>:</p>
+<ul>
+<li><code>pure f :: Maybe (a -&gt; b -&gt; c)</code></li>
+<li><code>pure f &lt;*&gt; x :: Maybe (b -&gt; c)</code></li>
+</ul>
+<p>Finally, using <code>&lt;*&gt;</code> again allows us to apply the resulting function onto <code>y</code>, giving us a result of type <code>Maybe c</code>:</p>
+<p><code>pure f &lt;*&gt; x &lt;*&gt; y :: Maybe c</code></p>
+<pre><code>                  pure f   
+Maybe a --&lt;*&gt;--&gt; ━━━┓
+                    ┣━━━━ Maybe c
+Maybe b --&lt;*&gt;--&gt; ━━━┛
+</code></pre>
+<p>However, recall from our very first example that we had attempted to use <code>fmap</code> to apply <code>(+)</code> onto a <code>Maybe Int</code> to give a <code>Maybe (Int -&gt; Int)</code>. Now we know that we can directly use this result and apply it onto another <code>Maybe Int</code> to give us a <code>Maybe Int</code>, thereby applying <code>(+)</code> in context! This is a natural consequence of the applicative laws, where <code>pure f &lt;*&gt; x</code> is the same as <code>fmap f x</code>!</p>
+<pre><code class="language-haskell">pure f &lt;*&gt; x == Just f &lt;*&gt; x
+             == case x of
+                    Just y -&gt; Just $ f y
+                    Nothing -&gt; Nothing
+             == fmap f x
+</code></pre>
+<p>Therefore, Haskell also defines a function <code>&lt;$&gt;</code> as an alias of <code>fmap</code>:</p>
+<pre><code class="language-haskell">(&lt;$&gt;) :: Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+(&lt;$&gt;) = fmap
+</code></pre>
+<p>Therefore, instead of using <code>pure f &lt;*&gt; x</code>, we can just write <code>fmap f x</code> or <code>f &lt;$&gt; x</code> to achieve the same effect!</p>
+<p><code>pure f &lt;*&gt; x &lt;*&gt; y</code> = <code>fmap f x &lt;*&gt; y</code> = <code>f &lt;$&gt; x &lt;*&gt; y</code></p>
+<p>Now let us revisit our earlier example again! Here is a naive approach to applying <code>(+)</code> onto <code>x</code> and <code>y</code>:</p>
+<pre><code class="language-haskell">x, y, z :: Maybe Int
+x = head' [1, 2, 3]
+y = head' [4, 5, 6]
+z = case (x, y) of
+    (Just x, Just y) -&gt; x + y
+    _ -&gt; Nothing
+</code></pre>
+<p>Don't torture yourself! Instead, knowing that <code>Maybe</code> is an applicative (and therefore also a functor), let us just use <code>&lt;$&gt;</code> and <code>&lt;*&gt;</code>!</p>
+<pre><code class="language-haskell">x, y, z :: Maybe Int
+x = head' [1, 2, 3]
+y = head' [4, 5, 6]
+z = (+) &lt;$&gt; x &lt;*&gt; y -- Just 5
+</code></pre>
+<p>As you can see, <code>Applicative</code>s allow us to perform computation in context separately, and apply a function over the results over these terms in context!</p>
+<p>So far, you should have noticed that the functions and typeclasses presented perform the usual stuff, but in context:</p>
+<ul>
+<li><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>: lifts a function into a function in context</li>
+<li><code>pure :: a -&gt; f a</code>: puts pure computation in context</li>
+<li><code>&lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b</code>: function application in context</li>
+</ul>
+<p>With these, here are some guidelines for when to use <code>fmap</code>, <code>pure</code> and <code>&lt;*&gt;</code>:</p>
+<ul>
+<li><code>f x</code> becomes <code>fmap f x</code> or <code>f &lt;$&gt; x</code> or <code>pure f &lt;*&gt; x</code> if <code>x</code> becomes in context</li>
+<li><code>f x</code> becomes <code>f &lt;*&gt; x</code> if both <code>f</code> and <code>x</code> become in context</li>
+<li><code>f x y z</code> becomes <code>f &lt;$&gt; x &lt;*&gt; y &lt;*&gt; z</code> if <code>x</code>, <code>y</code> and <code>z</code> become in context</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../railway_pattern/functors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../railway_pattern/validation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../railway_pattern/functors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../railway_pattern/validation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

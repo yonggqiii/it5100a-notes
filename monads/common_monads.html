@@ -1,0 +1,499 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Commonly Used Monads - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html" class="active"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="commonly-used-monads"><a class="header" href="#commonly-used-monads">Commonly Used Monads</a></h1>
+<p>Thus far, we have looked at monads like <code>[]</code>, <code>Maybe</code> and <code>Either</code>. Recall that these monads describe the following notions of computation:</p>
+<ul>
+<li><code>[]</code>: nondeterminism</li>
+<li><code>Maybe</code>: potentially empty computation</li>
+<li><code>Either a</code>: potentially failing computation</li>
+</ul>
+<p>However, there are many more monads that you will frequently encounter, and in fact, many libraries (even in other programming languages) expose classes or data types that work as monads. Most of these monads involve one or both of the following notions of computation:</p>
+<ol>
+<li>Reading from state</li>
+<li>Writing to, or editing state</li>
+</ol>
+<p>In fact, side effects can also be seen as reading from and writing to state. In this section, we shall describe some commonly used monads that implement these ideas.</p>
+<h2 id="reader"><a class="header" href="#reader">Reader</a></h2>
+<p>A very common pattern of computation is <em>reading from state</em>, i.e. performing computations based on some environment. For example, we may have a local store of users in an application, from which we retrieve some user information and do stuff with it. Typically, this is represented by a plain function of type <code>env -&gt; a</code>, where <code>env</code> is the environment to read from, and <code>a</code> is the type of the result that depends on the environment. For example, we can determine if two nodes are connected in a graph by using depth-first search—however, connectivity of two nodes depends on the graph, where two nodes might be connected in one graph, but not in another. Therefore, the result of a depth-first search depends on the graph. However, depth-first search requires us to look up the neighbours of a node so that we can recursively search them, thereby also depending on the graph. As such, we want some way to compose two functions that receive a graph (monadically).</p>
+<p>In general, we can let any term of type <code>env -&gt; a</code> be seen as a term of type <code>a</code> that depends on an environment <code>env</code>. In other words, the type <code>env -&gt; ?</code> describes the notion of computation of something depending on an environment. And as it turns out, for any environment type <code>env</code>, the partially applied type <code>(-&gt;) env</code> i.e. <code>env -&gt; a</code> for all <code>a</code> is a <code>Monad</code>!</p>
+<pre><code class="language-haskell">instance Functor ((-&gt;) env) where
+    fmap :: (a -&gt; b) -&gt; (env -&gt; a) -&gt; (env -&gt; b)
+    fmap f x = f . x
+
+instance Applicative ((-&gt;) env) where
+    pure :: a -&gt; (env -&gt; a)
+    pure = const
+    (&lt;*&gt;) :: (env -&gt; (a -&gt; b)) -&gt; (env -&gt; a) -&gt; env -&gt; b
+    (&lt;*&gt;) f g x = f x (g x)
+
+instance Monad ((-&gt;) env) where
+    return :: a -&gt; (env -&gt; a)
+    return = pure
+    (&gt;&gt;=) :: (env -&gt; a) -&gt; (a -&gt; (env -&gt; b)) -&gt; env -&gt; b
+    (&gt;&gt;=) m f x = f (m x) x
+</code></pre>
+<p>The definition of <code>fmap</code> is incredibly straightforward, essentially just doing plain function composition. The definition of <code>pure</code> is just <code>const</code>, where <code>const</code> is defined to be <code>const x = \_ -&gt; x</code>, i.e. <code>pure</code> receives some value and produces a function that ignores the environment and produces that value. <code>&lt;*&gt;</code> takes two functions <code>f</code> and <code>g</code> and performs applicative application by applying each of them to the same environment <code>x</code>. Most notably, <code>&lt;*&gt;</code> applies the same environment <em>unmodified</em> to both functions. Finally, <code>&gt;&gt;=</code> operates pretty similar to <code>&lt;*&gt;</code> except with some changes to how the functions are applied.</p>
+<p>For clarity, let's define a type alias <code>Reader env a</code> which means that it is a type that reads an environment of type <code>env</code> and returns a result of type <code>a</code>:</p>
+<pre><code class="language-haskell">type Reader = (-&gt;)
+</code></pre>
+<p>Then, let's try to implement depth-first search with the <code>Reader</code> monad. First, we define some additional types, like the graph, which for us, has nodes as integers, and is represented using an adjacency list:</p>
+<pre><code class="language-haskell">type Node = Int
+type Graph = [(Node, [Node])]
+</code></pre>
+<p>Next, we define a function <code>getNeighbours</code> which gets the nodes that are adjacent to a node in the graph:</p>
+<pre><code class="language-haskell">getNeighbours :: Node -&gt; Reader Graph [Node]
+getNeighbours x = do
+    neighbours &lt;- lookup x
+    return $ concat neighbours
+</code></pre>
+<p>Notice that our <code>getNeighbours</code> function does not refer to the graph at all! We can just use <code>do</code> notation, and Haskell knows how to compose these computations!</p>
+<p>Using <code>getNeighbours</code>, we can now define <code>dfs</code> which performs a depth-first search via recursion:</p>
+<pre><code class="language-haskell">dfs :: Node -&gt; Node -&gt; Reader Graph Bool
+dfs src dst = aux [] src where
+  aux :: [Node] -&gt; Node -&gt; Reader Graph Bool
+  aux visited current
+    | arrived         = return True
+    | alreadyVisited  = return False
+    | otherwise       = do
+      neighbours &lt;- getNeighbours current
+      ls &lt;- mapM (aux (current : visited)) neighbours
+      return $ or ls
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>Let us learn how this works. Within the <code>dfs</code> function we define an auxiliary function that has a <code>visited</code> parameter. This is so that a user using the <code>dfs</code> function will not have to pass in the empty list as our <code>visited</code> "set". The <code>aux</code> function is where the main logic of the function is written. The first two cases are straightforward: (1) if we have arrived at the destination then we return <code>True</code>, and (2) if we have already visited the current node then we return <code>False</code>. If both (1) and (2) are not met, then we must continue searching the graph. We first get the neighbours of the current node using the <code>getNeighbours</code> function, giving us <code>neighbours</code>, which are the neighbours of the current node. Then, we recursively map <code>aux</code> (thereby recursively performing <code>dfs</code>) over all the neighbours. However, since <code>aux</code> is a monadic operation, we use <code>mapM</code> to map over the neighbours, giving us a list of results. We finally just check whether any of the nodes give us a positive result using the <code>or</code> function, corresponding to the <code>any</code> function in Python. Note one again that our <code>dfs</code> function makes no mention of the map at all, and we do not even need to pass the map into <code>getNeighbours</code>! The <code>Reader</code> monad automatically passes the same environment into all the other <code>Reader</code> terms that receive the environment.</p>
+<p>Using the <code>dfs</code> function is very simple. Since the <code>Reader</code> monad is actually just a function that receives an environment and produces output, to use a <code>Reader</code> term, we can just pass in the environment we want!</p>
+<pre><code class="language-haskell">ghci&gt; my_map = [(1, [2, 3])
+              , (2, [1])
+              , (3, [1, 4])
+              , (4, [3])
+              , (5, [6])
+              , (6, [5])]
+ghci&gt; dfs 5 6 my_map
+True
+ghci&gt; dfs 5 2 my_map
+False
+ghci&gt; dfs 1 2 [] -- empty map
+False
+</code></pre>
+<p>Finally, note that we can retrieve the environment directly within the <code>Reader</code> monad by just using the identity function <code>id</code>!</p>
+<pre><code class="language-haskell">ask :: Reader env env
+ask = id
+
+getNeighbours :: Node -&gt; Reader Graph [Node]
+getNeighbours x = do
+    my_graph &lt;- ask -- gets the graph directly
+    let neighbours = lookup x my_graph
+    return $ concat neighbours
+</code></pre>
+<h2 id="writer"><a class="header" href="#writer">Writer</a></h2>
+<p>The dual of a <code>Reader</code> is a <code>Writer</code>. In other words, instead of reading from some state or environment, the <code>Writer</code> monad has state that it writes to. The simplest example of this is logging. When writing an application, some (perhaps most) operations should be logged, so that we developers have usage information, crash dumps and so on, which can be later analysed.</p>
+<p>In general, we can let any term of type <code>(log, a)</code> be seen as a type <code>a</code> that also has a log <code>log</code>. And as it turns out, for any log type <code>log</code>, the partially applied type <code>(log,)</code>, i.e. <code>(log, a)</code> for all <code>a</code> is a <code>Monad</code>!</p>
+<pre><code class="language-haskell">instance Functor (log,) where
+    fmap :: (a -&gt; b) -&gt; (log, a) -&gt; (log, b)
+    fmap f (log, a) = (log, f a)
+
+instance Monoid log =&gt; Applicative (log,) where
+    pure :: a -&gt; (log, a)
+    pure = (mempty,)
+    (&lt;*&gt;) :: (log, a -&gt; b) -&gt; (log, a) -&gt; (log, b)
+    (&lt;*&gt;) (log1, f) (log2, x) = (log1 `mappend` log2, f x)
+
+instance Monad (log,) where
+    return :: a -&gt; (log, a)
+    return = pure
+    (&gt;&gt;=) :: (log, a) -&gt; (a -&gt; (log, b)) -&gt; (log, b)
+    (log, a) &gt;&gt;= f = let (log2, b) = f a
+                     in  (log1 `mappend` log2, b)
+</code></pre>
+<p>Let's carefully observe what the instances say. The <code>Functor</code> instance is straightforward—it applies the mapping function onto the second element of the tuple. The <code>Applicative</code> and <code>Monad</code> instances are more interesting. Importantly, just like the definition of the <code>Applicative</code> instance for <code>Validation</code>, the two logs are to be combined via an associative binary operation <code>&lt;&gt;</code>, which in this case is <code>mappend</code>. In most occasions, <code>mappend</code> is the same as <code>&lt;&gt;</code>. However, applicatives must also have a <code>pure</code> operation. In the case of <code>Either</code> and <code>Validation</code>, <code>pure</code> just gives a <code>Right</code> or <code>Success</code>, therefore not requiring any <code>log</code>. However, in a tuple, we need some "empty" <code>log</code> to add to the element to wrap in the tuple.</p>
+<p>Thus, the <code>log</code> not only must have an associative binary operation, it needs some "empty" term that acts as the identity of the binary operation:
+\[E\oplus\textit{empty}=\textit{empty}\oplus E=E\]
+\[E_1\oplus(E_2\oplus E_3)=(E_1\oplus E_2)\oplus E_3\]</p>
+<p>This is known as a <code>Monoid</code>, which is an extension of <code>Semigroup</code>!</p>
+<pre><code class="language-haskell">class Semigroup a =&gt; Monoid a where
+    mempty :: a
+    mappend :: a -&gt; a -&gt; a
+</code></pre>
+<p>Typically, <code>mappend</code> is defined as <code>&lt;&gt;</code>.</p>
+<p>Recall that <code>[a]</code> with concatenation is a <code>Semigroup</code>. In fact, <code>[a]</code> is also a <code>Monoid</code>, where <code>mempty</code> is the empty list!</p>
+<pre><code>ls ++ [] = [] ++ ls = ls
+x ++ (y ++ z) = (x ++ y) ++ z
+</code></pre>
+<p>Therefore, as long as <code>a</code> is a <code>Monoid</code>, then <code>(a, b)</code> is a monad!</p>
+<p>Lastly, just like how <code>Reader</code>s have an <code>ask</code> function which obtains the environment, <code>Writer</code>s have a <code>write</code> function which writes a message to your log—the definition of <code>write</code> makes this self-explanatory.</p>
+<pre><code class="language-haskell">write :: w -&gt; (w, ())
+write = (,())
+</code></pre>
+<p>Let us see this monad in action. Just like with <code>Validation</code>, we are going to let <code>[String]</code> be our log.</p>
+<pre><code class="language-haskell">type Writer = (,)
+type Log = [String]
+</code></pre>
+<p>Then, we write an example simple function that adds a log message:</p>
+<pre><code class="language-haskell">loggedAdd :: Int -&gt; Int -&gt; Writer Log Int
+loggedAdd x y = do
+    let z = x + y
+    write [show x ++ " + " ++ show y ++ " = " ++ show z]
+    return z
+</code></pre>
+<p>Composing these functions is, once again, incredibly straightforward with <code>do</code> notation!</p>
+<pre><code class="language-haskell">loggedSum :: [Int] -&gt; Writer Log Int
+loggedSum [] = return 0
+loggedSum (x:xs) = do
+    sum' &lt;- loggedSum xs
+    loggedAdd x sum'
+</code></pre>
+<p>With this, the <code>loggedSum</code> function receives a list of integers and returns a pair containing the steps it took to arrive at the sum, and the sum itself:</p>
+<pre><code class="language-haskell">ghci&gt; y = loggedSum [1, 2, 3]
+ghci&gt; snd y
+6
+ghci&gt; fst y
+["3 + 0 = 3","2 + 3 = 5","1 + 5 = 6"]
+</code></pre>
+<h2 id="state"><a class="header" href="#state">State</a></h2>
+<p>However, many times, we will also want to compose functions that do <em>both</em> reading from, and writing to or modifying state. In essence, it is somewhat a combination of the <code>Reader</code> and <code>Writer</code> monads we have seen. One example is pseudorandom number generation. A pseudorandom number generator receives a seed, and produces a random number and the next seed, which can then be used to generate more random numbers. The type signature of a pseudorandom number generation function would be something of the form:</p>
+<pre><code class="language-haskell">randomInt :: Seed -&gt; (Int, Seed)
+</code></pre>
+<p>This pattern extends far beyond random number generation, and can be used to encapsulate the idea of a stateful transformation. For this, let us define a type called <code>State</code>:</p>
+<pre><code class="language-haskell">newtype State s a = State { runState :: s -&gt; (a, s) }
+</code></pre>
+<p>Notice the <code>newtype</code> declaration. A <code>newtype</code> declaration is basically a <code>data</code> declaration, except that it must have exactly one constructor with exactly one field. In other words, a <code>newtype</code> declaration is a wrapper over a single type, in our case, the type <code>s -&gt; (a, s)</code>. <code>newtype</code>s only differ from their wrapped types while programming and during type checking, but have no operational differences—after compilation, <code>newtype</code>s are represented exactly as the type they wrap, thereby introducing no additional overhead. However, <code>newtype</code> declarations also behave like <code>data</code> declarations, which allow us to create a new type from the types they wrap, allowing us to give new behaviours to the new type.</p>
+<p>With this in mind, let us define the <code>Monad</code> instance for our <code>State</code> monad:</p>
+<pre><code class="language-haskell">instance Functor (State s) where
+    fmap :: (a -&gt; b) -&gt; State s a -&gt; State s b
+    fmap f (State f') = State $ 
+        \s -&gt; let (a, s') = f' s
+              in  (f a, s')
+
+instance Applicative (State s) where
+    pure :: a -&gt; State s a
+    pure x = State (x,)
+    (&lt;*&gt;) :: State s (a -&gt; b) -&gt; State s a -&gt; State s b
+    (&lt;*&gt;) (State f) (State x) = State $ 
+        \s -&gt; let (f', s') = f s
+                  (x', s'') = x s'
+              in  (f' x', s'')
+
+instance Monad (State s) where
+    return :: a -&gt; State s a
+    return = pure
+    (&gt;&gt;=) :: State s a -&gt; (a -&gt; State s b) -&gt; State s b
+    (State f) &gt;&gt;= m = State $ 
+        \s -&gt; let (a, s') = f s
+                  State f' = m a
+              in  f' s'
+</code></pre>
+<p>The instance definitions are tedious to define. Furthermore, nothing worthy of note is defined—the methods implement straightforward function composition. However, it is these methods that allow us to compose stateful computation elegantly!</p>
+<p>Finally, just like <code>ask</code> for <code>Reader</code>s and <code>write</code> for <code>Writer</code>s, we have <code>get</code> and <code>put</code> to retrieve and update the state of the monad accordingly, and an additional <code>modify</code> function which modifies the state:</p>
+<pre><code class="language-haskell">put :: s -&gt; State s ()
+put s = State $ const ((), s)
+
+get :: State s s 
+get = State $ \s -&gt; (s, s)
+
+modify :: (s -&gt; s) -&gt; State s ()
+modify f = do s &lt;- get
+              put (f s)
+</code></pre>
+<p>Let's try this with an example. Famously, computing the fibonacci numbers in a naive recursive manner is incredibly slow. Instead, by employing memoization, we can take the time complexity of said function from \(O(2^n)\) down to \(O(n)\). Memoization requires retrieving and updating state, making it an ideal candidate for using the <code>State</code> monad!</p>
+<p>We first define our state to be a table storing inputs and outputs of the function. Then, writing the fibonacci function is straightforward. Note the use of <code>Integer</code> instead of <code>Int</code> so that we do not have integer overflow issues when computing large fibonacci numbers:</p>
+<pre><code class="language-haskell">type Memo = [(Integer, Integer)]
+getMemoized :: Integer -&gt; State Memo (Maybe Integer)
+getMemoized n = lookup n &lt;$&gt; get
+
+fib :: Integer -&gt; Integer
+fib n = fst $ runState (aux n) [] where
+  aux :: Integer -&gt; State Memo Integer
+  aux 0 = return 0
+  aux 1 = return 1
+  aux n = do 
+    x &lt;- getMemoized n
+    case x of
+        Just y -&gt; return y
+        Nothing -&gt; do
+            r1 &lt;- aux (n - 1)
+            r2 &lt;- aux (n - 2)
+            let r = r1 + r2
+            modify ((n, r) :)
+            return r
+</code></pre>
+<p>The <code>getMemoized</code> function essentially just performs a lookup of the memoized input from the state. Then, the <code>fib</code> function defines an auxiliary function <code>aux</code> like before, which contains the main logic describing the computation of the fibonacci numbers. In particular, the <code>aux</code> function returns <code>State Memo Integer</code>. As such, to access the underlying state processing function produced by <code>aux n</code>, we must use the <code>runState</code> accessor function as defined in the <code>newtype</code> declaration for <code>State</code>. <code>runState (aux n)</code> gives us a function <code>Memo -&gt; (Integer, Memo)</code>, and thus passing in the empty memo (<code>runState (aux n) []</code>) gives us the result. The result is a pair <code>(Integer, Memo)</code>, and since we do not need the memo after the result has been computed, we just discard it and return it from <code>fib</code>.</p>
+<p>The <code>aux</code> function is similarly straightforward, with the usual two base cases. In the recursive case <code>aux n</code>, we first attempt to retrieve any memoized result using the <code>getMemoized</code> function. If the result has already been computed (<code>Just y</code>), then we return the memoized result directly. Otherwise, we recursively compute <code>aux (n - 1)</code> and <code>aux (n - 2)</code>. Importantly, <code>aux (n - 1)</code> will perform updates to the state (the memo), which is then passed along automatically (via monadic bind) to the call to <code>aux (n - 2)</code>, eliminating the exponential time complexity. Once <code>r1</code> and <code>r2</code> have been computed, the final result is <code>r</code>. Of course, we add the entry <code>n -&gt; r</code> into the memo, and we can do so using the <code>modify</code> function, where <code>modify ((n, r) :)</code> prepends the pair <code>(n, r)</code> onto the memo. Of course, we finally return <code>r</code> after all of the above has been completed.</p>
+<p>The result of this is polynomial-time <code>fib</code> function that can comfortably compute large fibonacci numbers:</p>
+<pre><code class="language-haskell">ghci&gt; fib 1
+1
+ghci&gt; fib 5
+5
+ghci&gt; fib 10
+55
+ghci&gt; fib 20
+6765
+ghci&gt; fib 100
+354224848179261915075
+ghci&gt; fib 200
+280571172992510140037611932413038677189525
+</code></pre>
+<h2 id="io"><a class="header" href="#io">I/O</a></h2>
+<p>Until now, we still have no idea how Haskell performs simple side effects like reading user input or printing to the console. In fact, nothing we have discussed so far involves side effects, because Haskell is a purely functional programming language, and all functions are pure. One of the key innovations of monads is that it allows a purely functional programming language like Haskell to produce side effects... but how?</p>
+<p>Typically, a function that produces side effects is a regular function, except that it will also cause some additional effects on the side. One example is the <code>print</code> function in Python, which has the following type signature:</p>
+<pre><code class="language-python">def print(x: object) -&gt; NoneType: # prints to the console
+    # ...
+</code></pre>
+<p>However, notice that the <code>State</code> monad is somewhat similar. A term of <code>State s a</code> wraps a function <code>s -&gt; (a, s)</code>; it is a pure function that is meant to compute a term of type <code>a</code>. However, it has the additional effect of depending on some state of type <code>s</code>, and will also produce some new state also of type <code>s</code>. Therefore, <code>State s a</code> can be seen as an impure function/term of type <code>a</code>, with the side effect of altering state.</p>
+<p>What if the state <code>s</code> was actually the real world itself? In essence, the function <code>RealWorld -&gt; (a, RealWorld)</code> is a function that receives the real world (as in, literally the world), and produces some term <code>a</code> and a new state of the world? In this view, a function that prints to the console receives the current state of the world and computes nothing (just like how <code>print</code> in Python returns <code>None</code>), and also produces the new state of the world where text has been printed to the console. Then, <code>input</code> in Python can be seen as a function that receives a state of the world containing user input, and produces the value entered by the user, retaining the current state of the world! These functions can thus actually be seen as <em>pure functions</em>, as long as we view the real world as a term in our programming language! In essence:</p>
+<blockquote>
+<p>The <code>IO</code> monad is the <code>State</code> monad where the state is the real world.</p>
+</blockquote>
+<p>This is how Haskell, a purely functional programming language, performs I/O, a side effect. In fact, our characterization of <code>IO</code> is not merely an analogy, but is exactly how <code>IO</code> is represented in Haskell:</p>
+<pre><code class="language-haskell">newtype IO a = IO (State# RealWorld -&gt; (# State# RealWorld, a #))
+</code></pre>
+<p>As such, after learning how the <code>State</code> monad works, performing I/O in Haskell should now be straightforward, especially with <code>do</code> notation. Let us finally, after five chapters, write a "Hello World" program.</p>
+<pre><code class="language-haskell">main :: IO ()
+main = putStrLn "Hello World!"
+</code></pre>
+<p>The <code>putStrLn</code> function has type <code>String -&gt; IO ()</code>. It essentially receives a string to print, and alters the state of the world by adding the string to the console.</p>
+<p>Importantly, every Haskell program can be seen as the <code>main</code> function, which has type <code>IO ()</code>. Recall that <code>IO</code> is just the <code>State</code> monad, which wraps a function that receives the state of the real world at function application, and produces a new state of the world and some other pure computation. In essence, the <code>main</code> function therefore has type <code>State# RealWorld -&gt; (# State# RealWorld, () #)</code>. Therefore, we can see, roughly, that when a Haskell program is run, the current state of the world is passed into <code>main</code>, giving us a new state of the world where the program has completed execution!</p>
+<p>Just like the <code>State</code> monad, we can compose <code>IO</code> operations monadically with <code>do</code> notation. For example, the <code>getLine</code> function has type <code>IO String</code>, similar to <code>input</code> in Python except it does not receive and print a prompt. Thus, we can write a program that reads the name of a user and says hello to that user like so:</p>
+<pre><code class="language-haskell">-- Main.hs
+main :: IO ()
+main = do
+    name &lt;- getLine
+    putStrLn $ "Hello " ++ name ++ "!"
+</code></pre>
+<p>Now, instead of loading the program with GHCi, we can <em>compile</em> this program with GHC into an executable!</p>
+<pre><code>ghc Main.hs
+</code></pre>
+<p>When we run the program, the program waits for us to enter a name, then says hello to us!</p>
+<pre><code class="language-output info">Yong Qi
+Hello Yong Qi!
+</code></pre>
+<p>Other <code>IO</code> operations can be found in Haskell's Prelude, and these should be relatively straightforward to understand.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../monads/more_monads.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../monads/monadtrans.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../monads/more_monads.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../monads/monadtrans.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

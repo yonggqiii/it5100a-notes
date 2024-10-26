@@ -1,0 +1,676 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Functional Programming - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html" class="active"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="functional-programming"><a class="header" href="#functional-programming">Functional Programming</a></h1>
+<p><em>Functional Programming</em> (FP) is a <em>declarative</em> <em>programming paradigm</em> where <em>functions</em> take centre stage. As a recap from IT5001, you might have learnt that programming paradigms are schools of thought for writing programs. IT5001 has very likely exposed you to <em>imperative</em> paradigms like <em>procedural</em> and <em>Object-Oriented Programming</em>. The following table shows other popular programming paradigms:</p>
+<div class="table-wrapper"><table><thead><tr><th>Imperative</th><th>Declarative</th></tr></thead><tbody>
+<tr><td>Procedural</td><td>Logic</td></tr>
+<tr><td>Object-Oriented</td><td>Functional</td></tr>
+</tbody></table>
+</div>
+<p>Object-Oriented Programming (OOP) has four principles as you might recall: <em>Abstraction</em>, <em>Inheritance</em>, <em>Encapsulation</em> and
+<em>Polymorphism</em>.<sup class="footnote-reference"><a href="#1">1</a></sup> Functional Programming, on the other hand, is centered around the following principles, which really are just principles of mathematical functions and the \(\lambda\) <em>calculus</em>:<sup class="footnote-reference"><a href="#4">2</a></sup></p>
+<ul>
+<li>Immutability</li>
+<li>Pure Functions</li>
+<li>Recursion</li>
+<li>Types</li>
+<li>First-Class Functions</li>
+</ul>
+<p>Let's briefly describe what these principles entail.</p>
+<h2 id="immutability"><a class="header" href="#immutability">Immutability</a></h2>
+<p>The idea of <em>immutability</em> is simple—only use <strong>immutable</strong> data. For example, the following program fragment does not perform any mutation, not even on the variables:</p>
+<pre><code class="language-python">def add_one(fraction):
+    """fraction is a tuple of (numerator, denominator)"""
+    old_num, den = fraction
+    num = old_num + den
+    return (num, den)
+ 
+my_fraction = (3, 2)
+new_fraction = add_one(my_fraction)
+ 
+print(new_fraction) # (5, 2)
+print(my_fraction) # (3, 2)
+</code></pre>
+<p>The fact that the program does not perform any mutation makes this very
+similar to mathematical functions where mathematical objects are seen as
+values instead of references to cells that can be changed. This makes
+reasoning about any of the variables, objects and functions incredibly
+simple.</p>
+<p>Overall, immutability forces us to be disciplined with <strong>state</strong>.
+Contrast this with using <strong>mutable</strong> data structures and variables, such as in the following program fragment:</p>
+<pre><code class="language-python">def f(ls):
+  ls[0] = 4
+  return ls
+ 
+my_ls = [1, 2, 3]
+print(f(my_ls)) # [4, 2, 3]
+print(my_ls) # [4, 2, 3]
+</code></pre>
+<p>This is one of the classic examples of the problems with mutability—it is
+not at all clear whether passing a list into a function will preserve
+the state of the list. Because lists are mutable, we have no guarantee
+that functions or any operation will not cause the <em>side-effect</em> of
+mutation (accidental or intentional).</p>
+<h2 id="pure-functions"><a class="header" href="#pure-functions">Pure Functions</a></h2>
+<p>Just like mathematical functions, functions (in programming) should be
+<em>pure</em>. Pure functions really look like mathematical functions, for
+example, \(f\) below:</p>
+<p>\[f: \mathbb{N} \to \mathbb{N}\]
+\[f(x) = x^2 + 2x + 3\]</p>
+<p>An equivalent implementation in Python would
+look like:</p>
+<pre><code class="language-python">def f(x):
+  return x ** 2 + 2 * x + 3
+</code></pre>
+<p>Pure functions <strong>only receive input and return
+output</strong>. They do not produce side effects, and do not depend
+on external state. An example of this is as follows:</p>
+<pre><code class="language-python"># Python
+def double(ls):
+  return [i * 2 for i in ls]
+ 
+x = [1, 2, 3]
+ 
+print(double(x)) # [2, 4, 6]
+print(double(x)) # [2, 4, 6]
+print(double(x)) # ...
+# ...
+</code></pre>
+<p>Notice that the <code>double</code> function is pure! In this example,
+<code>double(x)</code> evaluates to <code>[2, 4, 6]</code>; thus,
+<code>double(x)</code> and <code>[2, 4, 6]</code> are the <strong>same</strong>! This
+property of pure functions is known as <em>referential transparency</em>, and
+makes reasoning about and optimizing programs much more straightforward.</p>
+<p>Contrast the behaviour of pure functions with that of impure functions:</p>
+<pre><code class="language-python">def f():
+  global ls
+  x = ls # use of global variable
+  addend = x[-1] + 1
+  x.append(addend) # is there a side-effect?
+  ls = x + [addend + 1] # mutate global variable
+  return ls
+ 
+ls = [1, 2, 3]
+x = ls
+ 
+print(f()) # [1, 2, 3, 4, 5]
+print(ls) # [1, 2, 3, 4, 5]
+print(x) # [1, 2, 3, 4]
+</code></pre>
+<p>So many side effects have been caused! Functions like these make
+reasoning about program behaviour incredibly difficult. Converting this
+function into a pure one (removing all side-effects) makes its behaviour
+clearer and more transparent.</p>
+<pre><code class="language-python">def f(ls):
+  x = ls
+  addend = x[-1] + 1
+  x = x + [addend]
+  ls = x + [addend + 1]
+  return ls
+ 
+ls = [1, 2, 3]
+x = ls
+ 
+print(f(ls)) # [1, 2, 3, 4, 5]
+print(ls) # [1, 2, 3]
+print(x) # [1, 2, 3]
+</code></pre>
+<h2 id="recursion"><a class="header" href="#recursion">Recursion</a></h2>
+<p>You have seen this before—use <em>recursive</em> functions to simulate loops.<sup class="footnote-reference"><a href="#2">3</a></sup> Let's look at an example of a perfectly reasonable way to sum
+the numbers of a 2-dimensional list, using the <code>sum2D</code> function:</p>
+<pre><code class="language-python">def sum2D(ls):
+  total = 0
+  for row in ls:
+    for num in row:
+      total += num
+  return total
+</code></pre>
+<p>Loops are typically useful for its side-effects, primarily mutation.
+Looking at the (nested) loop above, a bunch of mutation occurs: the
+reassignments to <code>row</code> and <code>num</code> (the loop variables),
+and the mutation of the <code>total</code> variable in the loop body. In
+an environment where mutation is impossible, can we write the same
+program? Yes! Like we have said, rely on <strong>recursion</strong>! An example
+recursive formulation of the <code>sum2D</code> function from above would
+be like so:</p>
+<pre><code class="language-python">def row_sum(row):
+    return 0 if not row else \
+           row[0] + row_sum(row[1:])
+ 
+def sum2D(ls):
+    return 0 if not ls else \
+           row_sum(ls[0]) + sum2D(ls[1:])
+</code></pre>
+<p>Again, the behaviour of the program has not changed: the
+<code>sum2D</code> function still produces the correct output given any
+2-dimensional list of integers. However, our function is still pure and
+does not mutate <strong>any</strong> data structure or variable.</p>
+<p>Recursive solutions can also be more elegant,
+especially when the problem or data structures used are (inherently)
+recursive. Take the example of obtaining the preorder of a binary tree.
+Binary trees are recursive data structures, if formulated the following
+way:</p>
+<blockquote>
+<p>A (nonempty) binary tree is either:</p>
+<ul>
+<li>A node with a value, a left tree and a right tree; OR</li>
+<li>A leaf with just a value</li>
+</ul>
+</blockquote>
+<p>As you can see, the definition of a node contains (sub)trees, making the binary tree
+a recursive data structure<sup class="footnote-reference"><a href="#3">4</a></sup>. Therefore, operations on trees can often be
+expressed elegantly using recursion. For example, the specification of
+obtaining the <em>preorder</em> of a tree can be like so:</p>
+<ol>
+<li>
+<p>The preorder of a leaf is a list containing the leaf's value</p>
+</li>
+<li>
+<p>The preorder of a node is the node's value, together with the
+preorder of the left (sub)tree, then the preorder of the right
+(sub)tree.</p>
+</li>
+</ol>
+<p>This specification written in code is concise and elegant:</p>
+<pre><code class="language-python">from dataclasses import dataclass
+ 
+@dataclass
+class Tree: pass
+ 
+@dataclass
+class Node(Tree):
+    val: object
+    left: Tree
+    right: Tree
+ 
+@dataclass
+class Leaf(Tree):
+    val: object
+ 
+def preorder(tree):
+    match tree:
+        case Node(val=v, left=l, right=r):
+            return [v] + preorder(l) + preorder(r)
+        case Leaf(val=v):
+            return [v]
+</code></pre>
+<p>Recursive functions are also amenable to <strong>formal</strong> reasoning. Some
+languages (usually <em>Interactive Theorem Provers</em>) support proofs and can
+even automatically synthesize proofs of correctness for you. In the
+following example written in Lean 4, the following program defines a
+binary tree and a program for obtaining the preorder of the tree just as
+before; the key difference being, that Lean automatically helps us prove
+that the function <strong>terminates</strong>. In such an environment, we rarely have
+to worry whether our program gets stuck or crashes.</p>
+<pre><code class="language-lean">inductive Tree (α : Type) : Type where
+  | node : α -&gt; Tree α -&gt; Tree α -&gt; Tree α
+  | leaf : α -&gt; Tree α 
+ 
+-- compiler automatically synthesizes proof of termination
+def Tree.preorder { β : Type } : Tree β -&gt; List β
+  | .node v l r =&gt; v :: (preorder l) ++ (preorder r)
+  | .leaf v =&gt; [v]
+ 
+def myTree : Tree Nat := .node 1 (.leaf 2) (.leaf 3)
+#eval myTree.preorder -- [1, 2, 3]
+</code></pre>
+<p>The primary reason for this is that recursive functions can often be
+reasoned about via <em>induction</em>:</p>
+<p>\[\frac{P(0)~~~~~~~~\forall k \in \mathbb{N}. P(k)\to P(k + 1)}{\forall n \in \mathbb{N}. P(n)} \text{Induction}\]</p>
+<p>We have seen that factorial can be written recursively, and in fact we
+can prove its correctness (in a quite straightforward manner) via
+induction. This makes the following factorial function implementation
+obviously correct.</p>
+<pre><code class="language-lean">-- Lean 4
+def fac : Nat -&gt; Nat 
+  | 0     =&gt; 1
+  | n + 1 =&gt; (n + 1) * fac n
+</code></pre>
+<h3 id="types"><a class="header" href="#types">Types</a></h3>
+<p>Adhering strictly to type information <strong>eliminates type-related bugs</strong>
+and makes functions <strong>transparent</strong>. Perhaps most importantly, adherence
+to type information can be verified by a program.</p>
+<p>Observe the following program fragment.</p>
+<pre><code class="language-python">x: int = 123
+# ...
+print(x + 5)
+</code></pre>
+<p>If we fix the type of <code>x</code> to <code>int</code> and strictly adhere
+to it, then the last line containing <code>x + 5</code> will definitely
+not cause a <code>TypeError</code>, because we know that adding any number
+to an integer will always work.</p>
+<p>Contrast the above with the following example.</p>
+<pre><code class="language-python"># Python
+def safe_div(num: int, den: int) -&gt; int:
+    return None if den == 0 else \
+           num // den
+ 
+x = int(input())
+y = int(input())
+z = safe_div(x, y) + 1 # hmmm...
+print(z)
+</code></pre>
+<p>If we do not adhere to typing information strictly, no one knows that
+the <code>safe_div</code> function could return <code>None</code>! In such a
+scenario, if the user enters <code>0</code> for <code>y</code>, the
+expression <code>safe_div(x, y) + 1</code> would give a
+<code>TypeError</code>!</p>
+<p>Function purity and adhering to types forces functions to be
+<strong>transparent in effects</strong>. That is because if we want our pure function
+to perform some effectful computation (such as potentially returning
+<code>None</code>), we must return an object that encapsulates this
+behaviour; coupled with adhering to types, we must assign the correct
+type for the output of the function—the type of the object which
+encapsulates this behaviour—making the function's effects obvious.</p>
+<p>To improve the program written earlier, let us try to create a data structure
+<code>Maybe</code> that is one of two things: <code>Just</code> a value, or
+<code>Nothing</code>. We can express this as dataclasses in Python (you
+may ignore the stuff involving <code>typing</code> and all the square brackets
+for now, they will make sense later).</p>
+<pre><code class="language-python">from typing import Any
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Maybe[T]:
+    """Represents computation that may result in nothing"""
+    pass
+ 
+@dataclass(frozen=True)
+class Just[T](Maybe[T]):
+    j: T
+ 
+@dataclass(frozen=True)
+class Nothing(Maybe[Any]):
+    pass
+</code></pre>
+<p>Now we can amend our <code>safe_div</code> function appropriately to
+return a <code>Maybe</code> value:</p>
+<pre><code class="language-python">def safe_div(num: int, den: int) -&gt; Maybe[int]:
+    return Nothing() if den == 0 else \
+           Just(num // den)
+</code></pre>
+<p>Notice two things: 1) the function is pure, and does nothing other than
+receive inputs and returns output 2) the function's type signature makes
+it incredibly obvious that the function will <em>maybe</em> produce an
+<code>int</code>. Therefore, users of this function are <em>forced</em> to handle
+the case where the function produces <code>Nothing</code>.</p>
+<p>From this, we may proceed to use the <code>safe_div</code> function as
+before, except that instead of directly assigning
+<code>z = safe_div(x, y) + 1</code>, we must first call
+<code>safe_div</code> and handle the two cases: one where some integer was
+returned, the other where nothing was.</p>
+<pre><code class="language-python">x: int = int(input())
+y: int = int(input())
+z: Maybe[int]
+match safe_div(x, y):
+    case Just(j):
+        z = Just(j + 1)
+    case Nothing():
+        z = Nothing()
+</code></pre>
+<p>Types and type systems are highly useful, not just for verification of
+type safety, but also more generally, program verification and theorem
+proving etc. Types are backed by a rich theory (type theory) and is
+widely studied. As an example, interactive theorem provers may rely
+on systems with advanced type systems (such as the calculus of constructions, which has
+<em>dependent types</em>) to form the computational basis for proof assistance
+and proof checking. When these systems are baked into the language, we
+can write proof-carrying code and theorems (mathematical theorems or
+theorems about properties of code itself). An example is as follows,
+where theorems about the additive identity and the commutativity of
+addition of numbers can be used to show that concatenating a vector
+(like an immutable list) of length \(n\) to one of length \(k\) gives a
+vector of length \(n + k\).</p>
+<pre><code class="language-lean">-- Lean 4
+theorem izero : ∀ (k : Nat) , k = 0 + k
+  | 0 =&gt; by rfl
+  | n + 1 =&gt; congrArg (. + 1) (izero n)
+ 
+theorem isucc (n k : Nat) : n + k + 1 = n + 1 + k :=
+  match k with 
+  | 0 =&gt; by rfl
+  | x + 1 =&gt; congrArg (. + 1) (isucc n x)
+ 
+def Vect.concat {α : Type} {n k : Nat} : Vect α n -&gt; Vect α k -&gt; Vect α (n + k)
+  | .nil, ys =&gt; izero k ▸ ys
+  | .cons x xs, ys =&gt; isucc _ _ ▸ .cons x (xs.concat ys)
+</code></pre>
+<h3 id="first-class-functions"><a class="header" href="#first-class-functions">First-Class Functions</a></h3>
+<p>You might have seen in IT5001 that in some languages, functions are
+<em>first-class</em> objects.<sup class="footnote-reference"><a href="#7">5</a></sup> This gives rise to higher-order functions which
+support <strong>code re-use</strong>. <em>Higher-order functions</em> can receive functions
+as arguments and/or return functions as output.</p>
+<p>In the following program fragment, the <code>map</code> method of
+<code>Tree</code>s receive a function and returns a new tree with the
+function applied to all of its values. We then also <em>curry</em> the
+<code>add</code> function so that it receives the first addend, then
+returns a function that receives the second addend and returns the sum.
+This way, adding 2 to the values of a tree is as simple as several
+function calls:</p>
+<pre><code class="language-python">@dataclass(frozen=True)
+class Tree:
+    def map(self, f):
+        match self:
+            case Leaf(v):
+                return Leaf(f(v))
+            case Node(v, l, r):
+                newval = f(v)
+                newl = l.map(f)
+                newr = r.map(f)
+                return Node(newval, newl, newr)
+ 
+@dataclass(frozen=True)
+class Node(Tree):
+    val: object
+    left: Tree
+    right: Tree
+ 
+@dataclass(frozen=True)
+class Leaf(Tree):
+    val: object
+ 
+def add(x):
+    return lambda y: x + y
+ 
+x = Node(1, Leaf(2), Leaf(3))
+print(x.map(add(2))) # Node(3, Leaf(4), Leaf(5))
+</code></pre>
+<p>Functional programming languages emphasize this fact and make it easy
+and ergonomic to define higher-order functions. For example, in Haskell,
+functions are automatically curried, and has higher-order functions like
+<code>map</code> built into the standard library. This makes, for
+example, adding two to elements of a list, straightforward:</p>
+<pre><code class="language-haskell">main :: IO ()
+main = do
+  let x = [1, 2, 3]
+  print (map (+2) x) -- [3, 4, 5]
+</code></pre>
+<h3 id="so-what"><a class="header" href="#so-what">So what?</a></h3>
+<p>Ideas from functional programming languages are increasingly being
+adopted in commonly-used imperative programming languages:</p>
+<ul>
+<li>
+<p>Closures in C++/Rust/Java 8</p>
+</li>
+<li>
+<p>Structural pattern matching in Python 3.11/Java 21</p>
+</li>
+<li>
+<p>Algebraic Data Types in Rust</p>
+</li>
+<li>
+<p>Records in Java 14 etc.</p>
+</li>
+</ul>
+<p>Learning functional programming has a direct impact on your future work as a developer; functional programming is more than just a collection of language features and principles—it fundamentally encourages a new way of solving problem. As we’ve discussed, some of these principles impose meaningful constraints on programmers, which can make problem-solving more challenging and require innovative strategies. Nevertheless, mastering functional programming is invaluable, as it offers a fresh perspective on problem-solving. The skills you acquire will not only enhance your discipline as a developer but also empower you to explore diverse approaches to the challenges you encounter in your daily work.</p>
+<p>Our goal for this course is to therefore first learn how to write
+programs in a purely functional programming language (thus forcing you
+to write programs fully with FP), and then transfer concepts into
+commonly used programming languages. For this, we will be writing code
+in two languages: <em>Haskell</em> (a purely functional programming language)
+and Python (which you should all be relatively familiar with).</p>
+<h3 id="things-you-need"><a class="header" href="#things-you-need">Things You Need</a></h3>
+<p>For this course, you will need the following software:</p>
+<ul>
+<li>
+<p>The Glasgow Haskell Compiler (GHC) (recommended: GHC 9.4.8 or newer)</p>
+</li>
+<li>
+<p>Python 3.12 (note the version; we shall be using new features)</p>
+</li>
+<li>
+<p>Any text editor you like (Visual Studio Code, Neovim etc.)</p>
+</li>
+</ul>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Polymorphism in OOP refers to <em>subtype polymorphism</em>, which is
+different to the polymorphism in FP known as <em>parametric
+polymorphism</em>.</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">2</sup>
+<p>If you have not, you may want to read <a href="../../recap/sections/lambda.html">a recap on the \(\lambda\) calculus</a> before continuing.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">3</sup>
+<p>If you have not, you may want to read
+<a href="../../recap/sections/recursion.html">a recap on recursion</a> before continuing.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">4</sup>
+<p>(Singly-linked) lists are also recursive data structures. To see
+this, look at our definition of binary trees, and remove one subtree
+in the definition of a node (therefore, a node has a value and one
+subtree). This is now a singly-linked list.</p>
+</div>
+<div class="footnote-definition" id="7"><sup class="footnote-definition-label">5</sup>
+<p>If you have not, you may want to read a
+<a href="../../recap/sections/first-class-functions.html">a recap on first-class functions</a> before continuing.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../course_introduction/sections/course_admin.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../course_introduction/sections/haskell.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../course_introduction/sections/course_admin.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../course_introduction/sections/haskell.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

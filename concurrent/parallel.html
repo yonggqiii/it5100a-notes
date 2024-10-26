@@ -1,0 +1,503 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Parallel Programming - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html" class="active"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="parallel-programming"><a class="header" href="#parallel-programming">Parallel Programming</a></h1>
+<p>Let us now turn our focus to parallel programming. For many large problems, we could divide them into chunks and evaluate the solution for these chunks at the same time on multiple cores, before combining the results, just like a divide-and-conquer approach. However, doing so is traditionally seen as difficult, and we usually use the same libraries and language primitives that are used for concurrency to develop a parallel program. Writing parallel programs in general-purpose imperative languages can be complex and tedious.</p>
+<p>While we could certainly use Haskell’s concurrency features like <code>forkIO</code>, <code>MVar</code> and <code>Chan</code> to develop parallel code, there is a much simpler approach available to us. All we need to do is to annotate some sub-expressions in our functions to make them evaluated in parallel.</p>
+<h2 id="non-strict-evaluation"><a class="header" href="#non-strict-evaluation">Non-Strict Evaluation</a></h2>
+<p>In the very beginning of this course, we described Haskell as a non-strict evaluation language. That is, Haskell decides the evaluation strategy for us, unlike other strict evaluation languages where things are evaluated in a deterministic and specific format. For example, in Python, a function call is evaluated by first fully evaluating its arguments, then executing each statement in the function from top down. Haskell generally only evaluates terms <em>by need</em>, giving rise to a notion of <em>lazy evaluation</em>.</p>
+<p>The key idea of attaining <em>parallelism</em> in Haskell is by specifying <em>parallel evaluation strategies</em>.</p>
+<h3 id="strict-evaluation"><a class="header" href="#strict-evaluation">Strict Evaluation</a></h3>
+<p>Before we bgin describing how to evaluate terms in parallel, we must first describe how we can even force the evaluation of a term in the first place. For example, in the following program:</p>
+<pre><code class="language-haskell">ghci&gt; x = [1..]
+ghci&gt; y = sum x
+</code></pre>
+<p>virtually nothing is evaluated, and GHCI does not enter an infinite loop. This is because there is as yet no demand for the evaluation of <code>y</code>. Of course, if we attempt to evaluate <code>y</code>, we do arrive at an infinite loop, because evaluating the actual sum of <code>x</code> is required to determine what <code>y</code> is.</p>
+<p>Therefore, whenever an expression is encountered, Haskell allocates a <em>thunk</em> as a uncomputed placeholder for the result of the expression evaluation. The thunk is only evaluated by need (usually as little as possible) to evaluate other parts of code.</p>
+<p>For example:</p>
+<pre><code class="language-haskell">ghci&gt; x = [1..]
+ghci&gt; case x of { [] -&gt; 0; (x:xs) -&gt; x }
+1
+</code></pre>
+<p>Notice that the <code>case</code> expression demands the evaluation of <code>x</code>. However, it does not demand the <em>complete</em> evaluation of <code>x</code>. Instead, it only demands to know the constructor of <code>x</code>. Therefore, when executing <code>x = [1..]</code>, Haskell puts a completely unevaluated thunk, for <code>x</code>, and the <code>case</code> expression then evaluates <code>x</code> to <em>head normal form</em> (HNF) (evaluating to the constructor but not its arguments)<sup class="footnote-reference"><a href="#1">1</a></sup> to perform the case analysis.</p>
+<p>Another example of lazy evaluation is with <code>let</code> expressions:</p>
+<pre><code class="language-haskell">ghci&gt; let x = [1..]; y = sum x in 1 + 2
+3
+</code></pre>
+<p>Again, Haskell does not evaluate <code>y</code> at all since it is not demanded in the evaluation of <code>1 + 2</code>!</p>
+<p>This may be a problem for concurrency and parallelism, because it is possible for <code>forkIO</code> to push an I/O action to a different thread, only for that thread to allocate an unevaluated thunk for it, and when its evaluation is demanded, the evaluation is done on the main thread!</p>
+<pre><code class="language-haskell">expensive :: MVar String -&gt; IO ()
+expensive var = do
+    putMVar var expensivelyComputedString
+
+main :: IO ()
+main = do
+    var &lt;- newEmptyMVar
+    forkIO $ expensive var
+    whatever
+    result &lt;- takeMVar var
+    print result
+</code></pre>
+<p>The program above gives the impression that the expensive computation is done on the forked thread. However, in reality, what could happen is that the thread running <code>expensive</code> only allocates a thunk for <code>expensivelyComputedString</code>, and returns. Then, when the <code>result</code> is demanded in the <code>main</code> I/O action running in the main thread, it is the main thread that computes the expensively computed string, thereby, achieving nothing from the concurrency.</p>
+<p>It is for this reason that Haskell exposes primitives for deciding the evaluation of expressions. The one most used is <code>seq</code>, which introduces an artificial demand for an expression to be evaluated to head normal form:</p>
+<pre><code class="language-haskell">ghci&gt; :t seq
+seq :: a -&gt; b -&gt; b
+</code></pre>
+<p>The expression <code>x `seq` y</code> evaluates to <code>y</code>, but creates an artificial demand for the evaluation of <code>x</code> as well. Therefore, evaluating the following expression does not terminate:</p>
+<pre><code class="language-haskell">ghci&gt; let x = [1..]; y = sum x in y `seq` 1 + 2
+</code></pre>
+<p>However, notice that the following <em>does</em> terminate:</p>
+<pre><code class="language-haskell">ghci&gt; let x = [1..] in x `seq` 1 + 2
+3
+</code></pre>
+<p>This is because <code>seq</code> only creates an artificial demand for <code>x</code> to be evaluated to <em>head normal form</em>, i.e. up to the evaluation of its constructor.</p>
+<p>What we can do instead is to introduce a new <em>evaluation strategy</em> for forcing the full evaluation of a list:</p>
+<pre><code class="language-haskell">ghci&gt; :{
+ghci| deepSeq :: [a] -&gt; b -&gt; b
+ghci| deepSeq [] x = x
+ghci| deepSeq (x:xs) y = x `seq` deepSeq xs y
+ghci| :}
+ghci&gt; x = [1..]
+ghci&gt; x `seq` 1
+1
+ghci&gt; x `deepSeq` 1
+</code></pre>
+<p>Using <code>deepSeq</code> now forces the full evaluation of <code>x</code>, which obviously does not terminate because <code>x</code> is infinitely large! However, note that <code>deepSeq</code> only evaluates the <em>elements</em> to HNF—therefore, if <code>x</code> were a, for example, a two-dimensional list, the individual one-dimensional lists in <code>x</code> are only evaluated to HNF, i.e. only their constructors are evaluated.</p>
+<h2 id="parallel-evaluation"><a class="header" href="#parallel-evaluation">Parallel Evaluation</a></h2>
+<p>Since parallel programming is all about deciding what expressions to evaluate in parallel, all we need is some primitives that tell the compiler to evaluate an expression in parallel, just like <code>seq</code>! The <code>GHC.Conc</code> module exposes two evaluation primitives, <code>par</code> and <code>pseq</code> that allows us to do parallel programming easily:</p>
+<pre><code class="language-haskell">ghci&gt; import GHC.Conc
+ghci&gt; :t par
+par :: a -&gt; b -&gt; b
+ghci&gt; :t pseq
+pseq :: a -&gt; b -&gt; b
+</code></pre>
+<p><code>par</code> is straightforward to understand: <code>x `par` y</code> is an expression stating that there is an artificial demand for <code>x</code> that <em>could</em> be evaluated to HNF in <em>parallel</em>. However, <code>par</code> does not <em>guarantee</em> the parallel evaluation of <code>x</code>. This is because <code>x</code> could be a cheap computation that does not need to be, and should not be, evaluated in parallel, or that there are not enough cores available for the parallel evaluation of <code>x</code>.</p>
+<p>Then, what is <code>pseq</code> for? Notice this: in an expression <code>x `par` f x y</code>, we claim to want to evaluate <code>x</code> in parallel to HNF, <em>and then</em> combine it with <code>y</code> using <code>f</code> in the current thread. However, this requires a guarantee that <code>y</code> is evaluated on the current thread <em>before</em> the current thread attempts to evaluate <code>x</code>. Otherwise, it could be that <code>par</code> will queue a spark for the evaluation of <code>x</code>, and before a new thread can be sparked for that evaluation, the current thread evaluates <code>f x y</code>, which performs the evaluation of <code>x</code> first; therefore, no parallel evaluation of <code>x</code> happens, defeating of <code>par</code> in the first place.</p>
+<p>Therefore, we need some primitive that performs the evaluation of an expression to HNF before another expression. <code>seq</code> does not do this; <code>x `seq` y</code> only claims to evaluate <code>x</code> to HNF, but does not enforce that to happen <em>before</em> <code>y</code>. In contrast, <code>pseq</code> does. <code>x `pseq` y</code> guarantees that the evaluation of <code>x</code> to HNF happens <em>before</em> the evaluation of <code>y</code>.</p>
+<p>As such, <code>par</code> and <code>pseq</code> allow us to annotate computations with evaluation strategies to describe what computation happens in parallel, and what that computation is <em>in parallel with</em>. For example, the expression <code>x `par` (y `pseq` f x y)</code> states roughly that <code>x</code> happens in parallel with <code>y</code>, then the results are combined using <code>f</code>.</p>
+<p>For example, let us try writing a parallel (but still exponential) fibonacci:</p>
+<pre><code class="language-haskell">fib :: Int -&gt; Integer
+fib 0 = 0
+fib 1 = 1
+fib n = n1 `par` (n2 `pseq` (n1 + n2))
+  where n1 = fib (n - 1)
+        n2 = fib (n - 2)
+</code></pre>
+<p>Aside from the usual base cases, the recursive case computes the \(n-1\) and \(n - 2\) fibonacci numbers in parallel, then combines them together with addition. Described in words, the recursive case computes <code>fib (n - 1)</code> in parallel with <code>fib (n - 2)</code> by queueing a spark for <code>fib (n - 1)</code> and evaluating <code>fib (n - 2)</code> in the current thread, then adds the results together with plain addition.</p>
+<p>Computing <code>fib 45</code> shows that for large values, having more cores makes a big difference.</p>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N20
+Number of cores: 20
+1134903170
+
+________________________________________________________
+Executed in    3.29 secs    fish           external
+   usr time   53.14 secs  319.00 micros   53.14 secs
+   sys time    0.47 secs  129.00 micros    0.47 secs
+
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N1
+Number of cores: 1
+1134903170
+
+________________________________________________________
+Executed in   12.93 secs    fish           external
+   usr time   12.61 secs  418.00 micros   12.61 secs
+   sys time    0.08 secs  171.00 micros    0.08 secs
+</code></pre>
+<h2 id="when-should-we-parallelize"><a class="header" href="#when-should-we-parallelize">When Should We Parallelize?</a></h2>
+<p>However, notice the <code>usr</code> time for the case of running our program on 20 cores. Clearly, the CPU does more than 4x more work than the single core case; it just so happens that leveraging more cores makes the speed-ups outweigh the additional overhead. Indeed, while <code>par</code> is cheap, it is not <em>free</em>. Although Haskell threads are lightweight, threads in general will always incur some additional overhead, and at some point, the benefits of computing something in parallel are outweighed by the overhead of spawning a new thread for its computation. For example, in the case of computing <code>fib 3</code>, it is frankly completely unnecessary to compute <code>fib 2</code> and <code>fib 1</code> in parallel, since both are such small computations that run incredibly quickly.</p>
+<p>Let us amend our implementation to only use parallelism for larger values. Smaller values are computed sequentially:</p>
+<pre><code class="language-haskell">fib :: Int -&gt; Integer
+fib 0 = 0
+fib 1 = 1
+-- sequential for small n
+fib n | n &lt;= 10 = fib (n - 1) + fib (n - 2)
+-- parallel for large n
+fib n = n1 `par` (n2 `pseq` (n1 + n2))
+  where n1 = fib (n - 1)
+        n2 = fib (n - 2)
+</code></pre>
+<p>The execution time shows a significant speed-up on both the single core and multicore runtimes!</p>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N20
+Number of cores: 20
+1134903170
+
+________________________________________________________
+Executed in  892.37 millis    fish           external
+   usr time   13.01 secs    646.00 micros   13.00 secs
+   sys time    0.18 secs      0.00 micros    0.18 secs
+
+
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N1
+Number of cores: 1
+1134903170
+
+________________________________________________________
+Executed in    6.81 secs    fish           external
+   usr time    6.71 secs  453.00 micros    6.71 secs
+   sys time    0.03 secs    0.00 micros    0.03 secs
+</code></pre>
+<p>Generally speaking, knowing when to parallelize is a matter of experimentation, trial-and-error and engineering experience. It highly depends on the computation you are trying to parallelize, the kind of computation you are doing, the usual inputs to the computation, and so on.</p>
+<h2 id="parallel-strategies"><a class="header" href="#parallel-strategies">Parallel Strategies</a></h2>
+<p>Let us try writing a parallel mergesort:</p>
+<pre><code class="language-haskell">mergesort :: Ord a =&gt; [a] -&gt; [a]
+mergesort [] = []
+mergesort [x] = [x]
+mergesort ls
+  | n &lt; 100 = merge left' right'
+  | otherwise = par left' $ pseq right' $ merge left' right'
+    where n = length ls `div` 2
+          merge [] ys = ys
+          merge xs [] = xs
+          merge (x:xs) (y:ys)
+            | x &lt;= y = x : merge xs (y : ys)
+            | otherwise = y : merge (x:xs) ys
+          (left, right) = splitAt n ls
+          left' = mergesort left
+          right' = mergesort right
+</code></pre>
+<p>Our <code>mergesort</code> function does a typical merge sort, except from the fact that we are using an immutable list. Let us write a supporting <code>main</code> function to test our program:</p>
+<pre><code class="language-haskell">main :: IO ()
+main = do
+  n &lt;- getNumCapabilities
+  putStrLn $ "Number of cores: " ++ show n
+  let ls :: [Int] = [10000000, 9999999..1]
+      ls' = mergesort ls
+  print $ length ls'
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N20
+Number of cores: 20
+10000000
+
+________________________________________________________
+Executed in    3.58 secs    fish           external
+   usr time   16.02 secs  381.00 micros   16.02 secs
+   sys time    1.39 secs  159.00 micros    1.39 secs
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N1
+Number of cores: 1
+10000000
+
+________________________________________________________
+Executed in    6.11 secs    fish           external
+   usr time    5.62 secs    0.00 micros    5.62 secs
+   sys time    0.43 secs  586.00 micros    0.43 secs
+</code></pre>
+<p>From before, recall that because Haskell is a lazy language, it may be the case that not all the supposedly parallel computation happens in the other thread. Since both <code>par</code> and <code>pseq</code> evaluate their first arguments only to HNF, it really only does evaluation up until it determines the constructor of the list after sorting, leaving the remainder of the list unevaluated. Then, in <code>main</code>, when we obtain the <code>length</code> of the list, the main thread may then have to evaluate the remainder of the list in the same thread. Let us extract some more performance out of our parallel evaluation by actually evaluating everything deeply in the parallel computation using <code>deepSeq</code> from before:</p>
+<pre><code class="language-haskell">mergesort :: Ord a =&gt; [a] -&gt; [a]
+mergesort [] = []
+mergesort [x] = [x]
+mergesort ls
+  | n &lt; 100 = merge left' right'
+  | otherwise = par (deepSeq left') $ pseq right' $ merge left' right'
+    where n = length ls `div` 2
+          merge [] ys = ys
+          merge xs [] = xs
+          merge (x:xs) (y:ys)
+            | x &lt;= y = x : merge xs (y : ys)
+            | otherwise = y : merge (x:xs) ys
+          (left, right) = splitAt n ls
+          left' = mergesort left
+          right' = mergesort right
+
+deepSeq :: [a] -&gt; ()
+deepSeq [] = ()
+deepSeq (x:xs) = x `seq` deepSeq xs
+</code></pre>
+<p>Now we should notice some more performance gains!</p>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N20
+Number of cores: 20
+10000000
+
+________________________________________________________
+Executed in    2.89 secs    fish           external
+   usr time   18.04 secs  365.00 micros   18.04 secs
+   sys time    0.68 secs  145.00 micros    0.67 secs
+</code></pre>
+<pre><code class="language-output info">&gt; time cabal run playground -- +RTS -N1
+Number of cores: 1
+10000000
+
+________________________________________________________
+Executed in    6.18 secs    fish           external
+   usr time    5.59 secs  362.00 micros    5.59 secs
+   sys time    0.46 secs  145.00 micros    0.46 secs
+</code></pre>
+<p>Some very smart people have also come up with nice and elegant ways to write parallel code. For example, using the <a href="https://hackage.haskell.org/package/parallel"><code>parallel</code></a> library, we can express parallel programs with <code>Strategy</code>'s in the <code>Eval</code> monad:</p>
+<pre><code class="language-haskell">mergesort :: (Ord a, NFData a) =&gt; [a] -&gt; [a]
+mergesort [] = []
+mergesort [x] = [x]
+mergesort ls
+  | n &lt; 100 = merge left' right'
+  | otherwise = runEval $ do
+      l &lt;- rparWith rdeepseq left'
+      r &lt;- rseq right'
+      return $ merge l r
+  where n = length ls `div` 2
+        (left, right) = splitAt n ls
+        left' = mergesort left
+        right' = mergesort right
+        merge [] ys = ys
+        merge xs [] = xs
+        merge (x:xs) (y:ys)
+          | x &lt;= y = x : merge xs (y : ys)
+          | otherwise = y : merge (x:xs) ys
+</code></pre>
+<p>Strategies also allow us to separate algorithm from evaluation. For example, we can write a parallel fibonacci like so:</p>
+<pre><code class="language-haskell">fib :: Int -&gt; Integer
+fib 0 = 0
+fib 1 = 1
+fib n | n &lt;= 10 = fib (n - 1) + fib (n - 2)
+fib n = runEval $ do 
+    n1 &lt;- rpar (fib (n - 1))
+    n2 &lt;- rseq (fib (n - 2))
+    return $ n1 + n2
+</code></pre>
+<p>Alternatively, we can make clear the distinction between the underlying algorithm and the evaluation strategy with <code>using</code>:</p>
+<pre><code class="language-haskell">fib :: Int -&gt; Integer
+fib 0 = 0
+fib 1 = 1
+fib n | n &lt;= 10   = n1 + n2
+      | otherwise = (n1 + n2) `using` strat
+  where n1 = fib (n - 1)
+        n2 = fib (n - 2)
+        strat v = do { rpar n1; rseq n2; return v }
+</code></pre>
+<p>We will leave it up to you to learn more about parallel Haskell with the <a href="https://hackage.haskell.org/package/parallel"><code>parallel</code></a> library. For more information, you may read the paper by <a href="#seqnomore">Marlow et al.; 2010</a> that describes it. We shall not cover these because they, along with <code>par</code> and <code>pseq</code>, are much more Haskell-specific and less applicable to code written in general-purpose languages. The only goal of this chapter, which we hope has been achieved, is to show how easy it is to introduce parallelism to regular sequential programs in a purely functional programming language.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Usually expressions are evaluated to <em>weak head normal form</em> (WHNF), although the distinction is not crucial for our understanding.</p>
+</div>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<a id="seqnomore" class="cite">
+Simon Marlow, Patrick Maier, Hans-Wolfgang Loidl, Mustafa K. Aswad, and Phil Trinder. 2010. <code>seq</code> No More: Better Strategies for Parallel Haskell. In <i>Proceedings of the third ACM Haskell symposium on Haskell (Haskell '10)</i>. Association for Computing Machinery, New York, NY, USA, 91–102. <a class="cite" href="https://doi.org/10.1145/1863523.1863535">https://doi.org/10.1145/1863523.1863535</a>.
+</a>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../concurrent/concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../concurrent/stm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../concurrent/concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../concurrent/stm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

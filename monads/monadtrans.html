@@ -1,0 +1,541 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Monad Transformers - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html" class="active"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="monad-transformers"><a class="header" href="#monad-transformers">Monad Transformers</a></h1>
+<p>Monads support <em>composition in context</em>. Another question to ask is, can we <em>compose monads</em>? In other words, can we combine monads together?</p>
+<p>Consider the example of finding the length of the path between two connected neighbours in a directed graph, except that we have each node connected to at most one edge. The way we might solve this problem is, once again, via DFS (which in this case is the same as BFS), except that our graph is now of type <code>[(Node, Node)]</code> and our function returns the length of the path instead of a <code>Bool</code> value describing whether the path exists:</p>
+<pre><code class="language-haskell">type Node = Int
+type Graph = [(Node, Node)]
+dfs :: Node -&gt; Node -&gt; Graph -&gt; Maybe Int
+dfs src dst gph = aux src [] gph where
+    aux :: Node -&gt; [Node] -&gt; Graph -&gt; Maybe Int
+    aux current visited gph'
+      | arrived = return 0
+      | alreadyVisited = Nothing
+      | otherwise  = do
+          n &lt;- lookup current gph
+          (+1) &lt;$&gt; aux n (current : visited) gph'
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>Notice that just like our previous definition of <code>dfs</code>, all our functions such as <code>dfs</code> and <code>lookup</code> involve some environment which we need to pass around! Let us try changing everything of type <code>Graph -&gt; Maybe Int</code> to <code>Reader Graph (Maybe Int)</code> and modify our environment to no longer receive the <code>gph</code> argument:</p>
+<pre><code class="language-haskell">type Node = Int
+type Graph = [(Node, Node)]
+dfs :: Node -&gt; Node -&gt; Reader Graph (Maybe Int)
+dfs src dst = aux src [] where
+    aux :: Node -&gt; [Node] -&gt; Reader Graph (Maybe Int)
+    aux current visited 
+      | arrived = return 0
+      | alreadyVisited = Nothing
+      | otherwise  = do
+          n &lt;- lookup current
+          (+1) &lt;$&gt; aux n (current : visited)
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>Unfortunately, our code doesn't type check. This is because now our <code>do</code> block performs the monadic operations based on the definition of <code>Reader</code>, not on <code>Maybe</code>! As such, we may need significant rewrites to our function to introduce the <code>Reader</code> monad to our <code>Maybe</code> computation.</p>
+<h2 id="enriching-the-maybe-monad"><a class="header" href="#enriching-the-maybe-monad">Enriching the <code>Maybe</code> Monad</a></h2>
+<p>Is there a better way? Yes! Let us try defining a new monad <code>ReaderMaybe</code> that essentially acts as both the <code>Reader</code> and the <code>Maybe</code> monads!</p>
+<pre><code class="language-haskell">newtype ReaderMaybe env a = ReaderMaybe { runReaderMaybe :: Reader env (Maybe a) }
+
+instance Functor (ReaderMaybe env) where
+  fmap :: (a -&gt; b) -&gt; ReaderMaybe env a -&gt; ReaderMaybe env b
+  fmap f (ReaderMaybe ls) = ReaderMaybe $ fmap (fmap f) ls
+
+instance Applicative (ReaderMaybe env) where
+  pure :: a -&gt; ReaderMaybe env a
+  pure = ReaderMaybe . pure . pure
+  (&lt;*&gt;) :: ReaderMaybe env (a -&gt; b) -&gt; ReaderMaybe env a -&gt; ReaderMaybe env b
+  (ReaderMaybe f) &lt;*&gt; (ReaderMaybe x) = ReaderMaybe $ do
+    maybe_f &lt;- f
+    case maybe_f of 
+      Nothing -&gt; return Nothing
+      Just f' -&gt; do
+        maybe_x &lt;- x
+        case maybe_x of 
+          Nothing -&gt; return Nothing
+          Just x' -&gt; return $ Just (f' x')
+
+instance Monad (ReaderMaybe env) where
+  return :: a -&gt; ReaderMaybe env a
+  return = pure
+  (&gt;&gt;=) :: ReaderMaybe env a -&gt; (a -&gt; ReaderMaybe env b) -&gt; ReaderMaybe env b
+  (ReaderMaybe ls) &gt;&gt;= f = ReaderMaybe $ do
+    m &lt;- ls
+    case m of
+      Just x -&gt; runReaderMaybe $ f x
+      Nothing -&gt; return Nothing
+</code></pre>
+<p>All of these methods are tedious to define, however are somewhat straightforward. In particular, it relies on <code>do</code> notation on <code>Reader</code>s to extract out the <code>Maybe</code> values, and performs the usual <code>Maybe</code> methods to compose them.</p>
+<p>The result is that we can now make use of this <code>ReaderMaybe</code> monad in our <code>dfs</code> function:</p>
+<pre><code class="language-haskell">dfs :: Node -&gt; Node -&gt; Graph -&gt; Maybe Int
+dfs src dst = runReaderMaybe (aux src []) where
+    aux :: Node -&gt; [Node] -&gt; ReaderMaybe Graph Int
+    aux current visited 
+      | arrived = return 0
+      | alreadyVisited = ReaderMaybe $ return Nothing
+      | otherwise  = do
+          n &lt;- ReaderMaybe $ lookup current 
+          (+1) &lt;$&gt; aux n (current : visited)
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>There are several points worthy of note in our new implementation:</p>
+<ol>
+<li>Most of this definition is the same as our original definition that works on the <code>Maybe</code> monad</li>
+<li>Because the <code>aux</code> function returns a <code>ReaderMaybe</code> term which wraps the actual <code>Reader</code> function, we write <code>runReaderMaybe (aux src [])</code> to expose the actual <code>Reader Graph (Maybe Int)</code> function</li>
+<li>In the <code>alreadyVisited</code> case, we cannot write <code>alreadyVisited = Nothing</code> since <code>Nothing</code> is not of the type <code>ReaderMaybe Graph Int</code>; we also cannot just write <code>return Nothing</code> since that has type <code>ReaderMaybe env (Maybe a)</code>. As such, we have to use <code>return @(Reader Graph) Nothing</code>, then wrap it in the <code>ReaderMaybe</code> constructor</li>
+<li>Similar to (3), instead of <code>lookup current</code>, we have to wrap it around the <code>ReaderMaybe</code> constructor so that instead of having type <code>Reader Graph (Maybe Int)</code>, <code>ReaderMaybe $ lookup current</code> will have type <code>ReaderMaybe Graph Int</code>, which is the correct type to have.</li>
+</ol>
+<p>When converting the original implementation based on <code>Maybe</code> into the new implementation based on <code>ReaderMaybe Graph Int</code>, one tip is to leave the implementation the same and just change the type signature of the functions to use <code>ReaderMaybe Graph Int</code> instead of <code>Graph -&gt; Maybe Int</code>, then make use of typing information to correct the types in the program; in other words, "let the types guide your programming", like we have done in <a href="../types/README.html">Chapter 2 (Types)</a>! Furthermore, we are generally assured that everything works as expected because monads behave in the <em>most obvious way</em>!</p>
+<p>Just like that, we are able to compose the <code>Reader</code> monad with the <code>Maybe</code> monad! Running <code>dfs</code> works exactly as we'd expect:</p>
+<pre><code class="language-haskell">ghci&gt; my_map = [(1, 2), (2, 3), (3, 1)]
+ghci&gt; dfs 1 4 my_map
+Nothing
+ghci&gt; dfs 1 2 my_map
+Just 1
+ghci&gt; dfs 2 1 my_map
+Just 2
+</code></pre>
+<p>Now, what if we wanted to enrich the <code>Maybe</code> monad with other notions of computation, such as <code>[]</code>, <code>IO</code> etc? Suppose we follow the same procedure of enriching <code>Maybe</code> with <code>Reader</code>, but instead by enriching it with <code>IO</code>, giving us a new monad <code>IOMaybe a</code> which represents <code>IO (Maybe a)</code>:</p>
+<pre><code class="language-haskell">newtype IOMaybe a = IOMaybe { runIOMaybe :: IO (Maybe a) }
+
+instance Functor IOMaybe where
+  fmap :: (a -&gt; b) -&gt; IOMaybe a -&gt; IOMaybe b
+  fmap f (IOMaybe io) = IOMaybe (fmap (fmap f) io)
+
+instance Applicative IOMaybe where
+  pure :: a -&gt; IOMaybe a
+  pure = IOMaybe . pure . pure
+  (&lt;*&gt;) :: IOMaybe (a -&gt; b) -&gt; IOMaybe a -&gt; IOMaybe b
+  (IOMaybe f) &lt;*&gt; (IOMaybe x) = IOMaybe $ do
+    maybe_f &lt;- f
+    case maybe_f of 
+      Nothing -&gt; return Nothing
+      Just f' -&gt; do
+        maybe_x &lt;- x
+        case maybe_x of 
+          Nothing -&gt; return Nothing
+          Just x' -&gt; return $ Just (f' x')
+
+instance Monad IOMaybe where
+  return :: a -&gt; IOMaybe a
+  return = pure
+  (&gt;&gt;=) :: IOMaybe a -&gt; (a -&gt; IOMaybe b) -&gt; IOMaybe b
+  (IOMaybe m) &gt;&gt;= f = IOMaybe $ do
+    maybe_m &lt;- m
+    case maybe_m of
+      Just x -&gt; runIOMaybe $ f x
+      Nothing -&gt; return Nothing
+</code></pre>
+<p>There are several things worth thinking about. Firstly, so far, it appears that we have to re-create new instances for <em>every</em> notion of computation we want to enrich <code>Maybe</code> with. Secondly, you might realise that absolutely nothing about the definition of the instances care about the enriching monad. All of the definitions in the methods for <code>ReaderMaybe</code> and <code>IOMaybe</code> do not mention any <code>Reader</code>-specific or <code>IO</code>-specific functions. Instead, they all rely on their respective monad binds! Therefore, we can abstract these into a <em>monad transformer</em>.</p>
+<h2 id="monad-transformers-1"><a class="header" href="#monad-transformers-1">Monad Transformers</a></h2>
+<p>A monad transformer <code>MonadT m a</code> enriches <code>Monad</code> with <code>m</code>. For example, the <code>MaybeT m a</code> monad transformer enriches <code>Maybe</code> with <code>m</code>. Therefore, our <code>ReaderMaybe</code> and <code>IOMaybe</code> monads can be represented exactly as <code>MaybeT (Reader env)</code> and <code>MaybeT IO</code>! The definition of <code>MaybeT</code> is virtually the exact same as the definitions of <code>ReaderMaybe</code> and <code>IOMaybe</code>, except that we do not refer to <code>Reader</code> or <code>IO</code>, and leave them as <code>m</code>:</p>
+<pre><code class="language-haskell">newtype MaybeT m a = MaybeT { runMaybeT :: m (Maybe a) }
+
+instance (Functor m) =&gt; Functor (MaybeT m) where
+    fmap f (MaybeT x) = MaybeT $ fmap (fmap f) x
+
+instance (Functor m, Monad m) =&gt; Applicative (MaybeT m) where
+    pure = MaybeT . return . Just
+    mf &lt;*&gt; mx = MaybeT $ do
+        mb_f &lt;- runMaybeT mf
+        case mb_f of
+            Nothing -&gt; return Nothing
+            Just f  -&gt; do
+                mb_x &lt;- runMaybeT mx
+                case mb_x of
+                    Nothing -&gt; return Nothing
+                    Just x  -&gt; return (Just (f x))
+
+instance (Monad m) =&gt; Monad (MaybeT m) where
+    return = MaybeT . return . Just
+    x &gt;&gt;= f = MaybeT $ do
+        v &lt;- runMaybeT x
+        case v of
+            Nothing -&gt; return Nothing
+            Just y  -&gt; runMaybeT (f y)
+</code></pre>
+<p>With this <code>Maybe</code> monad transformer, we can rewrite our definition of <code>dfs</code> by replacing <code>ReaderMaybe Graph Int</code> with <code>MaybeT (Reader Graph) Int</code>!</p>
+<pre><code class="language-haskell">dfs :: Node -&gt; Node -&gt; Graph -&gt; Maybe Int
+dfs src dst = runMaybeT (aux src []) where
+    aux :: Node -&gt; [Node] -&gt; MaybeT (Reader Graph) Int
+    aux current visited 
+      | arrived = return 0
+      | alreadyVisited = MaybeT $ return Nothing
+      | otherwise  = do
+          n &lt;- MaybeT $ lookup current 
+          (+1) &lt;$&gt; aux n (current : visited)
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>And now with the <code>MaybeT</code> monad transformer, we can enrich the <code>Maybe</code> monad with any other monad we want without having to redefine new types and new type class instances for each of the monads we are enriching <code>Maybe</code> with!</p>
+<h2 id="monad-transformer-library"><a class="header" href="#monad-transformer-library">Monad Transformer Library</a></h2>
+<p>Because monads are so common in programming, the common monads already have their own monad transformers, and these are defined in the <a href="https://hackage.haskell.org/package/transformers"><code>transformers</code></a> and <a href="https://hackage.haskell.org/package/mtl"><code>mtl</code></a> libraries. If you want to use these commonly used monad transformers, just download the dependencies and <code>import</code> the libraries into your programs! But... how do we do that?</p>
+<h3 id="build-tools-and-package-managers"><a class="header" href="#build-tools-and-package-managers">Build Tools and Package Managers</a></h3>
+<p>Most production programming languages have a package manager and build tool, and Haskell is no different. In fact, Haskell has <em>several</em> package managers and build tools you can use. Two of the main competing ones are <a href="https://www.haskell.org/cabal/"><code>cabal</code></a> and <a href="https://docs.haskellstack.org/en/stable/"><code>stack</code></a>, both of which can be installed via <a href="https://www.haskell.org/ghcup/">GHCup</a>. For our purposes, we shall just use <code>cabal</code> since it is slightly simpler to use; most modern versions are generally fine, but for us, we shall use (at least) <code>cabal-3.10.3</code>.</p>
+<h3 id="project-initialization"><a class="header" href="#project-initialization">Project Initialization</a></h3>
+<p>Using <code>cabal</code> is very simple. First, to create a new Haskell project, create an empty directory and run <code>cabal init</code> (<code>&gt;</code> is the shell prompt of the terminal, do not enter <code>&gt;</code> as part of the command)</p>
+<pre><code class="language-output info">&gt; mkdir my-project
+&gt; cd my-project
+&gt; cabal init
+</code></pre>
+<p>Then, <code>cabal</code> will take you through a series of questions to initialize the project. Some notable options are:</p>
+<ul>
+<li>Executables are programs that can be executed; libraries are code that other Haskell users can import. For us, choose to build an executable</li>
+<li>The main module of the executable should be <code>Main.hs</code>. The <code>Main.lhs</code> option is for writing <a href="https://wiki.haskell.org/Literate_programming">literate Haskell</a> programs. You can use that as well, although for us, it is significantly easier to just use <code>Main.hs</code> and write plain Haskell programs.</li>
+<li>The language for our executable should be GHC2021, giving us as many of the latest features as we can have without having to include them as language extensions.</li>
+</ul>
+<p>The result of running <code>cabal init</code> is that your project directory has been initialized with several parts:</p>
+<ul>
+<li>The <code>app</code> directory (or whatever name you have chosen) stores the source code of your program</li>
+<li><code>my-project.cabal</code> is the specification of your project.</li>
+</ul>
+<h3 id="project-configuration"><a class="header" href="#project-configuration">Project Configuration</a></h3>
+<p>Let us investigate what is in <code>my-project.cabal</code> (some comments and fields omitted for concision):</p>
+<pre><code class="language-haskell">cabal-version:      3.0
+-- ...
+common warnings
+    ghc-options: -Wall
+executable my-project
+    import:           warnings
+    main-is:          Main.hs
+
+    -- Modules included in this executable, other than Main.
+    -- other-modules:
+
+    -- LANGUAGE extensions used by modules in this package.
+    -- other-extensions:
+
+    -- Other library packages from which modules are imported.
+    build-depends:    base ^&gt;=4.17.2.1
+
+    -- Directories containing source files.
+    hs-source-dirs:   app
+
+    -- Base language which the package is written in.
+    default-language: GHC2021
+</code></pre>
+<p>The <code>executable my-project</code> clause describes some of the specifications of our project. In particular, the <code>build-depends</code> field describes any external dependencies we wish to include. These dependencies can be automatically pulled from Hackage by <code>cabal</code>, as long as we specify the name, and optionally the version, of the package. For example, we want the <code>Control.Monad.Trans.Maybe</code> module in <code>transformers</code> library. Hence, to include the <code>transformers</code> library to have access to monad transformers, just include <code>transformers</code> in <code>build-depends</code>.</p>
+<pre><code class="language-haskell">-- ...
+executable my-project
+    -- ...
+    -- Other library packages from which modules are imported.
+    build-depends:    base ^&gt;=4.17.2.1
+                    , transformers
+    -- ...
+</code></pre>
+<p>Then, run <code>cabal install</code> to install all our dependencies!</p>
+<pre><code class="language-output">&gt; cabal install
+/path/to/my-project-0.1.0.0.tar.gz
+Resolving dependencies...
+Symlinking 'my-project' to '/path/to/.local/bin/my-project'
+</code></pre>
+<p>And that's all! Just like that, we now have access to <code>transformers</code> functions, data types, classes and methods!</p>
+<h3 id="writing-the-program"><a class="header" href="#writing-the-program">Writing the Program</a></h3>
+<p>Let us try creating a simple executable program in our project. First, we create our simple graph library. Right now, our project directory looks like this:</p>
+<pre><code class="language-output">my-project/
+├─ my-project.cabal
+├─ app/
+│   └─ Main.hs
+└─ ...
+</code></pre>
+<p>Let us create a simple graph library by creating a file <code>my-project/app/Data/Graph.hs</code>, therefore our directory structure becomes:</p>
+<pre><code class="language-output">my-project/
+├─ my-project.cabal
+├─ app/
+│   ├─ Main.hs
+│   └─ Data/
+│        └─ Graph.hs
+└─ ...
+</code></pre>
+<p>This creates a new module called <code>Data.Graph</code>. We must include this in our <code>cabal</code> file so that <code>cabal</code> knows to compile it as well. Head back to <code>my-project.cabal</code>, and include <code>Data.Graph</code> in the <code>other-modules</code> field:</p>
+<pre><code class="language-haskell">-- ...
+executable my-project
+    -- ...
+    -- Modules included in this executable, other than Main.
+    other-modules:    Data.Graph
+    -- ...
+</code></pre>
+<p>Now, open <code>Graph.hs</code> and write some code! In particular:</p>
+<ol>
+<li>Declare the name of the module. In this case, the module is called <code>Data.Graph</code> because it is in the <code>Data</code> directory and the file name is <code>Graph.hs</code>.</li>
+<li>Import the <code>Control.Monad.Trans.Maybe</code> module to have access to <code>MaybeT</code>, and the <code>Control.Monad.Trans.Reader</code> monad to have access to the <code>Reader</code> monad.</li>
+<li>Define our <code>dfs</code> function.</li>
+</ol>
+<pre><code class="language-haskell">module Data.Graph where
+
+import Control.Monad.Trans.Maybe
+import Control.Monad.Trans.Reader
+
+type Graph = [(Node, Node)]
+type Node = Int
+
+type GraphProcessor = MaybeT (Reader Graph) Int
+
+dfs :: Node -&gt; Node -&gt; Graph -&gt; Maybe Int
+dfs src dst = runReader $ runMaybeT (aux src []) where
+    aux :: Node -&gt; [Node] -&gt; GraphProcessor
+    aux current visited 
+      | arrived = return 0
+      | alreadyVisited = MaybeT $ return Nothing
+      | otherwise  = do
+          n &lt;- MaybeT $ reader $ lookup current 
+          (+1) &lt;$&gt; aux n (current : visited)
+      where arrived = current == dst
+            alreadyVisited = current `elem` visited
+</code></pre>
+<p>Note that our <code>Reader</code> monad shown in the previous chapter is quite different to the one defined in <code>transformers</code>. In fact, <code>Reader env a</code> is actually defined as <code>ReaderT env Identity a</code>. This is because it is generally quite uncommon to use the <code>Reader</code> monad by itself, since what it represents is just a plain function. The <code>ReaderT</code> monad transformer is defined as such:</p>
+<pre><code class="language-haskell">newtype ReaderT r m a = ReaderT { runReaderT :: r -&gt; m a }
+type Reader env a = ReaderT env Identity a
+</code></pre>
+<p>And the <code>Identity</code> monad is completely uninteresting:</p>
+<pre><code class="language-haskell">newtype Identity a = Identity { runIdentity :: a }
+</code></pre>
+<p>As such, the <code>transformers</code> library exposes some helper functions to make working with the plain <code>Reader</code> monad easier; for example, the <code>runReader</code> function extracts the enclosed function from a <code>ReaderT</code>, and the <code>reader</code> function transforms a function into a <code>ReaderT</code>.</p>
+<p>We are done with our <code>Graph</code> library. Now, open <code>app/Main.hs</code> and write the following to see our <code>dfs</code> function in action (note that <code>print</code> is defined as <code>putStrLn . show</code>)!</p>
+<pre><code class="language-haskell">module Main where
+
+import Data.Graph
+
+myGraph :: Graph
+myGraph = [(1, 2), (2, 3), (3, 1), (4, 5)]
+
+main :: IO ()
+main = do
+  print $ dfs 1 2 myGraph
+  print $ dfs 1 5 myGraph
+</code></pre>
+<p>We are done with developing our simple application! Compiling and running our program is simple with the help of build tools like <code>cabal</code>. In the terminal, just enter <code>cabal run</code> to compile the program (if changes have been made) and execute it!</p>
+<pre><code class="language-output info">&gt; cabal run
+Just 1
+Nothing
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../monads/common_monads.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../monads/monads_wild.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../monads/common_monads.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../monads/monads_wild.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

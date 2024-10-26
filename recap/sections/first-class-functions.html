@@ -1,0 +1,425 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>First-Class Functions - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html" class="active"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="first-class-functions"><a class="header" href="#first-class-functions">First-Class Functions</a></h1>
+<p>When we say that a language has first-class functions, what we mean is that functions are just regular terms or objects just like other terms and objects that you frequently encounter. Therefore, they can be <em>assigned to variables</em>, <em>passed in as arguments</em> and <em>returned from functions</em>. A language like Python (and of course, functional programming languages like Haskell and Lean) has first-class functions, making the following program completely valid:</p>
+<pre><code class="language-python">def foo():
+    return 1
+x = foo
+y = x() # 1
+</code></pre>
+<p>Although this program seems extremely weird, especially for those who are familiar with languages like C and Java, it totally works. The idea is, at least in Python, that functions are also <em>objects</em>, and therefore the <code>foo</code> <em>name</em> or <em>variable</em> actually stores a reference to the function that always returns <code>1</code>. This reference can be assigned to any other variable like <code>x</code> because <code>foo</code> is also a reference to an object! Then, when we invoke <code>x</code>, the Python runtime looks-up the reference stored in <code>x</code> which points to the <code>foo</code> function, and thus evaluates to <code>1</code>.</p>
+<p>Then, a function that receives functions as arguments or returns functions is known as a <em>higher-order function</em>. Let us look at the following examples:</p>
+<pre><code class="language-python">def add(x):
+    def add_x(y):
+        return x + y
+    return add_x
+</code></pre>
+<p>Invoking this function is slightly weird, although still behaves more-or-less as expected:</p>
+<pre><code class="language-python">&gt;&gt;&gt; add(1)(2)
+3
+</code></pre>
+<p>As you can see, <code>add</code> defines a local function <code>add_x</code> that receives <code>y</code> and returns <code>x + y</code>, for whatever <code>x</code> was passed into <code>add</code>. Then, <code>add</code> returns the <code>add_x</code> function itself! Therefore, <code>add(1)</code> actually evaluates to the <em>function</em> <code>add_x</code> where <code>x</code> is <code>1</code>, and when <em>that</em> is invoked, it evaluates to <code>1 + 2</code> which is <code>3</code>! This is an example of a function that <em>returns</em> a function, making it a higher-order function.</p>
+<p>Another example is as follows:</p>
+<pre><code class="language-python">def map(f, it):
+    return (f(i) for i in it)
+</code></pre>
+<p>This function <em>invokes</em> the argument <code>f</code>, passing each <code>i</code> from <code>it</code>. Therefore, <code>f</code> is a function! An example of using <code>map</code> is as follows:</p>
+<pre><code class="language-python">&gt;&gt;&gt; def add_1(x): return x + 1
+&gt;&gt;&gt; list(map(add_1, [1, 2, 3]))
+[2, 3, 4]
+</code></pre>
+<p>As you can see, <code>map</code> applies <code>add_1</code> to every single element of <code>[1, 2, 3]</code> and yields them into the resulting list, thereby giving us <code>[2, 3, 4]</code>! Again, since <code>map</code> <em>receives</em> functions like <code>add_1</code>, it is also a higher-order function.</p>
+<p>Having to write simple functions like <code>add_1</code> is incredibly cumbersome. As such, languages like Python and Java make it easy to define <em>anonymous functions</em>, usually named <em>lambda expressions</em><sup class="footnote-reference"><a href="#1">1</a></sup>. A lambda expression in Python looks like this:</p>
+<pre><code class="language-python">&gt;&gt;&gt; list(map(lambda x: x + 1, [1, 2, 3]))
+[2, 3, 4]
+</code></pre>
+<p>The idea is simple: the variable names to the left of <code>:</code> are the function's parameters, and the expression to the right of <code>:</code> is its return value. Obviously, this makes <code>lambda</code> expressions more restrictive since we cannot express multi-statement functions, but that is not the point. It provides a convenient syntax for defining short functions, which comes in handy very frequently.</p>
+<h2 id="nested-functions-and-closures"><a class="header" href="#nested-functions-and-closures">Nested Functions and Closures</a></h2>
+<p>You have likely been introduced to the idea of a <em>nested function</em>, i.e. it is a function that is defined locally within another function. And example is as follows:</p>
+<pre><code class="language-python">def f(x):
+    def g(y):
+        return x + y
+    return g
+</code></pre>
+<p><code>f</code> defines a nested local function <code>g</code>. In a sense, a nested function is just a function defined within a function. However, recall that local variables and definitions are typically erased from the <em>call stack</em> once the function has returned. Therefore, when an expression like <code>f(2)</code> is evaluated, the Python runtime should allocate a stack frame for <code>f</code>, which, internally defines <code>g</code> and has the local binding for <code>x = 2</code>. The function returns the reference stored in <code>g</code>. As the function is returned, all the local variables should have been torn down, such as the local variable <code>g</code> (however, the heap reference stored in <code>g</code> (which points to the local function definition) is returned to the caller of <code>f</code>, so it remains in memory and is accessible). However, <code>x</code>, containing the reference to the value <code>2</code> should also be cleaned up since <code>x</code> is a local variable! In this case, how does <code>f(2)(3)</code> become <code>5</code> if the local variable <code>x</code> has been cleaned and the binding has been forgotten?</p>
+<p>It turns out that languages that have first-class functions frequently support <em>closures</em>, that is, an environment that <em>remembers</em> the bindings of local variables. Therefore, when <code>f(2)</code> is invoked, it does not return <code>g</code> as-is, with a reference to some local <code>x</code> with no binding. Instead, it returns <code>g</code> with an environment containing the binding <code>x = 2</code>. As such, when we then invoke <em>that</em> function passing in <code>3</code> (i.e. <code>f(2)(3)</code>), it returns <code>x + y</code> where <code>y</code> is obviously <code>3</code>, but is also able to look up the environment <code>x = 2</code>, thereby evaluating to <code>5</code>.</p>
+<h3 id="currying"><a class="header" href="#currying">Currying</a></h3>
+<p>Nested functions and closures thereby support the phenomenon known as <em>currying</em>, which is to have a multi-parameter function being converted to successive single-parameter functions. Without loss of generality, suppose we have a function <code>f(x, y, z)</code>. <em>Currying</em> this function gives us a function <code>f(x)</code>, which returns a function <code>g</code>, defined as <code>g(y)</code>, that function returns another function <code>h</code> defined as <code>h(z)</code>, and <code>h</code> does whatever computation <code>f(x, y, z)</code> does. We offer the following simple example:</p>
+<pre><code class="language-python">def add(x, y, z):
+    return x + y + z
+
+# Curried
+def add_(x):
+    def g(y):
+        def h(z):
+            return x + y + z
+        return h
+    return g
+
+# Simpler definition with lambda expressions
+def add__(x):
+    return lambda y: lambda z: x + y + z
+    # the scope of lambda expressions extend as far to the right
+    # as possible, and therefore should be read as
+    # lambda y: (lambda z: (x + y + z))
+</code></pre>
+<p>Currying supports <em>partial function application</em>, which supports code re-use. You will see <em>many</em> instances of currying used throughout these notes, and hopefully this will become second-nature to you.</p>
+<h2 id="parameterizing-behaviour"><a class="header" href="#parameterizing-behaviour">Parameterizing Behaviour</a></h2>
+<p>Consider the following functions:</p>
+<pre><code class="language-python">def sum_naturals(n):
+    return sum(i for i in range(1, n + 1))
+def sum_cubes(n):
+    return sum(i ** 3 for i in range(1, n + 1))
+</code></pre>
+<p>Clearly, the only difference between these two functions are the terms to sum. However, the difference in <code>i</code> and <code>i ** 3</code> cannot be abstracted into a single term. Instead, what we have to do is to abstract these as a function <code>f</code> on <code>i</code>! As such, what we want is to have a function that <em>parameterizes behaviour</em>, instead of just parameterizing values.</p>
+<p>Since Python supports first-class functions, doing so is straightforward.</p>
+<pre><code class="language-python">def sum_terms(n, f):
+    return sum(f(i) for i in range(1, n + 1))
+</code></pre>
+<p>Then, we can use our newly defined <code>sum_terms</code> function to re-define <code>sum_naturals</code> and <code>sum_cubes</code> easily:</p>
+<pre><code class="language-python">sum_naturals = lambda n: sum_terms(n, lambda i: i)
+sum_cubes = lambda n: sum_terms(n, lambda i: i ** 3)
+</code></pre>
+<p>The process of abstracting over behaviour is no different when defining functions to abstract over data/values. Just <em>retain similarities and parameterize differences</em>! As another example, suppose we have two functions:</p>
+<pre><code class="language-python">def scale(n, seq):
+    return (i * n for i in seq)
+def square(seq):
+    return (i ** 2 for i in seq)
+</code></pre>
+<p>Again, we can retain the similarities (most of the code is similar), and parameterize the behaviour of either scaling each <code>i</code> or squaring each <code>i</code>. This can be written as a function <code>transform</code>, which we can use to re-define <code>scale</code> and <code>square</code>:</p>
+<pre><code class="language-python"># If you notice carefully, this is more-or-less the implementation of map
+def transform(f, seq):
+    return (f(i) for i in seq)
+scale = lambda n, s: transform(lambda i: i * n, s)
+square = lambda s: transform(lambda i: i ** 2, s)
+</code></pre>
+<p>In fact, we can use the <code>transform</code> function to transform any iterable in whatever way we want!</p>
+<h2 id="manipulating-functions"><a class="header" href="#manipulating-functions">Manipulating Functions</a></h2>
+<p>On top of partial function application and parameterizing behaviour, we can use functions to manipulate/transform functions! Doing so typically requires us to define functions that <em>receive</em> and <em>return</em> functions. For example, if we want to create a function that receives a function <code>f</code> and returns a new function that applies <code>f</code> twice, we can write:</p>
+<pre><code class="language-python">def twice(f):
+    return lambda x: f(f(x))
+
+mult_four = twice(lambda x: x * 2)
+
+print(mult_four(3)) # 12
+</code></pre>
+<p>As you can see, <code>twice</code> receives a function and returns a new function that applies the input function twice. In fact, we can take this further by generalizing <code>twice</code>, i.e. defining a function <code>compose</code> that performs function composition:
+\[(g\circ f)(x) = g(f(x))\]</p>
+<pre><code class="language-python">def compose(g, f):
+    return lambda x: g(f(x))
+
+mult_four = compose(lambda x: x * 2, lambda x: x * 2)
+plus_three_mult_two = compose(lambda x: x * 2, lambda x: x + 3)
+
+print(mult_four(3)) # 12
+print(plus_three_mult_two(5)) # 16
+</code></pre>
+<p>This is a really powerful idea and you will see this phenomenon frequently in this course.</p>
+<p>Specific to Python, we can use single-parameter function-manipulating functions like <code>twice</code> as decorators:</p>
+<pre><code class="language-python">@twice
+def mult_four(x):
+    return x * 2
+
+print(mult_four(3)) # 12
+</code></pre>
+<p>Although the definition of <code>mult_four</code> actually only multiplies the argument by <code>2</code>, the <code>twice</code> decorator transforms it to be applied twice, therefore multiplying the argument by <code>4</code>! While decorators are useful, Haskell does not have decorators similar to this, although, frankly, this is not a required feature in Haskell since it has features much more ergonomic than this.</p>
+<h2 id="map-filter-reduce-and-flatmap"><a class="header" href="#map-filter-reduce-and-flatmap">Map, Filter, Reduce and FlatMap</a></h2>
+<p>There are several higher-order functions that are frequently used in programming. One of these functions is <code>map</code>, and is more-or-less defined as such:</p>
+<pre><code class="language-python">def map(f, ls):
+    return (f(i) for i in ls)
+</code></pre>
+<p>This is exactly what you've seen earlier in <code>transform</code>! The idea is that <code>map</code> receives a function that maps each element of the iterable <code>ls</code>, and produces an iterable containing those transformed elements. Using it is incredibly straightforward:</p>
+<pre><code class="language-python">&gt;&gt;&gt; list(map(lambda i: i + 1, [1, 2, 3]))
+[2, 3, 4]
+&gt;&gt;&gt; list(map(lambda i: i * 2, [1, 2, 3]))
+[2, 4, 6]
+</code></pre>
+<p>As you can see, <code>map</code> allows us to transform every element of an input iterable using a function. Another function, <code>filter</code>, filters out elements that do not meet a <em>predicate</em>:</p>
+<pre><code class="language-python">def filter(f, ls):
+    return (i for i in ls if f(i))
+</code></pre>
+<pre><code class="language-python">&gt;&gt;&gt; list(filter(lambda x: x &gt;= 0, [-2, -1, 0, 1]))
+[0, 1]
+</code></pre>
+<p><code>map</code> and <code>filter</code> are powerful tools for transforming an iterable/sequence. However, what about aggregations? For this, we have the <code>reduce</code> function:</p>
+<pre><code class="language-python">def reduce(f, it, init):
+    for e in it:
+        init = f(init, e)
+    return init
+</code></pre>
+<p>As you can see, <code>reduce</code> receives three arguments: (1) a binary operation <code>f</code> that combines two elements (the left element is initially the <code>init</code> term, and also holds every successive application of <code>f</code>, i.e. it is the <em>accumulator</em>), (2) the iterable <code>it</code>, and (3) the initial value <code>init</code>. It essentially abstracts over the <em>accumulator</em> pattern that you have frequently seen, such as a function that sums over numbers or reverses a list:</p>
+<pre><code class="language-python">def sum(ls):
+    acc = 0
+    for i in ls:
+        acc = acc + i
+    return acc
+
+def reverse(ls):
+    acc = []
+    for i in ls:
+        acc = [i] + acc
+    return acc
+</code></pre>
+<p>In summary, <code>0</code> in <code>sum</code> and <code>[]</code> in <code>reverse</code> acts as <code>init</code> in <code>reduce</code>; <code>ls</code> in both functions act as <code>it</code> in <code>reduce</code>; <code>lambda acc, i: acc + i</code> and <code>lambda acc, i: [i] + acc</code> acts as <code>f</code> in <code>reduce</code>. We can therefore rewrite both of these functions using <code>reduce</code> as such:</p>
+<pre><code class="language-python">&gt;&gt;&gt; sum = lambda ls: reduce(lambda x, y: x + y, ls, 0)
+&gt;&gt;&gt; reverse = lambda ls: reduce(lambda x, y: [y] + x, ls, [])
+&gt;&gt;&gt; sum([1, 2, 3, 4])
+10
+&gt;&gt;&gt; reverse([1, 2, 3, 4])
+[4, 3, 2, 1]
+</code></pre>
+<p>Another way to view <code>reduce</code> is as a <em>left-associative fold</em>. To give you an example, suppose we are calling <code>reduce</code> with arguments <code>f</code>, <code>[1, 2, 3, 4]</code> and <code>i</code> as the initial value. Then, <code>reduce(f, [1, 2, 3, 4], i)</code> would be equivalent to:</p>
+<pre><code>reduce(f, [1, 2, 3, 4], i) ==&gt; f(f(f(f(i, 1), 2), 3), 4)
+</code></pre>
+<p>One last function that should be unfamiliar to Python developers is a <code>flatMap</code> function, which performs <code>map</code>, but also does a one-layer flattening of the result. This function is available in other languages like Java, JavaScript and many other languages due to its connection to <em>monads</em>, but we shall give a quick view of what it might look like in Python:</p>
+<pre><code class="language-python">def flat_map(f, it):
+    for i in it:
+        for j in f(i):
+            yield j
+</code></pre>
+<p>The idea is that <code>f</code> receives an element of <code>it</code> and returns an <em>iterable</em>, and we loop through the elements of that iterable and yield them individually. Take for example a function that turns integers into lists of their digits:</p>
+<pre><code class="language-python">&gt;&gt;&gt; to_digits = lambda n: list(map(int, str(n)))
+&gt;&gt;&gt; to_digits(1, 2, 3, 4)
+[1, 2, 3, 4]
+</code></pre>
+<p>If we had used <code>map</code> over a list of integers, we get a two-dimensional list of integers, where each component list is the list of digits of the corresponding integer:</p>
+<pre><code class="language-python">&gt;&gt;&gt; list(map(to_digits, [11, 22, 33]))
+[[1, 1], [2, 2], [3, 3]]
+</code></pre>
+<p>If we had used <code>flat_map</code> instead, we would get the same mapping of integers into lists of digits; however, the list is flattened into a list of digits of all the integers:</p>
+<pre><code class="language-python">&gt;&gt;&gt; list(flat_map(to_digits, [11, 22, 33]))
+[1, 1, 2, 2, 3, 3]
+</code></pre>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>The term <em>lambda expression</em> is inspired from the \(\lambda\)-calculus.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../recap/sections/recursion.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../recap/sections/lambda.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../recap/sections/recursion.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../recap/sections/lambda.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

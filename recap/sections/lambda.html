@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lambda Calculus - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html" class="active"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="lambda-calculus"><a class="header" href="#lambda-calculus">Lambda Calculus</a></h1>
+<p>The \(\lambda\) calculus, invented by Alonzo Church, is, essentially, one of the simplest formal "programming" languages. It has a simple <em>syntax</em> and <em>semantics</em> for how programs are evaluated.</p>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
+<p>Let us first consider the <em>untyped</em> \(\lambda\) <em>calculus</em> containing variables, atoms<sup class="footnote-reference"><a href="#1">1</a></sup>, abstractions and applications. The syntax of \(\lambda\) terms <code>e</code> in the the untyped \(\lambda\) calculus is shown here:</p>
+<pre><code>e ::= v      &gt; variables like x, y and z
+   |  a      &gt; atoms like 1, 2, True, +, *
+   |  λv.e   &gt; function abstraction, such as def f(v): return e
+   |  e e'   &gt; function call a.k.a function application such as e(e')
+</code></pre>
+<p>Part of the motivation for this new language is for expressing higher-order functions. For example, if we wanted to define a function like:</p>
+<pre><code class="language-python">def add(x):
+    def g(y):
+        return x + y
+    return g
+</code></pre>
+<p>Doing so mathematically might be a little clumsy. Instead, with the \(\lambda\) calculus, we can write it like so:</p>
+<p>\[\textit{add} = \lambda x.\lambda y. x + y\]</p>
+<p>Just like in Python, the scope of a \(\lambda\) abstraction extends as far to the right as possible, so the function above should be read as:</p>
+<p>\[\textit{add} = \lambda x.(\lambda y. (x + y))\]</p>
+<p>We show the correspondence between terms in the \(\lambda\) calculus with lambda expressions in Python:</p>
+<div class="table-wrapper"><table><thead><tr><th>\(\lambda\) term</th><th>Python Expression</th></tr></thead><tbody>
+<tr><td>\(\lambda x. x + 1\)</td><td><code>lambda x: x + 1</code></td></tr>
+<tr><td>\(\lambda x. \lambda y. x~y\)</td><td><code>lambda x: lambda y: x(y)</code></td></tr>
+<tr><td>\((\lambda x. 2 \times x)~y\)</td><td><code>(lambda x: 2 * x)(y)</code></td></tr>
+</tbody></table>
+</div>
+<p>Function applications are left-associative, therefore \(e1~e2~e3\) should be read as \((e1 ~ e2) ~ e3\), and in Python, <code>e1(e2)(e3)</code> should be read as <code>(e1(e2))(e3)</code>.</p>
+<h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
+<p>To begin describing how \(\lambda\) calculus executes a program (which is really just a \(\lambda\) term), we first distinguish between <em>free</em> and <em>bound</em> variables in a \(\lambda\) term.</p>
+<blockquote>
+<p>Definition 1 (Free Variables). A variable \(x\) in a \(\lambda\) term \(e\) is</p>
+<ul>
+<li><em>bound</em> if it is in the scope of a \(\lambda x\) in \(e\)</li>
+<li><em>free</em> otherwise</li>
+</ul>
+</blockquote>
+<p>Then, the functions \(BV\) and \(FV\) produce the bound and free variables of a \(\lambda\) term respectively. For example, \(FV(\lambda x. \lambda y. x ~ y ~ z) = \{z\}\).</p>
+<p>Now we want to be able to perform <em>substitutions</em> of variables with terms. For example, when we have an application of the form \((\lambda x. e_1) ~ e_2\), what we want is for \(e_2\) to be substituted with \(x\) in \(e_1\), just like the following function in Python:</p>
+<pre><code class="language-python">def f(x): return x + 1
+f(2) # becomes 2 + 1 which is 3, because we substituted x with 2
+</code></pre>
+<p>However, this is not straightforward because we may introduce name clashes. For example, if we had \((\lambda x. \lambda y. x ~ y) y\), performing a function call with naive substitution gives us \(\lambda y. y ~ y\) which is wrong, because now the free variable \(x\) is substituted with the <em>bound</em> variable \(y\), so the meaning is not preserved. As such, we define <em>substitutions</em> on \(\lambda\) terms keeping this in mind.</p>
+<blockquote>
+<p>Definition 2 (Substitution). \(e_1[x := e_2]\) is the substitution of all <em>free</em> occurrences of \(x\) in \(e_1\) with \(e_2\), changing the names of bound variables to avoid name clashes. Substitution is defined by the following rules:</p>
+<ol>
+<li>\(x[x := e] \equiv e\)</li>
+<li>\(a[x := e] \equiv a\) where \(a\) is an atom</li>
+<li>\((e_1 ~ e_2)[x := e_3] \equiv (e_1[x := e_3])(e_2[x := e_3])\)</li>
+<li>\((\lambda x.e_1)[x := e_2] \equiv \lambda x.e_1\) since \(x\) is not free</li>
+<li>\((\lambda y.e_1)[x := e_2] \equiv \lambda y.e_1\) if \(x \notin FV(e_1)\)</li>
+<li>\((\lambda y.e_1)[x := e_2] \equiv \lambda y.(e_1[x:=e_2])\) if \(x \in FV(e_1)\) and \(y\notin FV(e_2)\)</li>
+<li>\((\lambda y.e_1)[x := e_2] \equiv \lambda z.(e_1[y:=z][x := e_2])\) if \(x \in FV(e_1)\) and \(y\in FV(e_2)\)</li>
+</ol>
+</blockquote>
+<p>We give some example applications of each rule:</p>
+<ol>
+<li>\(x[x := \lambda x. x] \equiv \lambda x. x \)</li>
+<li>\(1[x := \lambda x. x] \equiv 1 \)</li>
+<li>\((x ~ y)[x := z] \equiv z ~ y\)</li>
+<li>\((\lambda x. x+1)[x := y] \equiv \lambda x. x + 1\)</li>
+<li>\((\lambda y. \lambda x. x+y)[x := z] \equiv \lambda y. \lambda x. x+y\)</li>
+<li>\((\lambda y. x+y)[x := z] \equiv \lambda y. z+y\)</li>
+<li>\((\lambda y. x+y)[x := y] \equiv \lambda z. y+z\) (rename \(y\) to \(z\) before performing substitution)</li>
+</ol>
+<p>The last rule where variables are renamed to avoid name clashes introduces a form of equivalence known as \(\alpha\) congruence. It captures the idea that renaming parameters in functions does not change its meaning. For example, the two functions below are, in operation, identical:</p>
+<pre><code class="language-python">def f(x):
+    return x + 1
+def f(y):
+    return y + 1
+</code></pre>
+<p>In other words, if two terms differ only in the name of the bound variables, they are said to be \(\alpha\) congruent.</p>
+<p>Finally, we get to the actual semantics of \(\lambda\) calculus, which is described by \(\beta\) reduction. Essentially it is as we have briefly described earlier—a function application <code>(lambda x: e1)(e2)</code>, evaluates to <code>e1</code> where <code>x</code> is substituted with <code>e2</code>:</p>
+<p>\[(\lambda x. e) ~ y \triangleright_\beta e[x := y]\]</p>
+<p>For example:</p>
+<p>\[\begin{align*}
+(\lambda x.\lambda y. x ~ y)(\lambda x. x + 1)(2) &amp;\triangleright_\beta (\lambda y. x ~ y)[x := \lambda x. x + 1] (2)\\
+&amp; \equiv (\lambda y. (\lambda x. x + 1) ~ y)(2)\\
+&amp; \triangleright_\beta ((\lambda x. x + 1) ~ y)[y := 2]\\
+&amp; \equiv (\lambda x. x + 1)(2)\\
+&amp; \triangleright_\beta (x + 1)[x := 2]\\
+&amp; \equiv 2 + 1 \\
+&amp; \equiv 3
+\end{align*}
+\]</p>
+<p>This is more-or-less how Python evaluates function calls:</p>
+<pre><code class="language-python">&gt;&gt;&gt; (lambda x: lambda y: x(y))(lambda x: x + 1)(2)
+3
+</code></pre>
+<h2 id="typed-variants"><a class="header" href="#typed-variants">Typed Variants</a></h2>
+<p>Python has types, which describes the class from which an object was instantiated:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; type(1)
+&lt;class 'int'&gt;
+&gt;&gt;&gt; type(1.0)
+&lt;class 'float'&gt;
+</code></pre>
+<p>We will describe more on types in <a href="../../types/README.html">Chapter 2 (Types)</a>. But for now, know that we can also assign types to terms in the \(\lambda\) calculus, giving us new forms of \(\lambda\) calculi. The simplest type system we can add to the \(\lambda\) calculus is, well, simple types, forming the <em>simply-typed</em> \(\lambda\) <em>calculus</em>.</p>
+<p>For now, we shall restrict types to be the base types to only include <code>int</code>, giving us a new language for the calculus:</p>
+<pre><code>Terms
+e ::= v         &gt; variables like x, y and z
+   |  a         &gt; atoms like 1, 2, +, *
+   |  λv: t.e   &gt; function abstraction, such as def f(v: t): return e
+   |  e e'      &gt; function call a.k.a function application such as e(e')
+
+Types
+t ::= int         &gt; base type constants, only including integers
+   |  t -&gt; t'     &gt; type of functions; -&gt; is right-associative
+</code></pre>
+<p>The introduction of types to the calculus now adds the notion of <em>well-typedness</em> to the language. Specifically, not all terms in the untyped \(\lambda\) calculus are well-typed in the simply typed \(\lambda\) calculus. To formalize this notion of well-typedness, we define <em>typing rules</em> that dictate when a term is well-typed, and what type a term has.</p>
+<p>First we have <em>typing environments</em> \(\Gamma,\Delta,\dots,\) which are sets (or sometimes lists) of <em>typing assumptions</em> of the form \(x:\tau\), stating that we are assuming that \(x\) has type \(\tau\). Then, the <em>typing relation</em> \(\Gamma\vdash e: \tau\) states that in the context \(\Gamma\), the term \(e\) has type \(\tau\). The reason we need typing environments is so that the types of in-scope bound variables in \(\lambda\) terms are captured and can be used in the derivation of the types of terms. Instances of typing relations are known as <em>typing judgements</em>.</p>
+<p>The validity of a typing judgement is shown by providing a <em>typing derivation</em> that is constructed using <em>typing rules</em>, which are inference rules:</p>
+<p>\[\frac{A_1 ~ A_2 ~ \dots ~ A_n}{B}\]</p>
+<p>Which basically states that if all the statements \(A_i\) are valid, then the statement \(B\) is also valid.</p>
+<p>Then, the simply-typed \(\lambda\) calculus uses the following rules.</p>
+<ol>
+<li>If a variable \(x\) has type \(\tau\) in \(\Gamma\) then in the context \(\Gamma\), \(x\) has type \(\tau\)
+\[
+\frac{x:\tau \in \Gamma}{\Gamma \vdash x : \tau}
+\]</li>
+<li>If an atom \(a\) has type \(\tau\) then we can also judge the type of \(a\) accordingly
+\[
+\frac{a\text{ is an atom of type }\tau}{\Gamma \vdash a: \tau}
+\]</li>
+<li>Abstraction: If in a certain context we can assume that \(x\) has type \(\tau_1\) to conclude \(e\) has type \(\tau_2\), then the same context without this assumption shows that \(\lambda x:\tau_1.e\) has type \(\tau_1\to\tau_2\)
+\[
+\frac{\Gamma,x:\tau_1\vdash e:\tau_2}{\Gamma \vdash (\lambda x:\tau_1.e) : \tau_1 \to \tau_2}
+\]</li>
+<li>Application: If in a certain context \(e_1\) has type \(\tau_1\to\tau_2\) and \(e_2\) has type \(\tau_1\), then \(e_1 ~ e_2\) has type \(\tau_2\)
+\[
+\frac{\Gamma \vdash e_1: \tau_1\to\tau_2 ~~~~~~ \Gamma \vdash e_2: \tau_1}{\Gamma \vdash (e_1 ~ e_2) :\tau_2}
+\]</li>
+</ol>
+<p>These rules can be used to perform <em>type checking</em> (the procedure of checking the well-typedness of a term) or <em>type reconstruction</em> (the procedure of finding the types of terms where their typing information is not present, as is the case in the untyped \(\lambda\) calculus).</p>
+<p>For example, in our calculus we can show that \(\lambda x: \mathtt{int}\to\mathtt{int}. \lambda y:\mathtt{int}.x ~ y\) has type \((\mathtt{int}\to\mathtt{int})\to\mathtt{int}\to\mathtt{int}\) and is therefore a well-typed term:</p>
+<p>\[
+\frac{x:\mathtt{int}\to\mathtt{int} \in \Gamma,x:\mathtt{int}\to\mathtt{int},y:\mathtt{int}}{\Gamma, x: \mathtt{int}\to\mathtt{int}, y:\mathtt{int}\vdash x:\mathtt{int}\to\mathtt{int}}
+\]</p>
+<p>\[
+\frac{y:\mathtt{int}\in \Gamma,x:\mathtt{int}\to\mathtt{int},y:\mathtt{int}}{\Gamma, x: \mathtt{int}\to\mathtt{int}, y:\mathtt{int}\vdash y:\mathtt{int}}
+\]</p>
+<p>\[
+\frac{\Gamma,x:\mathtt{int}\to\mathtt{int},y:\mathtt{int}\vdash x: \mathtt{int}\to\mathtt{int}~~~~~~~ \Gamma,x:\mathtt{int}\to\mathtt{int},y:\mathtt{int}\vdash y: \mathtt{int}}{\Gamma, x: \mathtt{int}\to\mathtt{int}, y:\mathtt{int}\vdash (x ~ y):\mathtt{int}}
+\]</p>
+<p>\[
+\frac{\Gamma, x: \mathtt{int}\to\mathtt{int}, y:\mathtt{int}\vdash (x ~ y):\mathtt{int}}{\Gamma, x: \mathtt{int} \to \mathtt{int} \vdash (\lambda y: \mathtt{int}. x ~ y) : \mathtt{int}\to\mathtt{int}}
+\]</p>
+<p>\[
+\frac{\Gamma, x: \mathtt{int} \to \mathtt{int} \vdash (\lambda y: \mathtt{int}. x ~ y) : \mathtt{int}\to\mathtt{int}}{\Gamma\vdash (\lambda x: \mathtt{int} \to \mathtt{int}.\lambda y: \mathtt{int}. x ~ y) : (\mathtt{int}\to\mathtt{int})\to\mathtt{int}\to\mathtt{int}}
+\]</p>
+<p>That means the following lambda expression in Python (assuming only <code>int</code> exists as a base type) will have the same type:</p>
+<pre><code class="language-python">&gt;&gt;&gt; f = lambda x: lambda y: x(y) # (int -&gt; int) -&gt; int -&gt; int
+&gt;&gt;&gt; my_fn = lambda x: x + 1 # int -&gt; int
+# f(my_fn): int -&gt; int
+# f(my_fn)(3): int
+&gt;&gt;&gt; f(my_fn)(3) # int
+4
+&gt;&gt;&gt; type(f(my_fn)(3))
+class &lt;'int'&gt;
+</code></pre>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>The actual untyped \(\lambda\) calculus does not have atoms like numbers, booleans etc. However, for simplicity's sake we shall include them in the language. The version we present is frequently termed the <em>applied</em> \(\lambda\) <em>calculus</em>, in contrast with usual presentations known as the <em>pure</em> \(\lambda\) <em>calculus</em> which omits atoms.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../recap/sections/first-class-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../recap/sections/first-class-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 2 - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html" class="active"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="types"><a class="header" href="#types">Types</a></h1>
+<h2 id="question-1"><a class="header" href="#question-1">Question 1</a></h2>
+<ol>
+<li><code>Int</code>.</li>
+<li><code>String</code>. <code>x</code> has type <code>Int</code>, so <code>show x</code> has
+type <code>String</code>.</li>
+<li><code>String</code>. Recall that <code>String</code> is an alias for
+<code>[Char]</code>. Although the expression evaluates to
+<code>[]</code> which has type <code>forall a. [a]</code>, because
+both branches of the conditional expression must have the same type,
+the type of the expression is thus specialized into
+<code>[Char]</code>.</li>
+<li><code>[a] -&gt; [a]</code>. <code>(++)</code> has type
+<code>forall a. [a] -&gt; [a] -&gt; [a]</code>, since <code>[]</code> is
+also polymorphic with type <code>forall a. [a]</code>, there is no
+need to specialize the resulting function call expression. This
+makes sense because any list can be concatenated with the empty
+list.</li>
+<li><code>[Int] -&gt; [Int]</code>. The <code>map</code> function has type
+<code>(a -&gt; b) -&gt; [a] -&gt; [b]</code>. Since we have supplied a
+function <code>Int -&gt; Int</code>, we are thus specializing <code>a</code> and
+<code>b</code> to <code>Int</code>.</li>
+<li><code>(a -&gt; [Int]) -&gt; a -&gt; String</code>. Recall that <code>(.)</code> has type
+<code>forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c</code>. The
+function <code>\(x :: Int) -&gt; show x</code> has type
+<code>Int -&gt; String</code>. Thus, substituting <code>b</code> and <code>c</code> for
+<code>Int</code> and <code>String</code> respectively, we get our
+answer.</li>
+<li><code>(String -&gt; a) -&gt; Int -&gt; a</code>. Note that <code>(+3)</code> is
+<code>\x -&gt; x + 3</code>, while <code>(3+)</code> is
+<code>\x -&gt; 3 + x</code>. As such, the answer here follows the same
+reasoning except that the argument to <code>(.)</code> is at the second
+position.</li>
+<li><code>(a, b) -&gt; c -&gt; (a, c)</code>. Note that <code>(,)</code> is the tuple
+(pair) constructor which has type
+<code>forall a, b. a -&gt; b -&gt; (a, b)</code>.</li>
+<li><code>(a -&gt; Bool) -&gt; [a] -&gt; [a]</code>. As we know,
+<code>filter</code> receives a function that tests each element, and
+returns the list with only the elements that pass the test.</li>
+</ol>
+<h2 id="question-2"><a class="header" href="#question-2">Question 2</a></h2>
+<ol>
+<li><code>eqLast</code>: <code>Eq a =&gt; [a] -&gt; [a] -&gt; Bool</code>. This function can
+be polymorphic but requires that <code>a</code> is amenable to equality
+comparisons, so we add the <code>Eq</code> constraint to it. We will discuss
+more on typeclasses next week.</li>
+<li><code>isPalindrome</code>: <code>Eq a =&gt; [a] -&gt; [a] -&gt; Bool</code>. The reason
+for the <code>Eq</code> constraint is because we need to compare the two lists
+for equality, which means that the elements of both lists must be
+amenable to equality comparisons!</li>
+<li><code>burgerPrice</code>: <code>Fractional a =&gt; String -&gt; a</code>. Notice once
+again that we have another typeclass constraint in this function
+signature. Typeclasses are incredibly common, and hopefully this
+might motivate you to understand these in the subsequent lectures.
+Nonetheless, if you had answered <code>String -&gt; Double</code>, that
+is fair as well.</li>
+<li><code>@:</code>: <code>[a] -&gt; (Int, Int) -&gt; [a]</code>. The function receives a
+list, a pair of two integers, and produces a slice of the list of
+the same type.</li>
+</ol>
+<h2 id="question-3"><a class="header" href="#question-3">Question 3</a></h2>
+<p>Let us first define a type that describes
+valid ingredients and a function on this type that gives their prices:</p>
+<pre><code class="language-haskell">data Ingredient = B | C | P | V | O | M
+price :: Ingredient -&gt; Rational
+price B = 0.5
+price C = 0.8
+price P = 1.5
+price V = 0.7
+price O = 0.4
+price M = 0.9
+</code></pre>
+<p>Then, we can define a valid burger being a list of ingredients. For
+this, we can define a <em>type alias</em> like so:</p>
+<pre><code class="language-haskell">type Burger = [Ingredient]
+</code></pre>
+<p>Type aliases are nothing special; more or less, they are <em>nicknames</em> for
+types. There is no difference between the <code>Burger</code> and
+<code>[Ingredient]</code> types, just like how there is no difference
+between <code>String</code> and <code>[Char]</code>. Then, we can define
+our <code>burgerPrice</code> function with pattern matching in a very standard way:</p>
+<pre><code class="language-haskell">burgerPrice :: Burger -&gt; Rational
+burgerPrice [] = 0
+burgerPrice (i : is) = price i + burgerPrice is
+</code></pre>
+<p>Let us take this a step further by observing the following function in
+Haskell's prelude:</p>
+<pre><code class="language-haskell">foldr :: (a -&gt; b -&gt; b) -&gt; b -&gt; [a] -&gt; b
+foldr f n [] = n
+foldr f n (x : xs) = 
+  let r = foldr f n xs
+  in  f x r
+</code></pre>
+<p>In practice, this does something very familiar:
+\[\textit{foldr}(f, n, [a_1,\dots,a_n]) = f(a_1,f(a_2,\dots f(a_{n-1}, f(a_n, n))\dots ))\]</p>
+<p>This looks like the right-associative equivalent of <code>reduce</code> in Python!
+(The equivalent of <code>reduce</code> in Haskell is the <code>foldl</code> function).
+\[\textit{reduce}(f, n, [a_1,\dots,a_n]) = f(f(\dots f(n, a_1), a_2), \dots, a_n)\]
+This hints to us that in the definition of <code>foldr</code>, <code>f</code> is the combiner
+function and <code>n</code> is the initial value. This corresponds very nicely to
+<code>burgerPrice</code>. Let us try rewriting our <code>burgerPrice</code> function to see
+this:</p>
+<pre><code class="language-haskell">burgerPrice [] = 0
+burgerPrice (x : xs) = 
+  let r = burgerPrice xs
+      f a b = price a + b
+      -- alternatively, 
+      -- f = (+) . price
+  in  f x r
+</code></pre>
+<p>As you can see, if we let <code>f</code> be <code>(+) . price</code> and <code>n</code> be <code>0</code>, we can
+define <code>burgerPrice</code> based on <code>foldr</code>:</p>
+<pre><code class="language-haskell">burgerPrice = foldr ((+) . price) 0
+</code></pre>
+<h2 id="question-4"><a class="header" href="#question-4">Question 4</a></h2>
+<p>Solutions are self-explanatory.</p>
+<pre><code class="language-haskell">dropConsecutiveDuplicates :: Eq a =&gt; [a] -&gt; [a]
+dropConsecutiveDuplicates [] = []
+dropConsecutiveDuplicates [x] = [x]
+dropConsecutiveDuplicates (x : xx : xs) 
+  | x == xx   = dropConsecutiveDuplicates (x : xs)
+  | otherwise = x : dropConsecutiveDuplicates (xx : xs)
+</code></pre>
+<h2 id="question-5"><a class="header" href="#question-5">Question 5</a></h2>
+<p>As hinted by the example runs, a zipper is a tuple of two
+lists. The idea is to model a zipper as two stacks. This is great
+because singly-linked lists (with head pointers), as we know, can model
+stacks.</p>
+<pre><code class="language-haskell">type ListZipper a = ([a], [a])
+mkZipper :: [a] -&gt; ListZipper a
+mkZipper ls = ([], ls)
+</code></pre>
+<p>Functions for traversing and replacing the elements of the zipper should
+be straightforward to define. Note that the <code>@</code> symbol binds the entire
+pattern on the right to the name on the left.</p>
+<pre><code class="language-haskell">l, r :: ListZipper a -&gt; ListZipper a
+
+l x@([], _) = x
+l (x : xs, ys) = (xs, x : ys)
+
+r x@(_,[]) = x
+r (xs, y : ys) = (y : xs, ys)
+
+setElement :: a -&gt; ListZipper a -&gt; ListZipper a
+setElement x (xs,[]) = (xs, [x])
+setElement x (xs, _ : ys) = (xs, x : ys)
+</code></pre>
+<h2 id="question-6"><a class="header" href="#question-6">Question 6</a></h2>
+<p>To start, we define a binary tree. This is very similar to the
+tree examples that we have given, except that we allow the tree to be
+empty. Note that you might be tempted to put the <code>Ord</code>
+constraint at the data type declaration itself. This is deprecated, and
+also not recommended.</p>
+<pre><code class="language-haskell">data SortedSet a = Empty | Node (SortedSet a) a (SortedSet a)
+</code></pre>
+<p>Let us start with the function to add elements to the sorted set. This
+should be straightforward if you remember how BST algorithms are
+defined.</p>
+<pre><code class="language-haskell">(@+) :: Ord a =&gt; SortedSet a -&gt; a -&gt; SortedSet a
+Empty @+ x = Node Empty x Empty
+t@(Node left a right) @+ x
+    | x == a     = t
+    | x &lt; a      = Node (left @+ x) a right
+    | otherwise  = Node left a (right @+ x)
+</code></pre>
+<p>Given a BST, to get the list of elements in sorted order, perform an
+inorder traversal.</p>
+<pre><code class="language-haskell">setToList :: SortedSet a -&gt; [a]
+setToList Empty = []
+setToList (Node left a right) = setToList left ++ (a : setToList right)
+</code></pre>
+<p>Converting a list into a sorted set can be done by repeated applications
+of <code>@+</code> over the elements of the list. This should hint to us that we
+can use a fold over the list. Note that the <code>flip</code> function flips the
+arguments of a function: i.e. <code>flip f x y = f y x</code>.</p>
+<pre><code class="language-haskell">sortedSet :: Ord a =&gt; [a] -&gt; SortedSet a 
+sortedSet = foldr (flip (@+)) Empty
+</code></pre>
+<p>Finally, determining if an element is a member of the sorted set is a
+matter of binary search.</p>
+<pre><code class="language-haskell">in' :: Ord a =&gt; a -&gt; SortedSet a -&gt; Bool
+in' _ Empty = False
+in' x (Node left a right)
+  | x == a    = True
+  | x &lt; a     = in' x left
+  | otherwise = in' x right
+</code></pre>
+<p>An alternative to this implementation is to use AVL trees instead of
+plain BSTs. We provide an implementation of AVL trees at the end of this chapter.</p>
+<h2 id="question-7"><a class="header" href="#question-7">Question 7</a></h2>
+<p>We start with the base definition which should
+be self-explanatory.</p>
+<pre><code class="language-haskell">-- Haskell
+data Shape = Circle Double | Rectangle Double Double
+
+area :: Shape -&gt; Double
+area (Circle r) = pi * r ^ 2
+area (Rectangle w h) = w * h
+</code></pre>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from math import pi
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self) -&gt; float:
+        pass
+
+@dataclass
+class Circle(Shape):
+    radius: float
+    def area(self) -&gt; float:
+        return pi * self.radius ** 2
+
+@dataclass
+class Rectangle(Shape):
+    width: float
+    height: float
+    def area(self) -&gt; float:
+        return self.width * self.height
+</code></pre>
+<p>We start with the first extension of our problem by creating a new shape
+called <code>Triangle</code>. Notice that to add representations of our types in
+our Haskell implementation, we must have access to edit whatever we've
+written before. This is unlike our OO implementation in Python, where by
+adding a new shape, we can just define a completely separate subclass
+and define the <code>area</code> method for that class.</p>
+<pre><code class="language-haskell">data Shape = Circle Double 
+           | Rectangle Double Double
+           | Triangle Double Double
+
+area :: Shape -&gt; Double
+area (Circle r) = pi * r ^ 2
+area (Rectangle w h) = w * h
+area (Triangle w h) = w * h / 2
+</code></pre>
+<pre><code class="language-python">@dataclass
+class Triangle(Shape):
+    width: float
+    height: float
+    def area(self) -&gt; float:
+        return self.width * self.height / 2
+</code></pre>
+<p>However, proceeding with the second extension, we see that the opposite
+is true: adding a new function does not require edit access in our
+Haskell implementation since we can just define a separate function, but
+it is required for our Python implementation since we have to add this
+method to all the classes we have defined!</p>
+<pre><code class="language-haskell">scale :: Double -&gt; Shape -&gt; Shape
+scale n (Circle r) = Circle (r * n)
+scale n (Rectangle w h) = Rectangle (w * n) (h * n)
+scale n (Triangle w h) = Triangle (w * n) (h * n)
+</code></pre>
+<pre><code class="language-python">class Shape(ABC):
+    @abstractmethod
+    def area(self) -&gt; float:
+        pass
+    @abstractmethod
+    def scale(self, n: float) -&gt; 'Shape':
+        pass
+
+@dataclass
+class Circle(Shape):
+    radius: float
+    def area(self) -&gt; float:
+        return pi * self.radius ** 2
+    def scale(self, n: float) -&gt; Shape:
+        return Circle(n * self.radius)
+
+@dataclass
+class Rectangle(Shape):
+    width: float
+    height: float
+    def area(self) -&gt; float:
+        return self.width * self.height
+    def scale(self, n: float) -&gt; Shape:
+        return Rectangle(self.width * n, self.height * n)
+
+@dataclass
+class Triangle(Shape):
+    width: float
+    height: float
+    def area(self) -&gt; float:
+        return self.width * self.height / 2
+    def scale(self, n: float) -&gt; Shape:
+        return Triangle(self.width * n, self.height * n)
+</code></pre>
+<h2 id="question-8"><a class="header" href="#question-8">Question 8</a></h2>
+<p>Defining additional constructors for our expressions GADT is
+relatively straightforward, and so is extending our <code>eval</code>
+function. We write the entire implementation here.</p>
+<pre><code class="language-haskell">{-# LANGUAGE GADTs #-}
+data Expr α where
+  LitNumExpr  :: Int -&gt; Expr Int
+  AddExpr     :: Expr Int -&gt; Expr Int -&gt; Expr Int
+  EqExpr      :: Eq α =&gt; Expr α -&gt; Expr α -&gt; Expr Bool
+  CondExpr    :: Expr Bool -&gt; Expr α -&gt; Expr α -&gt; Expr α
+  LitBoolExpr :: Bool -&gt; Expr Bool
+  AndExpr     :: Expr Bool -&gt; Expr Bool -&gt; Expr Bool
+  OrExpr      :: Expr Bool -&gt; Expr Bool -&gt; Expr Bool
+  FuncExpr    :: (α -&gt; β) -&gt; Expr (α -&gt; β)
+  FuncCall    :: Expr (α -&gt; β) -&gt; Expr α -&gt; Expr β
+
+eval :: Expr α -&gt; α
+eval (LitNumExpr n)   = n
+eval (AddExpr a b)    = eval a + eval b
+eval (EqExpr a b)     = eval a == eval b
+eval (CondExpr a b c) = if eval a then eval b else eval c
+eval (LitBoolExpr b)  = b
+eval (AndExpr a b)    = eval a &amp;&amp; eval b
+eval (OrExpr a b)     = eval a || eval b
+eval (FuncExpr f)     = f
+eval (FuncCall f x)   = (eval f) (eval x)
+</code></pre>
+<h2 id="question-9"><a class="header" href="#question-9">Question 9</a></h2>
+<h3 id="bank-accounts"><a class="header" href="#bank-accounts">Bank Accounts</a></h3>
+<h4 id="bank-account-adt"><a class="header" href="#bank-account-adt">Bank Account ADT</a></h4>
+<p>As in the lecture notes, simulating ADTs in Python can be done either
+with an (abstract) class, or a type alias. In our case, we shall use the
+latter.</p>
+<p>First, we create the type:</p>
+<pre><code class="language-python">type BankAccount = NormalAccount | MinimalAccount
+</code></pre>
+<p>Then, we create the <code>NormalAccount</code> and
+<code>MinimalAccount</code> classes:</p>
+<pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class NormalAccount:
+    account_id: str
+    balance: float
+    interest_rate: float
+
+@dataclass(frozen=True)
+class MinimalAccount:
+    account_id: str
+    balance: float
+    interest_rate: float
+</code></pre>
+<h4 id="basic-features"><a class="header" href="#basic-features">Basic Features</a></h4>
+<p>For our two basic features, we shall employ a simple helper function
+that sets the amount of a bank account. Notice once again that we do not
+mutate any data structure in our program!</p>
+<pre><code class="language-python">def _set_balance(amt: float, b: BankAccount) -&gt; BankAccount:
+    match b:
+        case NormalAccount(id, _, i):
+            return NormalAccount(id, amt, i)
+        case MinimalAccount(id, _, i):
+            return MinimalAccount(id, amt, i)
+</code></pre>
+<p>Then, the basic features can be defined in terms of our
+<code>_set_balance</code> helper function.</p>
+<pre><code class="language-python">def deposit(amt: float, b: BankAccount) -&gt; BankAccount:
+    return _set_balance(b.balance + amt, b)
+
+def deduct(amt: float, b: BankAccount) -&gt; tuple[bool, BankAccount]:
+    if amt &gt; b.balance:
+        return (False, b)
+    return (True, _set_balance(b.balance - amt, b))
+</code></pre>
+<h4 id="advanced-features"><a class="header" href="#advanced-features">Advanced Features</a></h4>
+<p>At this point, implementing the advanced features should not be too
+difficult.</p>
+<pre><code class="language-python">def _cmpd(p: float, r: float) -&gt; float:
+    return p * (1 + r)
+
+def compound(b: BankAccount) -&gt; BankAccount:
+    match b:
+        case NormalAccount(id, bal, i):
+            return NormalAccount(id, _cmpd(bal, i), i)
+        case MinimalAccount(id, bal, i):
+            new_bal: float = max(bal - 20, 0) if bal &lt; 1000 else bal
+            return MinimalAccount(id, _cmpd(new_bal, i), i)
+
+def transfer(amt: float, from_: BankAccount, to: BankAccount) -&gt; tuple[bool, BankAccount, BankAccount]:
+    success: bool
+    from_deducted: BankAccount
+    success, from_deducted = deduct(amt, from_)
+    if not success:
+        return (False, from_, to)
+    return (True, from_deducted, deposit(amt, to))
+</code></pre>
+<h3 id="operating-on-bank-accounts"><a class="header" href="#operating-on-bank-accounts">Operating on Bank Accounts</a></h3>
+<h4 id="operations-adt"><a class="header" href="#operations-adt">Operations ADT</a></h4>
+<p>The ADT definition is pretty straightforward:</p>
+<pre><code class="language-python">type Op = Transfer | Compound
+
+@dataclass
+class Transfer:
+    amount: float
+    from_: str
+    to: str
+
+@dataclass
+class Compound:
+    pass 
+</code></pre>
+<h4 id="processing-one-operation"><a class="header" href="#processing-one-operation">Processing One Operation</a></h4>
+<p>It's easier to write the functions that perform each individual
+operation first, especially since they are more involved with dictionary
+lookups etc. Take note of the fact that all of the data structures are
+unchanged!</p>
+<pre><code class="language-python"># Type alias for convenience
+type BankAccounts = dict[str, BankAccount]
+
+def _compound_all(mp: BankAccounts) -&gt; BankAccounts:
+    return {k : compound(v) for k, v in mp.items()}
+
+def _transfer(amt: float, from_: str, to: str, mp: BankAccounts) -&gt; tuple[bool, BankAccounts]:
+    if from_ not in mp or to not in mp:
+        return (False, mp)
+    success: bool
+    new_from: BankAccount
+    new_to: BankAccount
+    success, new_from, new_to = transfer(amt, mp[from_], mp[to])
+    if not success:
+        return (False, mp)
+    new_mp: BankAccounts = mp | { from_: new_from, to: new_to }
+    return (True, new_mp)
+</code></pre>
+<p>Then, the <code>process_one</code> function is easy to define since we can
+just invoke our helper functions:</p>
+<pre><code class="language-python">def process_one(op: Op, mp: BankAccounts) -&gt; tuple[bool, BankAccounts]:
+    match op:
+        case Transfer(amt, from_, to):
+            return _transfer(amt, from_, to, mp)
+        case Compound():
+            return (True, _compound_all(mp))
+</code></pre>
+<h4 id="process-all-operations"><a class="header" href="#process-all-operations">Process All Operations</a></h4>
+<p>Given the <code>process_one</code> function, the <code>process_all</code>
+function should be straightforward. Note once again that none of the
+data structures are being mutated and we use recursion. The last
+<code>case</code> statement is only used to suppress <code>pyright</code> warnings.</p>
+<pre><code class="language-python">def process_all(ops: list[Op], mp: BankAccounts) -&gt; tuple[list[bool], BankAccounts]:
+    match ops:
+        case []:
+            return [], mp
+        case x, *xs:
+            op_r, mp1 = process_one(x, mp)
+            rs, mp2 = process_all(xs, mp1)
+            return [op_r] + rs, mp2
+        case _: raise
+</code></pre>
+<h4 id="polymorphic-processing"><a class="header" href="#polymorphic-processing">Polymorphic Processing</a></h4>
+<p>Notice that if we had received the <code>process_one</code> function as an
+argument then we would now have a higher-order function:</p>
+<pre><code class="language-python">from typing import Callable
+# For brevity
+type P = Callable[[Op, BankAccounts], tuple[bool, BankAccounts]]
+def process_all(process_one: P, ops: list[Op], mp: BankAccounts) -&gt; tuple[list[bool], BankAccounts]:
+    match ops:
+        case []:
+            return [], mp
+        case x, *xs:
+            op_r, mp1 = process_one(x, mp)
+            rs, mp2 = process_all(process_one, xs, mp1)
+            return [op_r] + rs, mp2
+        case _: raise
+</code></pre>
+<p>Now notice that <code>process_all</code>'s implementation does not depend
+on <code>Op</code>, <code>bool</code> or <code>BankAccounts</code>. Let us
+make this function polymorphic by replacing <code>Op</code> with <code>A</code>,
+<code>BankAccounts</code> with <code>B</code> and <code>bool</code> with <code>C</code>!</p>
+<pre><code class="language-python">def process[A, B, C](f: Callable[[A, B], tuple[C, B]], ops: list[A], mp: B) -&gt; tuple[list[C], B]:
+    match ops:
+        case []:
+            return [], mp
+        case x, *xs:
+            op_r, mp1 = f(x, mp)
+            rs, mp2 = process(f, xs, mp1)
+            return [op_r] + rs, mp2
+        case _: raise
+</code></pre>
+<h2 id="avl-trees"><a class="header" href="#avl-trees">AVL Trees</a></h2>
+<p>Here we show an example of using AVL trees as sorted sets. Notice our
+AVL tree has nice pretty printing, pretty cool huh! We will learn how to
+define the string representation of a type in subsequent lectures.</p>
+<pre><code>ghci&gt; x = fromList [1,1,1,2,2,2,8,5,4,3,5,9,0,10,0,7,8,3]
+ghci&gt; x
+            7
+      ┏━━━━━┻━━━┓
+      3         9
+  ┏━━━┻━━━┓   ┏━┻━┓
+  1       5   8   10
+┏━┻━┓   ┏━┛
+0   2   4
+ghci&gt; x @+ 6 @+ 11 @+ 14 @+ 12 @+ 15
+              7
+      ┏━━━━━━━┻━━━━━━━━┓
+      3                11
+  ┏━━━┻━━━┓       ┏━━━━┻━━━━━┓
+  1       5       9          14
+┏━┻━┓   ┏━┻━┓   ┏━┻━┓     ┏━━┻━━┓
+0   2   4   6   8   10    12    15
+</code></pre>
+<p>We first start with some declarations and imports.</p>
+<pre><code class="language-haskell">module Avl ( AVL(Empty), in', toList, fromList, (@+)) where
+
+import Data.List (intercalate)
+
+data AVL a = Empty | Node (AVL a) a (AVL a) 
+  deriving Eq
+
+in'      :: Ord a =&gt; a -&gt; AVL a -&gt; Bool
+toList   :: AVL a -&gt; [a]
+fromList :: Ord a =&gt; [a] -&gt; AVL a
+(@+)     :: Ord a =&gt; AVL a -&gt; a -&gt; AVL a
+infixl 7 @+
+</code></pre>
+<p>Next, we provide implementations of these declarations. Many of these
+are identical to that of our sorted set implementation using BSTs; the
+only difference is in <code>@+</code> where AVL trees have to perform height
+balancing if the balance factor exceeds the range \([-1, 1]\).</p>
+<pre><code class="language-haskell">in' _ Empty = False
+in' x (Node left a right)
+  | x == a    = True
+  | x &lt; a     = in' x left
+  | otherwise = in' x right
+
+toList Empty = []
+toList (Node left a right) = toList left ++ (a : toList right)
+
+fromList = foldr (flip (@+)) Empty
+
+Empty @+ x = Node Empty x Empty
+o@(Node left a right) @+ x 
+  | x &lt; a = 
+      let newLeft = left @+ x
+          newTree = Node newLeft a right
+      in  if bf newTree &gt; -2 then newTree
+          else 
+            let t 
+                  | bf newLeft &gt; 0 = Node (rotateLeft newLeft) a right 
+                  | otherwise      = newTree
+            in rotateRight t
+  | x &gt; a =
+      let newRight = right @+ x
+          newTree = Node left a newRight
+      in  if bf newTree &lt; 2 then newTree
+          else let t
+                    | bf newRight &lt; 0 = Node left a (rotateRight newRight)
+                    | otherwise       = newTree
+               in rotateLeft t
+  | otherwise = o
+</code></pre>
+<p>The implementation of these functions involve some additional helper
+functions for obtaining balance factors and rotations, which we declare
+and define here:</p>
+<pre><code class="language-haskell">-- Implementation helpers
+height :: AVL a -&gt; Int
+height Empty = 0
+height (Node left _ right) = 1 + max (height left) (height right)
+
+rotateLeft :: AVL a -&gt; AVL a
+rotateLeft Empty = Empty
+rotateLeft t@(Node _ _ Empty) = t
+rotateLeft (Node left a (Node ll b right)) = Node (Node left a ll) b right
+
+rotateRight :: AVL a -&gt; AVL a
+rotateRight Empty = Empty
+rotateRight t@(Node Empty _ _) = t
+rotateRight (Node (Node left b rr) a right) = Node left b (Node rr a right)
+
+bf :: AVL a -&gt; Int -- balance factor
+bf Empty = 0
+bf (Node l _ r) = height r - height l
+</code></pre>
+<p>Finally, we write functions to support pretty printing.</p>
+<pre><code class="language-haskell">-- Pretty printing
+strWidth :: Show a =&gt; AVL a -&gt; Int
+strWidth Empty = 0
+strWidth (Node left a right) = 
+  let leftWidth = strWidth left
+      l = if leftWidth &gt; 0 then leftWidth + 1 else 0
+      centerWidth = length $ show a
+      rightWidth = strWidth right
+      r = if rightWidth &gt; 0 then rightWidth + 1 else 0
+  in  l + centerWidth + r
+
+leftPad :: Int -&gt; String -&gt; String
+leftPad 0 s = s
+leftPad n s = leftPad (n - 1) (' ' : s)
+
+rightArm, leftArm :: Int -&gt; String
+
+rightArm n = aux n where
+  aux n' 
+    | n' == n   = '┗' : aux (n' - 1)
+    | n' &gt; 0    = '━' : aux (n' - 1)
+    | otherwise = "┓"
+
+leftArm n = aux n where
+  aux n'
+    | n' == n = '┏' : aux (n' - 1)
+    | n' &gt; 0  = '━' : aux (n' - 1)
+    | otherwise = "┛"
+
+bothArm :: Int -&gt; Int -&gt; String
+bothArm mid right = aux 0 where
+  aux n'
+    | n' == 0 = '┏' : aux 1
+    | n' /= mid &amp;&amp; n' &lt; right = '━' : aux (n' + 1)
+    | n' == mid = '┻' : aux (n' + 1)
+    | otherwise = "┓"
+
+toRowList :: Show a =&gt; AVL a -&gt; [String]
+toRowList Empty = []
+toRowList (Node Empty a Empty) = [show a]
+toRowList (Node Empty a right) =
+  let x = toRowList right
+      nodeLength = length $ show a
+      y = map (leftPad (nodeLength + 1)) x
+      rroot = rootAt right + nodeLength + 1
+  in show a : rightArm rroot : y
+toRowList (Node left a Empty) = 
+  let x = toRowList left
+      lroot = rootAt left
+      nodeAt = strWidth left + 1
+  in leftPad nodeAt (show a) : leftPad lroot (leftArm (nodeAt - lroot)) : x
+toRowList (Node left a right) = 
+  let l = toRowList left
+      r = toRowList right
+      lw = strWidth left
+      rpadding = lw + 2 + length (show a)
+      rr = zipStringTree rpadding l r
+      lroot = rootAt left
+      rroot = rootAt right
+      nodeAt = lw + 1
+      f = leftPad (lw + 1) (show a)
+      s = leftPad lroot (bothArm (nodeAt - lroot) (rroot - lroot + rpadding))
+  in  f : s : rr
+
+
+rightPadTo :: Int -&gt; String -&gt; String
+rightPadTo n s
+  | ls &gt;= n   = s
+  | otherwise = let n' = n - ls
+                    s' = leftPad n' []
+                in  s ++ s'
+  where ls = length s
+
+rootAt :: Show a =&gt; AVL a -&gt; Int
+rootAt Empty = 0
+rootAt (Node Empty _ _) = 0
+rootAt (Node left _ _) = strWidth left + 1
+
+zipStringTree :: Int -&gt; [String] -&gt; [String] -&gt; [String]
+zipStringTree _ [] [] = []
+zipStringTree _ l [] = l
+zipStringTree n [] r = map (leftPad n) r
+zipStringTree n (l : ls) (r : rs) = 
+  let res = zipStringTree n ls rs
+      c   = rightPadTo n l ++ r
+  in  c : res
+
+instance Show a =&gt; Show (AVL a) where
+  show Empty = ""
+  show t = intercalate "\n" $ toRowList t
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../solutions/course_introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../solutions/typeclasses.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../solutions/course_introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../solutions/typeclasses.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

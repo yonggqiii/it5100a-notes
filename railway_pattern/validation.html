@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Validation - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html" class="active"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="validation"><a class="header" href="#validation">Validation</a></h1>
+<p>One of the most common use of applicatives is <em>validation</em>. From our example at the start of this chapter, we have several data structures and we want to be able to parse them from strings:</p>
+<pre><code class="language-haskell">data Email = Email { emailUsername :: String
+                   , emailDomain   :: String }
+  deriving (Eq, Show)
+
+data Salary = SInt Int 
+            | SDouble Double
+  deriving (Eq, Show)
+
+data User = User { username   :: String
+                 , userEmail  :: Email
+                 , userSalary :: Salary }
+  deriving (Eq, Show)
+</code></pre>
+<p>Parsing them from strings may not always succeed, therefore it is imperative that our parsing function does not guarantee that it returns the desired data structure. Therefore, what we can do instead is to have our parsing functions return results in the <code>Maybe</code> context to express this fact. This makes our parsing functions have the following type signatures:</p>
+<pre><code class="language-haskell">parseEmail :: String -&gt; Maybe Email
+parseSalary :: String -&gt; Maybe Salary
+</code></pre>
+<p>Given these functions, we should be able to define a function that parses a <code>User</code> from three strings: the user name (which requires no parsing), the email (which is parsed using <code>parseEmail</code>) and the salary (which is parsed using <code>parseSalary</code>). One way we can implement this <code>parseUser</code> function is by receiving the three strings, performing parsing on the <code>email</code> and <code>salary</code> (in <em>parallel</em><sup class="footnote-reference"><a href="#1">1</a></sup>), then constructing our <code>User</code> term with the usual <code>Functor</code> and <code>Applicative</code> methods.</p>
+<pre><code class="language-haskell">parseUser :: String -- name
+             -&gt; String -- email
+             -&gt; String -- salary
+             -&gt; Maybe User -- user
+parseUser name email salary =
+    let e = parseEmail email
+        s = parseSalary salary
+    in  User name &lt;$&gt; e &lt;*&gt; s
+</code></pre>
+<p>Now our parsing function works just fine!</p>
+<pre><code class="language-haskell">ghci&gt; parseUser "Foo" "yong@qi.com" "1000"
+Just (User "Foo" (Email "yong" "qi.com") 1000)
+ghci&gt; parseUser "Foo" "yong" "1000"
+Nothing
+</code></pre>
+<h2 id="validation-with-error-messages"><a class="header" href="#validation-with-error-messages">Validation with Error Messages</a></h2>
+<p>However, this is not always helpful since when parsing a user, several things could go wrong—either (1) the supplied email is invalid, (2) the supplied salary is invalid, or (3) both. Therefore, let's have our parsing functions return an error message instead of <code>Nothing</code>. For this, what we want to rely on is the <code>Either</code> type, which consists of a <code>Left</code> of something sad (like an error message), or a <code>Right</code> of something happy (the desired result type). We show the definitions of <code>Either</code> and its supporting typeclass instances here.</p>
+<pre><code class="language-haskell">data Either a b = Left a -- sad
+                | Right b -- happy
+
+instance Functor (Either a) where
+    fmap :: (b -&gt; c) -&gt; Either a b -&gt; Either a c
+    fmap _ (Left x) = Left x
+    fmap f (Right x) = Right $ f x
+
+instance Applicative (Either a) where
+    pure :: b -&gt; Either a b
+    pure = Right
+
+    (&lt;*&gt;) :: Either a (b -&gt; c) -&gt; Either a b -&gt; Either a c
+    Left f &lt;*&gt; _ = Left f
+    _ &lt;*&gt; Left x = Left x
+    Right f &lt;*&gt; Right x = Right $ f x
+</code></pre>
+<p>Let us change the context that our parsing functions will return. Some of the implementation of <code>parseEmail</code> and <code>parseSalary</code> will need to be changed to add descriptive error messages, and so will their type signatures.</p>
+<pre><code class="language-haskell">parseEmail :: String -&gt; Either String Email
+parseEmail email = 
+    if ... then
+        Left $ "error: " ++ email ++ " is not an email"
+    else
+        Right $ Email ...
+
+parseSalary :: String -&gt; Either String Salary
+parseSalary salary = 
+    if ... then
+        Left $ "error: " ++ salary ++ " is not a number"
+    else
+        Right $ SInt ...
+
+</code></pre>
+<p>The great thing is that although we have changed the return types of our individual parsing functions, the implementation of <code>parseUser</code> does not, because our definition only relies on the typeclass methods of <code>Functor</code> and <code>Applicative</code>. Since <code>Either a</code> is also an <code>Applicative</code>, our definition can be unchanged, and only the type signature of <code>parseUser</code> needs to be updated.</p>
+<pre><code class="language-haskell">parseUser :: String -- name
+             -&gt; String -- email
+             -&gt; String -- salary
+             -&gt; Either String User -- user
+parseUser name email salary =
+    let e = parseEmail email
+        s = parseSalary salary
+    in  User name &lt;$&gt; e &lt;*&gt; s
+</code></pre>
+<p>Now, users of our <code>parseUser</code> function will get more descriptive error message reports when parsing fails!</p>
+<pre><code class="language-haskell">ghci&gt; parseUser "Foo" "yong@qi.com" "1000"
+Right (User "Foo" (Email "yong" "qi.com") 1000)
+ghci&gt; parseUser "Foo" "yong" "1000"
+Left "error: yong is not an email"
+ghci&gt; parseUser "Foo" "yong@qi.com" "x"
+Left "error: x is not a number"
+</code></pre>
+<h2 id="accumulating-error-messages"><a class="header" href="#accumulating-error-messages">Accumulating Error Messages</a></h2>
+<p>However, there is one case that is not handled in our validation function. Let's see what that is:</p>
+<pre><code class="language-haskell">ghci&gt; parseUser "Foo" "abc" "x"
+Left "error: abc is not an email"
+</code></pre>
+<p>Notice that although <em>both</em> the email and salaries are invalid, the error message shown <em>only</em> highlights the invalid email address. This is misleading because, in fact, the salary is invalid as well, and the user of this function does not know that!</p>
+<p>The reason for this lies in the definition of the typeclass instance <code>Applicative (Either a)</code>. Notice that in the case of <code>Left f &lt;*&gt; Left x</code>, the result is <code>Left f</code>, ignoring the other error message <code>Left x</code>! In other words, <code>Either</code> is a fail-fast <code>Applicative</code>, and this is not what we want for our parsing function!</p>
+<p>As briefly stated earlier, although the <code>Applicative</code> laws describe how an <code>Applicative</code> behaves in the <em>most obvious way</em>, there is in fact, multiple <em>most obvious ways</em> an instance can behave. In fact, we can define a data structure that does not exhibit fail-fastness, and yet, is still a valid <code>Applicative</code>—the result of which is an <code>Applicative</code> that allows us to collect all error messages! Let us give this a try.</p>
+<p>The first is to re-define <code>Either</code> as an ADT called <code>Validation</code> that is practically the same (isomorphic) to <code>Either</code>, since that structure is still useful for our purposes. The <code>Functor</code> instance of this ADT will remain the same.</p>
+<pre><code class="language-haskell">data Validation err a = Success a
+                      | Failure err
+
+instance Functor (Validation err) where
+    fmap _ (Failure e) = Failure e
+    fmap f (Success x) = Success $ f x
+</code></pre>
+<p>Notice that our <code>err</code> type variable remains as a type variable, instead of a pre-defined error message collection type like <code>[String]</code>. This is because, as always, we want to keep our types as general as possible so that it can be used liberally. However, it is now incumbent on us to restrict or constraint <code>err</code> in a way that makes it amenable to collecting error messages in an obvious way so that we can still use it for our purposes. In essence, we just need <code>err</code> to have some binary operation that is <em>associative</em>:</p>
+<p>\[E_1\oplus(E_2 \oplus E_3) = (E_1 \oplus E_2) \oplus E_3 \]</p>
+<p>For this, we introduce the <code>Semigroup</code> typeclass which represents just that!</p>
+<pre><code class="language-haskell">class Semigroup a where
+    -- must be associative
+    (&lt;&gt;) :: a -&gt; a -&gt; a 
+</code></pre>
+<p>Any type is a semigroup as long as it is closed under an associative binary operation. With this, as long as our error is a semigroup, we can use that as our errors in <code>Validation</code>! Let us define our <code>Applicative</code> instance for this:</p>
+<pre><code class="language-haskell">instance Semigroup err =&gt; Applicative (Validation err) where
+    pure :: a -&gt; Validation err a
+    pure = Success
+
+    (&lt;*&gt;) :: Validation err (a -&gt; b) -&gt; Validation err a -&gt; Validation err b
+    Failure l &lt;*&gt; Failure r = Failure (l &lt;&gt; r)
+    Failure l &lt;*&gt; _ = Failure l
+    _ &lt;*&gt; Failure r = Failure r
+    Success f &lt;*&gt; Success x = Success (f x)
+</code></pre>
+<p>Notice the double-failure case—the errors are combined or aggregated using the semigroup binary operation <code>(&lt;&gt;)</code>. This way, no information is lost if both operands are <code>Failure</code> cases since they are accumulated together.</p>
+<p>Assuredly, using a list of strings as our error log is fine because concatenation is an associative binary operation over lists!</p>
+<pre><code class="language-haskell">instance Semigroup [a] where
+    (&lt;&gt;) :: [a] -&gt; [a] -&gt; [a]
+    (&lt;&gt;) = (++)
+</code></pre>
+<p>Therefore, with these definitions we can now amend our parsing functions to use our new <code>Validation</code> <code>Applicative</code>. First, as per usual, we amend <code>parseEmail</code> and <code>parseUser</code> so that they correctly use <code>Validation</code> instead of <code>Either</code></p>
+<pre><code class="language-haskell">parseEmail :: String -&gt; Validation [String] Email
+parseEmail email =
+    if ... then
+        Failure ["error: " ++ email ++ " is not an email"]
+    else
+        Success $ Email ...
+
+parseSalary :: String -&gt; Validation [String] Salary
+parseSalary salary =
+    if ... then
+        Failure ["error: " ++ salary ++ " is not a number"]
+    else
+        Success $ SInt ...
+</code></pre>
+<p>Once again, our <code>parseUser</code> function does not need to change, except for the type signature.</p>
+<pre><code class="language-haskell">parseUser :: String -- name
+             -&gt; String -- email
+             -&gt; String -- salary
+             -&gt; Validation [String] User -- user
+parseUser name email salary =
+    let e = parseEmail email
+        s = parseSalary salary
+    in  User name &lt;$&gt; e &lt;*&gt; s
+</code></pre>
+<p>Now, our parsing function works exactly as we want!</p>
+<pre><code class="language-haskell">ghci&gt; parseUser "Foo" "yong@qi.com" "1000"
+Success (User "Foo" (Email "yong" "qi.com") 1000)
+ghci&gt; parseUser "Foo" "yong" "1000"
+Failure ["error: yong is not an email"]
+ghci&gt; parseUser "Foo" "yong@qi.com" "x"
+Failure ["error: x is not a number"]
+ghci&gt; parseUser "Foo" "abc" "x"
+Failure ["error: abc is not an email", "error: x is not a number"]
+</code></pre>
+<h2 id="hands-on"><a class="header" href="#hands-on">Hands-On</a></h2>
+<p>In this chapter, we went from parsing with <code>Maybe</code>s to parsing with <code>Either</code>s and finally to parsing with <code>Validation</code>s. Give this a try for yourself!</p>
+<p>Written below is the full program for parsing users with <code>Maybe</code>. Try replacing the <code>Maybe</code>s with <code>Either</code>s, then with <code>Validation</code>s and see the outcome of running the program each time!</p>
+<pre><code class="language-haskell">module Main where
+
+import Control.Applicative
+import Text.Read
+import System.IO
+
+-- edit these!
+parseEmail :: String -&gt; Maybe Email
+parseEmail email = 
+    if '@' `elem` email &amp;&amp; length e == 2 &amp;&amp; '.' `elem` last e
+    -- edit the following two lines when replacing Maybe with
+    -- Either or Validation
+    then Just $ Email (head e) (last e)
+    else Nothing
+  where e = split '@' email
+
+parseSalary :: String -&gt; Maybe Salary
+parseSalary s = 
+  let si = SInt &lt;$&gt; readMaybe s
+      sf = SDouble &lt;$&gt; readMaybe s
+  in  case si &lt;|&gt; sf of
+        Just x -&gt; Just x -- change the RHS `Just x` when replacing
+                         -- Maybe with Either or Validation
+        Nothing -&gt; Nothing -- change the RHS `Nothing` when replacing
+                           -- Maybe with Either or Validation
+
+-- you should only need to change the type of `parseUser` when 
+-- replacing Maybe with Either or Validation
+parseUser :: String -- name
+          -&gt; String -- email
+          -&gt; String -- salary
+          -&gt; Maybe User 
+parseUser name email salary = 
+    let e = parseEmail email
+        s = parseSalary salary
+    in  User name &lt;$&gt; e &lt;*&gt; s
+
+-- no need to edit the rest!
+
+-- the data structures
+data Email = Email { emailUsername :: String,
+                     emailDomain :: String    }
+  deriving (Eq, Show)
+
+data Salary = SInt Int | SDouble Double
+  deriving (Eq, Show)
+
+data User = User { username :: String,
+                   userEmail :: Email,
+                   userSalary :: Salary }
+  deriving (Eq, Show)
+
+-- user input with a prompt
+input :: String -&gt; IO String
+input prompt = do
+  putStr prompt
+  hFlush stdout
+  getLine
+
+-- splitting strings
+split :: Char -&gt; String -&gt; [String]
+split _ [] = [""]
+split delim (x : xs)
+    | x == delim = "" : xs'
+    | otherwise  = (x : head xs') : tail xs'
+  where xs' = split delim xs
+
+-- validation
+data Validation err a = Success a
+                      | Failure err
+    deriving (Eq, Show)
+
+instance Functor (Validation err) where
+    fmap :: (a -&gt; b) -&gt; Validation err a -&gt; Validation err b
+    fmap _ (Failure e) = Failure e
+    fmap f (Success x) = Success $ f x
+
+instance Semigroup err =&gt; Applicative (Validation err) where
+    pure :: a -&gt; Validation err a
+    pure = Success
+
+    (&lt;*&gt;) :: Validation err (a -&gt; b) -&gt; Validation err a -&gt; Validation err b
+    Failure l &lt;*&gt; Failure r = Failure (l &lt;&gt; r)
+    Failure l &lt;*&gt; _ = Failure l
+    _ &lt;*&gt; Failure r = Failure r
+    Success f &lt;*&gt; Success x = Success (f x)
+
+main :: IO ()
+main = do
+  n &lt;- input "Enter name: "
+  e &lt;- input "Enter email: "
+  s &lt;- input "Enter salary: "
+  print $ parseUser n e s
+</code></pre>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>It is important to note that the use of the word "parallel" in this chapter has nothing to do with <em>parallelism</em>. The word "parallel" is only used to describe the notion of merging parallel railways into a single rail line via <code>&lt;*&gt;</code>.</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../railway_pattern/applicative.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../railway_pattern/monad.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../railway_pattern/applicative.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../railway_pattern/monad.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

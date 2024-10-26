@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Existential Typeclass Antipattern - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/existential.html" class="active"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../../solutions/typeclasses.html"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="the-existential-typeclass-antipattern"><a class="header" href="#the-existential-typeclass-antipattern">The Existential Typeclass Antipattern</a></h1>
+<p>In Python, as long as a class abides by a protocol, the Python type system presumes that this class is a <em>subclass</em> of said protocol. Therefore, any object instantiated from such a class is also considered to be of the same type as the protocol. Thus, in our earlier example, shapes, houses and rooms are all considered to be the same type has <code>HasArea</code>.</p>
+<pre><code class="language-python">class HasArea(Protocol):
+    def area(self) -&gt; float:
+        pass
+
+@dataclass
+class Rectangle:
+    # ...
+    def area(self) -&gt; float:
+        return # ...
+
+@dataclass
+class House:
+    # ...
+    def area(self) -&gt; float:
+        return # ...
+
+# the following is ok and well-typed
+ls: list[HasArea] = [Rectangle(1, 2), House(...)]
+</code></pre>
+<p>However, this is <em>not</em> okay in Haskell because <code>HasArea</code> is not a type, but a typeclass!</p>
+<pre><code class="language-haskell">x = Triangle 2 3
+y = R "bedroom" (Rectangle 3 4)
+z = H [y]
+ls = [x, y, z] -- error!
+</code></pre>
+<p>One question we might ask is, how do we replicate this ability in Python? I.e., how do we create a type that represents all types that implement <code>HasArea</code> in Haskell?</p>
+<h2 id="existential-types"><a class="header" href="#existential-types">Existential Types</a></h2>
+<p>Recall that polymorphic types are also called for-all types. Essentially, the definition of the type is independent of the type parameter. The idea behind for-all types is that we can substitute the type parameter with any other type to give a new type. For example, we know that the <code>id</code> function has type <code>forall a. a -&gt; a</code>. Therefore, we can apply <code>id</code> onto a type, say <code>Int</code>, to give us a new function whose type is <code>Int -&gt; Int</code>.</p>
+<p>The type variable <code>a</code> is opaque to whoever defines the term of the polymorphic type. For example, when we define a polymorphic function:</p>
+<pre><code class="language-haskell">singleton :: forall. a -&gt; [a]
+singleton x = []
+</code></pre>
+<p>The type of <code>x</code> is just <code>a</code> where we have no idea what <code>a</code> is. Thus, the implementation of <code>singleton</code> cannot make use of any knowledge of what <code>a</code> is because it is just an opaque type variable. In contrast, anyone who <em>uses</em> <code>singleton</code> can <em>decide</em> what type will inhabit <code>a</code>:</p>
+<pre><code class="language-haskell">x :: Int
+y = singleton @Int x
+</code></pre>
+<p>As you can see, the caller of <code>singleton</code> can decide to pass in the type <code>Int</code>, and thus will know that the function application <code>singleton @Int x</code> will evaluate to a term of type <code>[Int]</code>.</p>
+<p>One question you might ask is, we know that "for all" corresponds to \(\forall\) in mathematics. Are there also \(\exists\) types? The answer is yes! These are known as <em>existential types</em>:
+\[\exists\alpha.\tau\]</p>
+<p>The idea behind existential types is that there is <em>some</em> type which inhabits the existential type variable to give a new type. For example the type \(\exists\alpha.[\alpha]\) means <em>"some"</em> list of elements. The term <code>[1, 2]</code> can also be treated as having the type \(\exists\alpha.[\alpha]\) because we know that we can let \(\alpha\) be <code>Int</code> and <code>[1, 2]</code> is correctly of type <code>[Int]</code>. Similarly, <code>"abc"</code> can also be treated as having the type \(\exists\alpha.[\alpha]\) because we know that we can let \(\alpha\) be <code>Char</code> and <code>"abc"</code> is correctly of type <code>[Char]</code>. However, <code>[1, 'a']</code> is <em>not</em> of type \(\exists\alpha.[\alpha]\) since we cannot assign any type to \(\alpha\) so that the type of <code>[1, 'a']</code> matches it.</p>
+<p>An existential type reverses the relationship of type variable opacity. Recall that the implementer of a polymorphic function sees the type variable as opaque, while the user gets to decide what type inhabits the type variable. For an existential type, the implementer gets to decide what type inhabits the type variable, while the user of an existential type views the type variable as opaque.</p>
+<blockquote>
+<p><strong>Polymorphism</strong>: implementer <strong>does not know the type, must ignore it</strong>. <strong>User</strong> chooses the type.</p>
+<p><strong>Existential types</strong>: implementer <strong>chooses the type</strong>. <strong>User</strong> does not know the type, must ignore it.</p>
+</blockquote>
+<p>Ideally, this allows us to define a type of lists \([\exists\alpha.\mathtt{HasArea}~\alpha\Rightarrow\alpha]\) (read: a list of elements, each of which are some \(\alpha\) that implements <code>HasArea</code>), however the quantification of the type variable is inside the list constructor; these are called <em>impredicative</em> types. Haskell does not support impredicative types. What can we do now?</p>
+<p>What we can try to do is to define a new wrapper type that stores elements of type \(\exists\alpha.\mathtt{HasArea}~\alpha\), like so:</p>
+<pre><code class="language-haskell">data HasAreaType = HAT (∃a. HasArea a =&gt; a)
+instance HasArea HasAreaType where
+    area :: HasAreaType -&gt; Double
+    area (HAT x) = area x
+</code></pre>
+<p>However, perhaps surprisingly given what we've been talking about, Haskell does not even support existential types. What now?</p>
+<h2 id="mental-model-for-existential-types"><a class="header" href="#mental-model-for-existential-types">Mental Model for Existential Types</a></h2>
+<p>Just like how we have given a mental model for polymorphism, we give a mental model for existential types. Recall that a polymorphic function is a function that receives a type parameter and returns a function that is specialized over the type parameter. For us, let us suppose that a term of an existential type \(\exists\alpha.\tau\) is a pair \((\beta,x)\) such that \(x\) has type \(\tau[\alpha:=\beta]\).</p>
+<ul>
+<li><code>(Int, [1, 2])</code> is a term of type \(\exists\alpha.[\alpha]\) because <code>[1, 2] :: [Int]</code></li>
+<li><code>(Char, "abc")</code> is also a term of type \(\exists\alpha.[\alpha]\) because <code>"abc" :: [Char]</code></li>
+</ul>
+<p>Therefore, a function on an existential type can be thought of as a function receiving a pair, whose first element is a type, and the second element is corresponding term.</p>
+<p>In our example above, the <code>HAT</code> constructor would therefore have type</p>
+<pre><code class="language-haskell">HAT :: (∃a. HasArea a =&gt; a) -&gt; HasAreaType
+</code></pre>
+<p>Using our mental model, we destructure the existential type as a pair:</p>
+<pre><code class="language-haskell">HAT :: (a :: *, HasArea a =&gt; a) -&gt; HasAreaType
+</code></pre>
+<p>Recall <em>currying</em>, where a function over more than one argument is split into a function receiving one parameter and returning a function that receives the rest. We thus curry the <code>HAT</code> constructor like so:</p>
+<pre><code class="language-haskell">HAT :: (a :: *) -&gt; HasArea a =&gt; a -&gt; HasAreaType
+</code></pre>
+<p>Remember what it means for a function that receives a type as a parameter—this is a <strong>polymorphic function</strong>!</p>
+<pre><code class="language-haskell">HAT :: forall a. HasArea a =&gt; a -&gt; HasAreaType
+</code></pre>
+<p>Indeed, <em>polymorphic functions simulate functions over existential types</em>. Let us show more examples of this being the case. For example, the <code>area</code> typeclass method is a function over <em>something that implements <code>HasArea</code></em>, and returns a <code>Double</code>. Therefore, it should have the following function signature:</p>
+<pre><code class="language-haskell">area :: (∃a. HasArea a =&gt; a) -&gt; Double
+</code></pre>
+<p>However, we know that we can curry the existential type to get a polymorphic function, allowing us to recover the original type signature!</p>
+<pre><code class="language-haskell">area :: forall a. HasArea a =&gt; Double
+</code></pre>
+<p>In another example, we know the <code>EqExpr</code> constructor from the previous chapter is constructed by providing any two expressions that are amenable to equality comparisons:</p>
+<pre><code class="language-haskell">EqExpr :: (∃a. Eq a =&gt; (Expr a, Expr a)) -&gt; Expr Bool
+</code></pre>
+<p>Again, with currying, we recover our original type signature for <code>EqExpr</code>:</p>
+<pre><code class="language-haskell">EqExpr :: forall a. Eq a =&gt; Expr a -&gt; Expr a -&gt; Expr Bool
+</code></pre>
+<p>With this in mind, we can now properly create our <code>HAT</code> constructor and use the <code>HasAreaType</code> type to put shapes, rooms and houses in a single list!</p>
+<pre><code class="language-haskell">data HasAreaType where
+    HAT :: forall a. HasArea a =&gt; a -&gt; HasAreaType
+instance HasArea HasAreaType where
+    area :: HasAreaType -&gt; area
+    area (HAT x) = area x
+
+x = Triangle 2 3
+y = R "bedroom" (Rectangle 3 4)
+z = H [y]
+
+ls :: [HasAreaType]
+ls = [HAT x, HAT y, HAT z]
+
+d = totalArea ls -- 27
+</code></pre>
+<h2 id="the-antipattern"><a class="header" href="#the-antipattern">The Antipattern</a></h2>
+<p>Notice that we went through this entire journey just so that we can put these different types in a list, which is so that we can compute the total area. However, in this case, we can actually just save the trouble and do this:</p>
+<pre><code class="language-haskell">x = Triangle 2 3
+y = R "bedroom" (Rectangle 3 4)
+z = H [y]
+
+ls :: [Double]
+ls = [area x, area y, area z]
+
+d = sum ls -- 27
+</code></pre>
+<p>Of course, there are definitely use cases for existential types like <code>HasAreaType</code>. We frequently call these <em>abstract data types</em>. However, these are not commonly used. In fact, not knowing what existential types are should <strong>not</strong> affect your understanding of type classes and polymorphic types. In addition, encoding existential types as pairs is <em>very handwave-y</em> and is not even supported in Haskell. The closest analogue of real-world existential types is <em>dependent pair types</em> or \(\Sigma\)-<em>types</em>, which is different to the existential types we have seen. The demonstration that we have seen so far only serves as a mental model for why we write polymorphic functions were the return type does not depend on the type parameters.</p>
+<p>The key point is that we should <em>not</em> immediately attempt to replicate OO design patterns in FP just because they are familiar. Trying to skirt around the restrictions of the type system is, generally, not a good idea (there are cases where that is useful, but such scenarios occur exceedingly infrequently).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../typeclasses/sections/functional-dependencies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../typeclasses/sections/exercises.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../typeclasses/sections/functional-dependencies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../typeclasses/sections/exercises.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

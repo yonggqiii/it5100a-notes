@@ -1,0 +1,403 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 3 - Typed Functional Programming</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../about.html">About IT5100A</a></li><li class="chapter-item expanded affix "><li class="part-title">Typed Functional Programming</li><li class="chapter-item expanded "><a href="../course_introduction/index.html"><strong aria-hidden="true">1.</strong> Course Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../course_introduction/sections/course_admin.html"><strong aria-hidden="true">1.1.</strong> Course Administration</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/functional_programming.html"><strong aria-hidden="true">1.2.</strong> Functional Programming</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/haskell.html"><strong aria-hidden="true">1.3.</strong> Haskell</a></li><li class="chapter-item expanded "><a href="../course_introduction/sections/exercises.html"><strong aria-hidden="true">1.4.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../types/index.html"><strong aria-hidden="true">2.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../types/sections/type_systems.html"><strong aria-hidden="true">2.1.</strong> Type Systems</a></li><li class="chapter-item expanded "><a href="../types/sections/polymorphism.html"><strong aria-hidden="true">2.2.</strong> Polymorphism</a></li><li class="chapter-item expanded "><a href="../types/sections/algebraic_data_types.html"><strong aria-hidden="true">2.3.</strong> Algebraic Data Types</a></li><li class="chapter-item expanded "><a href="../types/sections/pattern_matching.html"><strong aria-hidden="true">2.4.</strong> Pattern Matching</a></li><li class="chapter-item expanded "><a href="../types/sections/exercises.html"><strong aria-hidden="true">2.5.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../typeclasses/index.html"><strong aria-hidden="true">3.</strong> Typeclasses</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../typeclasses/sections/ad-hoc-polymorphism.html"><strong aria-hidden="true">3.1.</strong> Ad-Hoc Polymorphism</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/typeclasses.html"><strong aria-hidden="true">3.2.</strong> Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/commonly-used-typeclasses.html"><strong aria-hidden="true">3.3.</strong> Commonly Used Typeclasses</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/functional-dependencies.html"><strong aria-hidden="true">3.4.</strong> Functional Dependencies</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/existential.html"><strong aria-hidden="true">3.5.</strong> Existential Typeclass Antipattern</a></li><li class="chapter-item expanded "><a href="../typeclasses/sections/exercises.html"><strong aria-hidden="true">3.6.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../railway_pattern/index.html"><strong aria-hidden="true">4.</strong> Railway Pattern</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../railway_pattern/context.html"><strong aria-hidden="true">4.1.</strong> Context/Notions of Computation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/functors.html"><strong aria-hidden="true">4.2.</strong> Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/applicative.html"><strong aria-hidden="true">4.3.</strong> Applicative Functors</a></li><li class="chapter-item expanded "><a href="../railway_pattern/validation.html"><strong aria-hidden="true">4.4.</strong> Validation</a></li><li class="chapter-item expanded "><a href="../railway_pattern/monad.html"><strong aria-hidden="true">4.5.</strong> Monads</a></li><li class="chapter-item expanded "><a href="../railway_pattern/railway_python.html"><strong aria-hidden="true">4.6.</strong> Railway Pattern in Python</a></li><li class="chapter-item expanded "><a href="../railway_pattern/exercises.html"><strong aria-hidden="true">4.7.</strong> Exercises</a></li></ol></li><li class="chapter-item expanded "><a href="../monads/index.html"><strong aria-hidden="true">5.</strong> Monads</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../monads/more_monads.html"><strong aria-hidden="true">5.1.</strong> More on Monads</a></li><li class="chapter-item expanded "><a href="../monads/common_monads.html"><strong aria-hidden="true">5.2.</strong> Commonly Used Monads</a></li><li class="chapter-item expanded "><a href="../monads/monadtrans.html"><strong aria-hidden="true">5.3.</strong> Monad Transformers</a></li><li class="chapter-item expanded "><a href="../monads/monads_wild.html"><strong aria-hidden="true">5.4.</strong> Monads in the Wild</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Exercises</div></li></ol></li><li class="chapter-item expanded "><a href="../concurrent/index.html"><strong aria-hidden="true">6.</strong> Concurrent and Parallel Programming</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concurrent/concurrency.html"><strong aria-hidden="true">6.1.</strong> Concurrent Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/parallel.html"><strong aria-hidden="true">6.2.</strong> Parallel Programming</a></li><li class="chapter-item expanded "><a href="../concurrent/stm.html"><strong aria-hidden="true">6.3.</strong> Software Transactional Memory</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendices</li><li class="chapter-item expanded "><a href="../solutions/index.html"><strong aria-hidden="true">7.</strong> Solutions to Exercises</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../solutions/course_introduction.html"><strong aria-hidden="true">7.1.</strong> Chapter 1</a></li><li class="chapter-item expanded "><a href="../solutions/types.html"><strong aria-hidden="true">7.2.</strong> Chapter 2</a></li><li class="chapter-item expanded "><a href="../solutions/typeclasses.html" class="active"><strong aria-hidden="true">7.3.</strong> Chapter 3</a></li><li class="chapter-item expanded "><a href="../solutions/railway.html"><strong aria-hidden="true">7.4.</strong> Chapter 4</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Chapter 5</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Chapter 6</div></li></ol></li><li class="chapter-item expanded "><a href="../recap/index.html"><strong aria-hidden="true">8.</strong> Recap of Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../recap/sections/recursion.html"><strong aria-hidden="true">8.1.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../recap/sections/first-class-functions.html"><strong aria-hidden="true">8.2.</strong> First-Class Functions</a></li><li class="chapter-item expanded "><a href="../recap/sections/lambda.html"><strong aria-hidden="true">8.3.</strong> Lambda Calculus</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Typed Functional Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge" alt="Updated" /></p>
+<h1 id="typeclasses"><a class="header" href="#typeclasses">Typeclasses</a></h1>
+<h3 id="question-1"><a class="header" href="#question-1">Question 1</a></h3>
+<ol>
+<li><code>Num a =&gt; a</code>. Because all of <code>1</code>, <code>2</code> and <code>3</code> can be interpreted as any number, the entire expression can likewise be interpreted as any number.</li>
+<li><code>Show b =&gt; (a -&gt; b) -&gt; a -&gt; String</code>. The type of <code>show</code> is <code>Show a =&gt; a -&gt; String</code>, in other words, any type that implements the <code>Show</code> typeclass can be converted into a <code>String</code>. Therefore, <code>(show .)</code> can receive any function <code>a -&gt; b</code> where <code>b</code> implements <code>Show</code>, so that the result is a function that receives <code>a</code> and produces <code>String</code></li>
+<li><code>Show a =&gt; (String -&gt; b) -&gt; a -&gt; b</code>. Similar to the above.</li>
+<li><code>Eq a =&gt; (a, a) -&gt; Bool</code>. The elements of the tuple must be amenable to equality comparisons, and therefore must be of the same type <code>a</code> where <code>a</code> implements <code>Eq</code>.</li>
+</ol>
+<h3 id="question-2"><a class="header" href="#question-2">Question 2</a></h3>
+<p>The idea is to create a protocol that describes classes that
+have a <code>to_list</code> function. In the following solution, the
+protocol is called <code>ToList</code>.</p>
+<pre><code class="language-python">from typing import Any
+
+type Tree[a] = Empty | TreeNode[a]
+type List[a] = Empty | ListNode[a]
+
+@dataclass
+class Empty:
+    def to_list(self) -&gt; list[Any]:
+        return []
+
+@dataclass
+class ListNode[a]:
+    head: a
+    tail: List[a]
+    def to_list(self) -&gt; list[a]:
+        return [self.head] + self.tail.to_list()
+
+@dataclass
+class TreeNode[a]:
+    l: Tree[a]
+    v: a
+    r: Tree[a]
+    def to_list(self) -&gt; list[a]:
+        return self.l.to_list() + [self.v] + self.r.to_list()
+
+class ToList[a](Protocol):
+    def to_list(self) -&gt; list[a]:
+        raise
+
+def flatten[a](ls: list[ToList[a]]) -&gt; list[a]:
+    if not ls: return []
+    return ls[0].to_list() + flatten(ls[1:])
+
+ls: list[ToList[int]] = [ListNode(1, Empty()), TreeNode(Empty(), 2, Empty())]
+ls2: list[int] = flatten(ls)
+</code></pre>
+<h3 id="question-3"><a class="header" href="#question-3">Question 3</a></h3>
+<p>The <code>smallest</code> function can be implemented directly with the <code>minBound</code> method of the <code>Bounded</code> typeclass:</p>
+<pre><code class="language-haskell">smallest :: Bounded a =&gt; a 
+smallest = minBound
+</code></pre>
+<p>The <code>descending</code> function can also be implemented directly with the <code>Bounded</code> and <code>Enum</code> methods. The idea is to construct a range (which requires <code>Enum</code>) starting from <code>maxBound</code> and enumerating all the way to <code>minBound</code>. You can either construct a range starting from <code>minBound</code> to <code>maxBound</code> and then reverse the list, or you can start from <code>maxBound</code>, followed by <code>pred maxBound</code> (<code>pred</code> comes from <code>Enum</code>), and end at <code>minBound</code>.</p>
+<pre><code class="language-haskell">descending :: (Bounded a, Enum a) =&gt; [a]
+descending = [maxBound,pred maxBound..minBound]
+</code></pre>
+<p>The <code>average</code> function can be implemented by converting the two terms to integers using <code>fromEnum</code>, then take the average, and use <code>toEnum</code> to bring it back to the desired term.</p>
+<pre><code class="language-haskell">average :: Enum a =&gt; a -&gt; a -&gt; a
+average x y = toEnum $ (fromEnum x + fromEnum y) `div` 2
+</code></pre>
+<h3 id="question-4"><a class="header" href="#question-4">Question 4</a></h3>
+<p>Any list of elements that can be ordered, i.e. any list over a type implementing <code>Ord</code> can be sorted!</p>
+<pre><code class="language-haskell">import Data.List (splitAt)
+mergesort :: Ord a =&gt; [a] -&gt; [a]
+mergesort ls 
+  | len &lt;= 1 = ls
+  | otherwise = let (l, r) = splitAt (len `div` 2) ls
+                    l'     = mergesort l
+                    r'     = mergesort r
+                in  merge l' r'
+  where len :: Int
+        len = length ls
+        merge :: Ord a =&gt; [a] -&gt; [a] -&gt; [a]
+        merge [] x = x
+        merge x [] = x
+        merge l@(x : xs) r@(y : ys)
+          | x &lt;= y = x : merge xs r
+          | otherwise = y : merge l ys
+</code></pre>
+<h3 id="question-5"><a class="header" href="#question-5">Question 5</a></h3>
+<p>Before we even begin, it will be helpful to decide what
+our typeclass will look like. The typeclass should be abstracted over
+the type of expression and the type from evaluating it. Therefore, it
+should be something like <code>Expr e a</code>, where
+<code>eval :: e -&gt; a</code>. However, we know that <code>e</code> uniquely
+characterizes <code>a</code>, therefore we should add this as a
+functional dependency of our typeclass.</p>
+<pre><code class="language-haskell">class Expr e a | e -&gt; a
+  eval :: e -&gt; a
+
+-- for clarity
+type IntExpr e = Expr e Int
+type BoolExpr e = Expr e Bool
+</code></pre>
+<p>Then, our types will all contain types that implement the
+<code>Expr</code> typeclass.</p>
+<p>First, to start we have numeric literals, which is straightforward.</p>
+<pre><code class="language-haskell">data LitNumExpr = LitNumExpr Int
+
+instance Expr LitNumExpr Int where
+  eval :: LitNumExpr -&gt; Int
+  eval (LitNumExpr x) = x
+</code></pre>
+<p><code>AddExpr</code> is more interesting. We require that the component
+expressions must be evaluated to an <code>Int</code>. As such, we
+constrain the component addends with <code>IntExpr</code> as follows:</p>
+<pre><code class="language-haskell">data AddExpr where
+  AddExpr :: (IntExpr e, IntExpr e') =&gt; e -&gt; e' -&gt; AddExpr
+
+instance Expr AddExpr Int where
+  eval :: AddExpr -&gt; Int
+  eval (AddExpr e1 e2) = eval e1 + eval e2
+</code></pre>
+<p>To define <code>EqExpr</code>, we have to allow expressions of any type
+that evaluates to any type that is amenable to equality comparisons:</p>
+<pre><code class="language-haskell">data EqExpr where
+  EqExpr :: (Eq a, Expr e a, Expr e' a) =&gt; e -&gt; e' -&gt; EqExpr
+
+instance Expr EqExpr Bool where
+  eval :: EqExpr -&gt; Bool
+  eval (EqExpr e1 e2) = eval e1 == eval e2
+</code></pre>
+<p>Finally, to define a <code>CondExpr</code> we must allow it to evaluate
+to any type, and thus should be parameterized.</p>
+<pre><code class="language-haskell">data CondExpr a where
+  CondExpr :: (BoolExpr c, Expr e a, Expr e' a) 
+           =&gt; c -&gt; e -&gt; e' -&gt; CondExpr a
+
+instance Expr (CondExpr a) a where
+  eval :: CondExpr a -&gt; a
+  eval (CondExpr c e1 e2) = if eval c then eval e1 else eval e2
+</code></pre>
+<h3 id="question-6"><a class="header" href="#question-6">Question 6</a></h3>
+<p>As per usual, we are going to define a typeclass <code>Sequence</code> that defines the methods <code>@</code>, <code>len</code> and <code>prepend</code>. The type parameters of <code>Sequence</code> is tricky. One possibility is for <code>Sequence</code> to be higher-kinded:</p>
+<pre><code class="language-haskell">class Sequence e s where
+    (@) :: s e -&gt; Int -&gt; e
+    len :: s e -&gt; Int
+    prepend :: s e -&gt; e -&gt; s e
+
+instance Sequence [] a where
+    -- ...
+</code></pre>
+<p>However, this will not work when having <code>Int</code>s as sequences because <code>Int</code> is not a type constructor. Therefore, we will just let <code>s</code> be the full sequence type, and introduce a functional dependency <code>s -&gt; e</code> so that the sequence type <code>s</code> <em>uniquely characterizes</em> the type of the elements of that sequence:</p>
+<pre><code class="language-haskell">class Sequence e s | s -&gt; e where
+    (@) :: s -&gt; Int -&gt; e
+    len :: s -&gt; Int
+    prepend :: s -&gt; e -&gt; s
+</code></pre>
+<p>In which case, the <code>Sequence</code> instances for <code>[a]</code> and <code>Int</code> becomes quite straightforward:</p>
+<pre><code class="language-haskell">instance Sequence a [a] where
+  (@) :: [a] -&gt; Int -&gt; a
+  (@) = (!!)
+
+  len :: [a] -&gt; Int
+  len = length
+
+  prepend :: [a] -&gt; a -&gt; [a]
+  prepend = flip (:)
+
+instance Sequence () Int where
+  (@) :: Int -&gt; Int -&gt; ()
+  i @ j 
+    | j &lt; 0 || j &gt;= i = undefined
+    | otherwise       = ()
+
+  len :: Int -&gt; Int
+  len = id
+
+  prepend :: Int -&gt; () -&gt; Int
+  prepend = const . (+1)
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../solutions/types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../solutions/railway.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../solutions/types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../solutions/railway.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
