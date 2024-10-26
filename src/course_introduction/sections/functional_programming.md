@@ -82,7 +82,7 @@ def f(x):
 
 Pure functions **only receive input and return
 output**. They do not produce side effects, and do not depend
-on external state. And example of this is as follows:
+on external state. An example of this is as follows:
 
 ``` python
 # Python
@@ -509,4 +509,4 @@ For this course, you will need the following software:
 [^7]: If you have not, you may want to read a 
     [a recap on first-class functions](../../recap/sections/first-class-functions.md) before continuing.
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge

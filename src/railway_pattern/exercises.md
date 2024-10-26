@@ -329,4 +329,4 @@ Failure ["n - k cannot be negative!"]
 
 > Note: `Validation` is not included in Haskell's Prelude. You can use the `Validation` datatype definition and its supporting typeclass instances as defined in the hands-on portion of [Chapter 4.4 (Railway Pattern#Validation)](./validation.md).
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge

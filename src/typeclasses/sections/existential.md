@@ -158,4 +158,4 @@ Of course, there are definitely use cases for existential types like `HasAreaTyp
 
 The key point is that we should _not_ immediately attempt to replicate OO design patterns in FP just because they are familiar. Trying to skirt around the restrictions of the type system is, generally, not a good idea (there are cases where that is useful, but such scenarios occur exceedingly infrequently). 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge

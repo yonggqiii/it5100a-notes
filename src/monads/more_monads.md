@@ -165,8 +165,8 @@ ghci> import Control.Monad
 ghci> ls = [-2, -1, 0, 1, 2]
 ghci> :{
 ghci> ls2 = do x <- ls
-ghci|         guard (x > 0)
-ghci|         return x
+ghci|          guard (x > 0)
+ghci|          return x
 ghci| :}
 ghci> ls2
 [1, 2]
@@ -216,5 +216,5 @@ Thus, as you can see, list comprehensions are just monadic binds and guards spec
 <a id="do-unchained" class="cite">Sebastian Ullrich and Leonardo de Moura. 2022. `do` Unchained: Embracing Local Imperativity in a Purely Functional Language (Functional Pearl). <i>Proceedings of the ACM on Programming Languages (PACMPL)</i>. 6(ICFP) Article 109 (August 2022), 28 pages. URL: <a class="cite" href="https://doi.org/10.1145/3547640">https://doi.org/10.1145/3547640</a>.</a>
 
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge
 

@@ -17,4 +17,4 @@ If the answer to one (or more) of the questions above is yes, chances are, your 
 
 Give this a try in the exercises and the assignment!
 
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge

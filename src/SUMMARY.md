@@ -35,7 +35,10 @@
     - [Monad Transformers](./monads/monadtrans.md)
     - [Monads in the Wild](./monads/monads_wild.md)
     - [Exercises]()
-- [Concurrent and Parallel Programming]()
+- [Concurrent and Parallel Programming](./concurrent/README.md)
+    - [Concurrent Programming](./concurrent/concurrency.md)
+    - [Parallel Programming](./concurrent/parallel.md)
+    - [Software Transactional Memory](./concurrent/stm.md)
 
 ---
 # Appendices

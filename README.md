@@ -62,7 +62,7 @@ Author: Foo Yong Qi - yongqi@nus.edu.sg
 
 [contributors-shield]: https://img.shields.io/github/contributors/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [contributors-url]: https://github.com/yonggqiii/it5100a-notes/graphs/contributors
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge
 [stars-shield]: https://img.shields.io/github/stars/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [stars-url]: https://github.com/yonggqiii/it5100a-notes/stargazers
 [issues-shield]: https://img.shields.io/github/issues/yonggqiii/it5100a-notes.svg?style=for-the-badge

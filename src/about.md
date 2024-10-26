@@ -97,26 +97,17 @@ Author: Foo Yong Qi - yongqi@nus.edu.sg
 
 |Date|Description|
 |---|---|
+| 26 Oct | Writeup on Concurrent and Parallel Programming, excluding exercises|
 |13 Oct| Writeup on Monads, excluding exercises|
 |10 Oct| Writeup on the existential typeclass pattern|
 | 28 Sep| <ul><li>Additional writeups and bug fixes in the existing chapters</li><li>Bug fixes in operator highlighting in code blocks in light modes.</li><li>Recap on first-class functions and lambda calculus.</li><li>Solutions to exercises for the first four chapters.</li></ul>|
 | 26 Sep| The first draft of these notes have been released with the first four chapters completed. |
 
-<!-- #### 10 October 2024 -->
-<!-- Writeup on the existential typeclass pattern. -->
-<!---->
-<!-- #### 28 September 2024 -->
-<!-- - Additional writeups and bug fixes in the existing chapters.  -->
-<!-- - Bug fixes in operator highlighting in code blocks in light modes. -->
-<!-- - Recap on first-class functions and lambda calculus.  -->
-<!-- - Solutions to exercises for the first four chapters. -->
-<!-- #### 26 September 2024 -->
-<!-- The first draft of these notes have been released with the first four chapters completed. -->
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [contributors-url]: https://github.com/yonggqiii/it5100a-notes/graphs/contributors
-[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-13%20OCT%202024-57ffd8?style=for-the-badge
+[update-shield]: https://img.shields.io/badge/LAST%20UPDATED-26%20OCT%202024-57ffd8?style=for-the-badge
 [stars-shield]: https://img.shields.io/github/stars/yonggqiii/it5100a-notes.svg?style=for-the-badge
 [stars-url]: https://github.com/yonggqiii/it5100a-notes/stargazers
 [issues-shield]: https://img.shields.io/github/issues/yonggqiii/it5100a-notes.svg?style=for-the-badge
