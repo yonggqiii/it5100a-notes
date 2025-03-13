@@ -1,7 +1,7 @@
 ---
 title: Type Systems
 abstract: |
-  As per the course title, one of the most important aspects of functional programming that we shall cover is **types**. In this chapter, we shall describe what types are, how they are useful and how we can use type information to write code, and some aspects of types that allow us to reduce boilerplate code while still retaining type-safety. In addition, we describe how we can define our own data types in Haskell, and a neat feature known as **pattern matching** that is extremely useful in the presence of **algebraic data types**. We also offer some examples of how we can incorporate these concepts in Python.
+  As per the course title, one of the most important aspects of functional programming that we shall cover is **types**. In this chapter, we shall describe what types are, how they are useful and how we can use type information to write code, and some aspects of types that allow us to reduce boilerplate code while still retaining type safety. In addition, we describe how we can define our own data types in Haskell, and a neat feature known as **pattern matching** that is extremely useful in the presence of **algebraic data types**. We also offer some examples of how we can incorporate these concepts in Python.
 ---
 
 
@@ -11,93 +11,95 @@ begs the question, "what is a type system?"
 
 An online search for definitions might give you the following:
 
-> **Definition (Type System)**. A type system is a
-**tractable syntactic method** for **proving the absence of certain
+:::theorem{#def:type-system title="Type System"}
+A type system is a **tractable syntactic method** for **proving the absence of certain
 program behaviours** by classifying phrases according to the **kinds of
 values they compute**.
+:::
 
-Let us unpack the highlighted phrases in the definition above.
+Let us unpack the highlighted phrases in :autoref{#def:type-system}.
 
-#### Tractable syntactic method
+:::steps
+1. **Tractable** more or less means **easy**, or **polynomial time**. **Method**
+   refers to a **formal method**, which means it is a kind of mathematically
+   formal process. The fact that it is a **syntactic method** means that this
+   formal analysis can be done syntactically, without the need to appeal to
+   a **semantic** analysis (although, static type checking is done against
+   the static semantics of the type system). More or less, it can be
+   performed without executing any of the code it is analyzing.
+2. In the case of type systems, this usually means that the type system is
+    used to **prove the absence of type errors**. The realm of program analysis
+    is broken down into roughly two kinds: over-approximation analyses, and
+    under-approximation analyses. Notice that both perform **approximations**
+    of program behaviour&mdash;this is because obtaining a precise specification of
+    any program is **undecidable**. Generally, static analyses, like type
+    checking, perform an over-approximation of program behaviour. An analogy
+    of how this works is as follows: assume true program behaviour is $x$
+    and buggy behaviour is at $y$ (these are all positive numbers, let's
+    say). We then over-approximate the true program behaviour, giving us
+    $x + \epsilon$. If we can show that $x + \epsilon < y$, then we can
+    guarantee that $x < y$, so the program is not buggy.
 
-*Tractable* more or less means *easy*, or *polynomial time*. *Method*
-refers to a *formal method*, which means it is a kind of mathematically
-formal process. The fact that it is a *syntactic method* means that this
-formal analysis can be done syntactically, without the need to appeal to
-a *semantic* analysis (although, static type checking is done against
-the static semantics of the type system). More or less, it can be
-performed without executing any of the code it is analyzing.
+    A more concrete example is as follows. Let's suppose we have the following code snippet in Python:
 
-#### Proving the absence of certain program behaviours
+    ``` python "f()"
+    y: int = 0 if f() else 'abc'
+    print(y + 1)
+    ```
 
-In the case of type systems, this usually means that the type system is
-used to prove the absence of type errors. The realm of program analysis
-is broken down into roughly two kinds: over-approximation analyses, and
-under-approximation analyses. Notice that both perform *approximations*
-of program behaviour&mdash;this is because obtaining a precise specification of
-any program is *undecidable*. Generally, static analyses, like type
-checking, perform an over-approximation of program behaviour. An analogy
-of how this works is as follows: assume true program behaviour is \\(x\\)
-and buggy behaviour is at \\(y\\) (these are all positive numbers, let's
-say). We then over-approximate the true program behaviour, giving us
-\\(x + \epsilon\\). If we can show that \\(x + \epsilon < y\\), then we can
-guarantee that \\(x < y\\), so the program is not buggy.
+    Notice that if we can determine that `f` always returns
+    `True`, then we know for sure that there will be no type
+    errors. However, it is not possible to make this determination in
+    general. Thus, we over-approximate program behaviour by assuming that it
+    is possible that `f` may return either `True` or
+    `False`leading us to show that we cannot prove the absence of
+    type errors in this program. Instead, if we had written the following:
 
-A more concrete example is as follows. Let's suppose we have the following code snippet in Python:
+    ```python del={1} ins={2} showLineNumbers=false
+    y: int = 0 if f() else 'abc'
+    y: int = 0 if f() else 1
+    print(y + 1)
+    ```
 
-``` python
-y: int = 0 if f() else 'abc'
-print(y + 1)
-```
+    Then even by assuming that both branches of the conditional expression
+    may be the result, we can conclusively show that `y` will
+    always be an `int`. Our over-approximation of program behaviour
+    doesn't have type errors, meaning, that our actual program really does
+    not have type errors.
+3. **Types** essentially classify the **kinds of values they compute**. As we will
+    informally define later, types group data/things in the
+    program that all behave similarly or have similar characteristics. In
+    some other sense, types can be seen as abstractions over terms.
+:::
 
-Notice that if we can determine that `f` always returns
-`True`, then we know for sure that there will be no type
-errors. However, it is not possible to make this determination in
-general. Thus, we over-approximate program behaviour by assuming that it
-is possible that `f` may return either `True` or
-`False`leading us to show that we cannot prove the absence of
-type errors in this program. Instead, if we had written the following:
-
-``` python
-y: int = 0 if f() else 1
-print(y + 1)
-```
-
-Then even by assuming that both branches of the conditional expression
-may be the result, we can conclusively show that `y` will
-always be an `int`. Our over-approximation of program behaviour
-doesn't have type errors, meaning, that our actual program really does
-not have type errors.
-
-#### Kinds of values they compute
-
-This is a simple description of what *types* are. Types, as we will
-informally define later, are classifications of data/things in the
-program that all behave similarly or have similar characteristics. In
-some other sense, types can be seen as abstractions over terms.
 
 Simply put, a type system is a formal system that lets us show that
 there won't be type errors. As we have seen, the nature of
-\[statically-typed\] type systems forces us to program in a different
+(static) type systems forces us to program in a different
 way (at least compared to dynamically typed languages like Python), and
 this is what we will explore in this chapter.
 
 ## Types
 
-Type systems are systems of types; but *what is a type*? In essence, a
-type is like a *kind* of thing, or a high-level description of what
-something is. Types (1) give meaning to some data, and (2) describe what
-its members are like.
+Type systems are systems of types; but **what is a type**? In essence, a
+type is like a **kind** of thing, or a high-level description of what
+something is. Types 
+1. give meaning to some data, and
+2. describe what its members are like.
+
+:::note
+**Kinds** are actually a separate concept that we will describe later.
+:::
 
 Since you have already programmed in Python, you should have some
 inkling of what types are. In Python, everything is an object. Thus, in
-Python, the type of an object is the *class* from which it was
+Python, the type of an object is the **class** from which it was
 instantiated.
 
 The following is some sample output showing the types of various objects. The output of
 all these function calls are classes.
 
-```python
+```python title="Python interactive session (types)" showLineNumbers=false frame="terminal"
 >>> x = 1
 >>> type(x)
 <class 'int'>
@@ -109,14 +111,15 @@ all these function calls are classes.
 ```
 
 This is very apt&mdash;classes are blueprints for creating objects, and (for
-the most part), all *instances* of a class will abide by the
+the most part), all **instances** of a class will abide by the
 specification as laid out in the class. Therefore, Python's type system
 based on classes is very appropriate for our purposes. In fact, this is
 not unique to Python. Many other languages with OO features also have
 classes as types.
 
-In Python, we mainly think of types as being bound to *objects*, that
-is, objects have *reified* types that can be accessed at runtime. We
+### Type Annotations
+In Python, we mainly think of types as being bound to **objects**, that
+is, objects have **reified** types that can be accessed at runtime. We
 have never thought of assigning types to variables or function
 parameters, since when we are investigating the type of a variable, what
 we are really doing is investigating the type of the object that is
@@ -127,7 +130,7 @@ should be.
 
 Observe the following program fragment.
 
-``` python
+```python title="example.py" ": int" ": str" "-> str"
 def f(x: int) -> str:
     y: int = x * 2
     return f'{x} * 2 = {y}'
@@ -137,32 +140,33 @@ s: str = f(z)
 print(s) # 3 * 2 = 6
 ```
 
-This program fragment contains several *type annotations*. In the
-function header, we have a specification for `f` to receive an
-`int` and return a `str`. That is, if the type
-annotations make sense, then passing an `int` into `f`
-will always result in a `str`. In the function body, we also
-have an annotation for the variable `y` stating that it is also
-an `int`. This makes sense&mdash;if `x` is an `int`,
-then so will `x * 2`. Actually, the type of `y` can be
-*inferred* (a type checker can determine the type of `y`
-automatically), so our type annotation for it is not necessary. Outside
-the function body we have other type annotations, documenting what the
-types of the other variables are. On visual inspection, we can see that
-all the type annotations make sense and we have adhered to them fully;
-we are thus guaranteed that we have no type errors.
+This program fragment contains several **type annotations**. 
+- In the function header, we have a specification for `f` to receive an
+  `int` and return a `str`. That is, if the type
+  annotations make sense, then passing an `int` into `f`
+  will always result in a `str`. 
+- In the function body, we also
+  have an annotation for the variable `y` stating that it is also
+  an `int`. This makes sense&mdash;if `x` is an `int`,
+  then so will `x * 2`. Actually, the type of `y` can be
+**inferred** (a **type checker** can determine the type of `y`
+automatically), so our type annotation for it is not necessary.
+- Outside the function body we have other type annotations, documenting what the
+  types of the other variables are. On visual inspection, we can see that
+  all the type annotations make sense and we have adhered to them fully;
+  we are thus guaranteed that we have no type errors.
 
 While Haskell also provides the capability for type annotations, a
-notable distinction lies in Haskell's *enforcement* of adherence to
+notable distinction lies in Haskell's **enforcement** of adherence to
 these annotations. Consequently, it might be more fitting to refer to
-them as *type declarations*. Nevertheless, the core concept remains
+them as **type declarations**. Nevertheless, the core concept remains
 unchanged: specifying the types of variables, functions, or terms
 ensures that, when adhered to correctly, our program will be well-typed.
 
 The following code snippet shows some Haskell code with type
 declarations.
 
-``` haskell
+```haskell title="Example.hs" {1,4,6}
 f :: Int -> String
 f x = show x ++ " * 2 = " ++ show y
     where y = x * 2
@@ -183,15 +187,15 @@ Declaring types for functions is slightly different. In Python, when
 writing type annotations for functions, we are really annotating the
 types of its parameters, and its return type. In Haskell, we are
 declaring the type of the function itself. The difference is actually
-not as large as one might imagine. If the function receives a type \\(S\\)
-and returns a type \\(T\\), then the function has the type \\(S\to T\\). We
+not as large as one might imagine. If the function receives a type $S$
+and returns a type $T$, then the function has the type $S\to T$. We
 similarly use arrows to declare the type of functions in Haskell. Thus,
 as above, since `f` receives an `Int` and returns a
 `String`, then `f` itself is of the type
 `Int -> String`.
 
-Haskell has roots in formal systems, in particular, System \\(F_C\\), which
-is a dialect of System \\(F\omega\\) (without type lambdas). Thus, the types
+Haskell has roots in formal systems, in particular, System $F_C$, which
+is a dialect of System $F_\omega$ (without type lambdas). Thus, the types
 of terms can be described formally. Knowing the formal typing rules of
 Haskell is not required, but may give you some insight as to how it
 works. Below we show the typing rules for function declarations, more
@@ -201,28 +205,34 @@ $$
 \frac{\Gamma,x:S\vdash e: T}{\Gamma\vdash\lambda x.e : S \to T}\text{T-Abs}
 $$
 
-The T-Abs rule is an *inference rule* stating that if the
+The T-Abs rule is an **inference rule** stating that if the
 premise above the line is true, then the conclusion below the line will
-also be true. Let's first parse the premise. The part to the left of
-\\(\vdash\\) is the *typing environment*, more or less describing the type
-declarations we have at the point of analysis of the program.
-Specifically, \\(\Gamma\\) is the actual type environment, while \\(x: S\\) is
-an additional assumption that a variable \\(x\\) has type \\(S\\). The part to
-the right of \\(\vdash\\) describes the judgement of the type of \\(e\\) being
-\\(T\\). Overall, the premise states \"given what we have so far, if in
-assuming \\(x\\) is of type \\(S\\) we get that \\(e\\) is of type \\(T\\), \...\". The
-conclusion can be understood similarly: it states that the typing
-environment \\(\Gamma\\) will show that the function \\(\lambda x.e\\) has type
-\\(S \to T\\). Putting these together, the rule states that \"given typing
-environment \\(\Gamma\\), if by assuming that variable \\(x\\) has type \\(S\\) we
-get that the expression \\(e\\) is of type \\(T\\), then \\(\Gamma\\) will also show
-that the type of the function \\(\lambda x.e\\) is of type \\(S \to T\\)\".
+also be true. 
+1. Let's first parse the premise. 
+    1. The part to the left of $\vdash$ is the *typing environment*, more or less describing the type
+        declarations we have at the point of analysis of the program.
+        Specifically, $\Gamma$ is the actual type environment, while $x: S$ is
+        an additional assumption that a variable $x$ has type $S$. 
+    2. The part to the right of $\vdash$ describes the judgement of the type of $e$ being
+        $T$. 
+   Overall, the premise states \"given what we have so far, if in
+        assuming $x$ is of type $S$ we get that $e$ is of type $T$, \...\". 
+2. The conclusion can be understood similarly: it states that the typing environment $\Gamma$ will show that the function $\lambda x.e$ has type $S \to T$. 
 
-A simple demonstration in Python is as follows: suppose we have \\(x\\) as
-`x` and \\(e\\) as `x * 2`. If we assume that `x`
+Putting these together, the rule states that \"given typing
+environment $\Gamma$, if by assuming that variable $x$ has type $S$ we
+get that the expression $e$ is of type $T$, then $\Gamma$ will also show
+that the type of the function $\lambda x.e$ is of type $S \to T$\".
+
+A simple demonstration in Python is as follows: suppose we have $x$ as
+`x` and $e$ as `x * 2`. If we assume that `x`
 is of type `int`, then we know that `x * 2` will also
-be an `int`. Therefore, the type of \\(\lambda x.e\\) which is
-`lambda x: x * 2` is `int -> int`[^1].
+be an `int`. Therefore, the type of $\lambda x.e$ which is
+`lambda x: x * 2` is `int -> int`.
+
+:::note
+Python doesn't have arrow types. The actual type of the function is `Callable[[int], int]` (see [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)). In general, if a Python function receives parameters of type `T1, T2, ... Tn` and returns type `R`, the type of the function would be `Callable[[T1, T2, ..., Tn], R]`.
+:::
 
 What about multi-parameter functions? Remember that in Haskell, all
 functions are curried, thus, all functions in Haskell are single
@@ -231,7 +241,7 @@ a function *closure* that receives the remaining variables and
 eventually will return the final result. Therefore the `(+)`
 function actually looks more like:
 
-``` python
+```python title="add.py"
 # Python
 def add(x):
     return lambda y: x + y
@@ -252,14 +262,14 @@ is, then write the implementation of your function around those
 restrictions.
 
 The following code
-snippet first *declares* the type of `f` before showing its
+snippet first **declares** the type of `f` before showing its
 implementation. It is not only good practice to declare types above
 their implementation, but it can be a nice way to frame your mind around
 the implementation of your function&mdash;start by providing a high-level
 specification of your function, then work on the implementation to
 describe what the function is actually trying to achieve.
 
-``` haskell
+```haskell title="Example.hs"
 f :: Int -> String -- explicit type declaration
 f x = show x ++ "!"
 g x = x + 1 -- type of g is inferred
@@ -267,8 +277,8 @@ g x = x + 1 -- type of g is inferred
 
 However, observe that the type of `g` is not defined. This
 does not mean that the type of `g` is dynamic or is not being
-checked; rather, Haskell can infer the *principal* (most liberal) type
-of `g` via a process known as *type inference*. That still
+checked; rather, Haskell can infer the **principal** (most liberal) type
+of `g` via a process known as **type inference**. That still
 means that the implementation of `g` itself must be well-typed
 (its implementation does not break any of the typing rules), and that
 any users of `g` must abide by its static type signature.
@@ -280,18 +290,18 @@ and can often be inferred. The example above of the declaration of
 `f` is a perfectly idiomatic way of defining and declaring a
 function, unlike `g` which lacks a type declaration.
 
-### Programming with Types
+## Programming with Types
 
 When learning Python, you might not have had to think very much about
 types; this is because Python does not care about type annotations. For
 example, you can happily annotate a variable to be an `int` but
 then assign a string into it. This is very much unlike Haskell, where
-adherence to type declarations and well-typedness is *enforced* by the
+adherence to type declarations and well-typedness is **enforced** by the
 compiler&mdash;the compiler will reject any program that is not well-typed.
 
 Observe the following program fragment:
 
-``` haskell
+```haskell title="BadExample.hs"
 f :: Int -> String -- explicit type declaration
 f x = show x ++ "!"
  
@@ -321,17 +331,14 @@ simplest typing rules:
 
 1.  In a binding `x = e`, the type of `x` must be
     the same as the type of `e`
-
 2.  In a conditional expression `if x then y else z`, the type
     of `x` must be `Bool` and the types of
     `y` and `z` must both be equal to some type
     `a`; the type of the entire expression is `a`
-
 3.  In a function application expression `f x` the type of
     `f` must be `a -> b` for some `a` and
     `b`, `x` must be of type `a`, and the
     type of the expression is `b`
-
 4.  (Without loss of generality of number of parameters) For a function
     binding `f x = e` the type of `f` must be
     `a -> b` for some `a` and `b` and in
@@ -341,7 +348,7 @@ simplest typing rules:
 Try calculating the types of every expression in the following code
 snippet. Can you get it all right?
 
-``` haskell
+```haskell title="Example.hs"
 f :: Int -> Int -> [Int]
 f x n =
   if n == 0 then
@@ -375,7 +382,7 @@ Suppose we are trying to define a function `f` that receives
 an integer `x` and returns a string showing the result of
 multiplying `x` by 2:
 
-``` haskell
+```haskell title="GHCi session (f example run)" showLineNumbers=false frame="terminal"
 ghci> f 3
 "3 * 2 = 6"
 ghci> f 5
@@ -475,26 +482,23 @@ of types which we shall see very shortly.
 Let's see `pyright` in action. We shall write an ill-typed
 program and see if it catches the potential bug:
 
-``` python
-# main.py
+``` python title="main.py"
 def f(x: int, y: int) -> int:
     z = x / y
     return z
 ```
 Running `pyright` on this program will reveal an error message:
-```
-pyright main.py
-```
 
-```output error
-pyright main.py
+```ansi title="Terminal session" showLineNumbers=false
+[32m~ $[0m [33m[1m[4mpyright[0m[1m[4m main.py[0m
 /home/main.py
   /home/main.py:4:12 - error:
     Expression of type "float" is incompatible with return
     type "int"
     "float" is incompatible with "int" (reportReturnType)
 1 error, 0 warnings, 0 informations 
-``````
+```
+
 Great! This makes sense because assuming `x` and `y`
 are of type `int`, the type of `z` should actually be
 `float`! Let's correct the program and try running `pyright`
@@ -519,7 +523,3 @@ One additional great feature about `pyright` is that it is actually also a
 language server. As such, you can include `pyright` in your favourite text
 editors so that it can catch bugs while writing programs!
 
----
-
-[^1]: Python doesn't have arrow types. The actual type of the function
-    is `Callable[[int], int]`.

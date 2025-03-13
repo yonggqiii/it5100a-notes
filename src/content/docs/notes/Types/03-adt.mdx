@@ -249,13 +249,19 @@ $$\lambda x.e: S \to T$$
 and when we call or apply
 this function, we are substituting the parameter for the argument of the
 function application: 
-$$(\lambda x.e_1)e_2 \equiv_\beta e_1[x:=e_2]$$
+$$
+(\lambda x.e_1)e_2 \equiv_\beta e_1[x:=e_2]
+$$
 
-$$\begin{aligned}
-(\lambda x: \mathtt{Int}.x + 4)3 &\equiv_\beta (x + 4)[x := 3]\\\\
-&\equiv_\beta (3 + 4)\\\\
+$$
+\begin{aligned}
+(\lambda x: \mathtt{Int}.x + 4)3 &\equiv_\beta (x + 4)[x := 3]\\
+&\equiv_\beta (3 + 4)\\
 & \equiv_\beta 7
-\end{aligned}$$ In Haskell (the expression in parentheses is a lambda
+\end{aligned}
+$$ 
+
+In Haskell (the expression in parentheses is a lambda
 expression):
 
 ``` haskell
@@ -267,18 +273,27 @@ A typed variant of the lambda calculus known as System \\(F\\) has
 polymorphic functions, which are functions that also receive a type
 parameter. We can then apply this function onto a type *argument* to get
 a specialized version of that function. Such type parameters are bound
-by \\(\Lambda\\). As an example, if we have a term \\(e\\) of type \\(T\\), we get:
+by $\Lambda$. As an example, if we have a term \\(e\\) of type \\(T\\), we get:
 
-$$\Lambda \alpha.e: \forall\alpha.T$$
+$$
+\Lambda \alpha.e: \forall\alpha.T
+$$
 Calling or applying this function with a type argument, once again, substitutes the type parameter with the type argument:
 
-$$(\Lambda\alpha.e)\ \tau\equiv_\beta e[\alpha := \tau]$$
-$$(\Lambda\alpha.e)\ \tau : T[\alpha := \tau]$$
+$$
+(\Lambda\alpha.e)\ \tau\equiv_\beta e[\alpha := \tau]
+$$
 
-$$\begin{aligned}
+$$
+(\Lambda\alpha.e)\ \tau : T[\alpha := \tau]
+$$
+
+$$
+\begin{aligned}
 (\Lambda \alpha.\lambda x:\alpha.[x]) \mathtt{Int} &\equiv_\beta (\lambda x:\alpha.[x])[\alpha := \mathtt{Int}]\\\\
   & \equiv_\beta \lambda x:\mathtt{Int}.[x]
-\end{aligned}$$
+\end{aligned}
+$$
 
 We can show this with an example in Haskell. Explicit type arguments
 must be enabled with a language extension and the type arguments must be
