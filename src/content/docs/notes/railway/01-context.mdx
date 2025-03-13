@@ -1,0 +1,210 @@
+---
+title: Context/Notions of Computation
+---
+
+One of the core ideas in FP is _composition_, i.e. that to "do one computation after the other" is to _compose_ these computations. In mathematics, function composition is straightforward, given by:
+\\[(g\circ f)(x) = g(f(x)) \\]
+
+That is, \\(g\circ f\\) is the function "\\(g\\) _after_ \\(f\\)", which applies \\(f\\) onto \\(x\\), _and then_ apply \\(g\\) on the result.
+
+In an ideal world, composing functions is as straightforward as we have described.
+
+```python
+def add_one(x: int) -> int:
+    return x + 1
+def double(x: int) -> int:
+    return x * 2
+def div_three(x: int) -> float:
+    return x / 3
+
+print(div_three(double(add_one(4))))
+```
+
+However, things are rarely perfect. Let us take the following example of an application containing users, with several data structures to represent them.
+
+First, we describe the `User` and `Email` classes:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Email:
+    name: str
+    domain: str
+
+@dataclass
+class User:
+    username: str
+    email: Email
+    salary: int | float
+```
+
+Now, we want to be able to parse user information that is provided as a string. However, note that this parsing may _fail_, therefore we raise exceptions if the input string cannot be parsed as the desired data structure.
+
+```python
+def parse_email(s: str) -> Email:
+    if '@' not in s:
+        raise ValueError
+    s = s.split('@')
+    if len(s) != 2 or '.' not in s[1]:
+        raise ValueError
+    return Email(s[0], s[1])
+
+def parse_salary(s: str) -> int | float:
+    try:
+        return int(s)
+    except:
+        return float(s) # if this fails and raises an exception,
+                        # then do not catch it
+```
+
+And to use these functions, we have to ensure that every program point that uses them must be wrapped in a `try` and `except` clause:
+
+```python
+def main():
+    n = input('Enter name: ')
+    e = input('Enter email: ')
+    s = input('Enter salary: ')
+    try:
+        print(User(n, parse_email(e), parse_salary(s)))
+    except:
+        print('Some error occurred')
+```
+As you can see, exceptions are being thrown everywhere. Generally, it is hard to keep track of which functions raise/handle execptions, and also hard to compose exceptional functions! Worse still, if the program is poorly documented (as is the case for our example), no one actually knows that `parse_salary` and `parse_email` will raise exceptions!
+
+There is a better way to do this&mdash;by using the _railway pattern_! Let us write the equivalent of the program above with idiomatic Haskell. First, the data structures:
+
+```haskell
+data Email = Email { emailUsername :: String
+                   , emailDomain   :: String }
+  deriving (Eq, Show)
+
+data Salary = SInt Int 
+            | SDouble Double
+  deriving (Eq, Show)
+
+data User = User { username   :: String
+                 , userEmail  :: Email
+                 , userSalary :: Salary }
+  deriving (Eq, Show)
+```
+
+Now, some _magic_. No exceptions are raised in any of the following functions (which at this point, might look like _moon runes_):
+
+```haskell
+parseEmail :: String -> Maybe Email
+parseEmail email = do
+    guard $ '@' `elem` email && length e == 2 && '.' `elem` last e
+    return $ Email (head e) (last e)
+  where e = split '@' email
+
+parseSalary :: String -> Maybe Salary
+parseSalary s = 
+  let si = SInt <$> readMaybe s
+      sf = SDouble <$> readMaybe s
+  in  si <|> sf
+```
+
+And the equivalent of `main` in Haskell is shown below.[^1] Although not apparent at this point, we are _guaranteed_ that no exceptions will be raised from using `parseEmail` and `parseSalary`.
+
+```haskell
+main :: IO ()
+main = do
+  n <- input "Enter name: "
+  e <- input "Enter email: "
+  s <- input "Enter salary: "
+  let u = User n <$> parseEmail e <*> parseSalary s
+  putStrLn $ maybe "Some error occurred" show u
+```
+
+How does this work? The core idea behind the railway pattern is that functions are _pure_ and _statically-typed_, therefore, all functions must make _explicit_ the kind of _effects_ it wants to produce. For this reason, any "exceptions" that it could raise must be _explicitly_ stated in its type signature by returning the appropriate term whose type represents some _notion of computation_. Then, any other function that uses these functions with notions of computation must _explicitly_ handle those notions of computations appropriately.
+
+In this chapter, we describe some of the core facets of the railway pattern:
+1. What is it?
+2. What data structures and functions can we use to support this?
+3. How do we write programs with the railway pattern?
+
+Many popular languages lie to you in many ways. An example is what we have seen earlier, where Python functions do not document exceptions in its type signature, and must be separately annotated as a docstrong to denote as such. This is not including the fact that Python type annotations are not enforced at all.
+```python
+def happy(x: int) -> int:
+    raise Exception("sad!")
+```
+This is not unique to dynamically-typed languages like Python. This is also the case in Java. In Java, checked exceptions must be explicitly reported in a method signature. However, _unchecked exceptions_, as named, do not need to be reported and are not checked by the Java compiler. That is not to mention other possible "lies", for example, it is possible to return nothing (`null`) even if the method's type signature requires it to return "_something_":
+
+```java
+class A {
+    String something() {
+        return null;
+    }
+}
+```
+We can't lie in Haskell. In the first place, we _shouldn't_ lie in general. What now?
+
+Instead, what we can do is to create the right data structures that represent what is _actually_ returned by each function! In the Python example `happy`, what we really wanted to return was _either_ an `int`, _or_ an exception. Let us create a data structure that represents this:
+```haskell
+data Either a b = Left a  -- sad path
+                | Right b -- happy path
+```
+Furthermore, instead of returning `null` like in Java, we can create a data structure that represents _either_ something, _or_ nothing:
+```haskell
+data Maybe a = Just a  -- happy path
+             | Nothing -- sad path
+```
+
+This allows the `happy` and `something` functions to be written safely in Haskell as:
+```haskell
+happy :: Either String Int
+happy = Left "sad!"
+
+something :: Maybe String
+something = Nothing
+```
+
+The `Maybe` and `Either` types act as _contexts_ or _notions of computation_:
+- `Maybe a`&mdash;an `a` or nothing
+- `Either a b`&mdash;either `a` or `b`
+- `[a]`&mdash;a list of possible `a`s (nondeterminism)
+- `IO a`&mdash;an I/O action resulting in `a`
+
+These types allow us to accurately describe what our functions are actually doing! Furthermore, these types "wrap" around a type, i.e. For instance, `Maybe`, `Either a` (for a fixed `a`), `[]` and `IO` all have kind `* -> *`, and essentially provide some _context_ around a type.
+
+Using these types makes programs clearer! For example, we can use `Maybe` to more accurately describe the `head` function, which may return nothing if the input list is empty.
+```haskell
+head' :: [a] -> Maybe a
+head' [] = Nothing
+head' (x : _) = x
+```
+Alternatively, we can express the fact that dividing by zero should yield an error:
+```haskell
+safeDiv :: Int -> Int -> Either String Int
+safeDiv x 0 = Left "Cannot divide by zero!"
+safediv x y = Right $ x `div` y
+```
+
+These data structures allow our functions to act as branching railways!
+
+```
+        head'                           safeDiv
+
+        ┏━━━━━ Just a                   ┏━━━━━ Right Int      -- happy path
+[a] ━━━━┫                  Int, Int ━━━━┫
+        ┗━━━━━ Nothing                  ┗━━━━━ Left String    -- sad path
+```
+
+This is the inspiration behind the name "railway pattern", which is the pattern of using algebraic data types to describe the different possible outputs from a function! This is, in fact, a **natural consequence** of purely functional programming. Since functions must be pure, it is not possible to define functions that opaquely cause side-effects. Instead, function signatures must be made _transparent_ by using the right data structures.
+
+What, then, is the _right_ data structure to use? It all depends on the notion of computation that you want to express! If you want to produce nothing in some scenarios, use `Maybe`. If you want to produce something or something else (like an error), use `Either`, so on and so forth!
+
+However, notice that having _functions as railways_ is not very convenient... with the non-railway (and therefore potentially exceptional) `head` function, we could compose `head` with itself, i.e. `head . head :: [[a]] -> a` is perfectly valid. However, we _cannot_ compose `head'` with itself, since `head'` returns a `Maybe a`, which cannot be an argument to `head'`. 
+
+```
+    ┏━━━━━      ?          ┏━━━━━
+━━━━┫        <----->   ━━━━┫
+    ┗━━━━━                 ┗━━━━━
+```
+
+How can we make the railway pattern _ergonomic_ enough for us to want to use them? 
+
+
+---
+[^1]: Wait... is this an _imperative_ program in Haskell?

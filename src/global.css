@@ -1,0 +1,29 @@
+.MathJax svg {
+  display: inline !important;
+}
+
+div.thm-header {
+  color: var(--sl-color-white);
+  font-size: var(--sl-text-xl);
+}
+
+div.thm {
+  border: 1px solid var(--sl-color-gray-5);
+  padding: 1rem; 
+}
+
+div.proof {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border: 1px solid var(--sl-color-gray-5);
+  padding: 1rem; 
+}
+div.qed {
+  width: 10px;
+  height: 10px;
+  background: var(--sl-color-text);
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}

@@ -1,0 +1,245 @@
+---
+title: Functors
+---
+
+We can borrow some ideas from a branch of mathematics, known as _Category Theory_, to improve the ergonomics of these structures. Part of the reason why we are able to do so is that all the types that we have described have kind `* -> *`, i.e. they "wrap" around another type. As such, they should be able to behave as _functors_, which we will formalize shortly.[^1]
+
+However, before we even talk about what a functor is and how the data structures we have described are functors, we first need to describe what category theory is. Intuitively, most theories (especially the algebraic ones) study mathematical structures that abstract over things; _groups_ are abstractions of _symmetries_, and _geometric spaces_ are abstractions of _space_. Category theory takes things one step further and studies _abstraction itself_.
+
+Effectively the goal of category theory is to observe similar underlying structures between collections of mathematical structures. What is nice about this is that a result from category theory generalizes to all other theories that fit the structure of a category. As such it should be no surprise that computation can be, and is, studied through the lens of category theory too!
+
+On the other hand, the generality of category theory also makes it incredibly abstract and difficult to understand&mdash;this is indeed the case in our very first definition. As such, I will, as much as possible, show you "concrete" examples of each definition and reason about them if I can. With this in mind, let us start with the definition of a category, as seen in many sources.
+
+
+> **Definition (Category)**. A category $\mathcal{C}$ consists of
+> - a collection of _objects_ $X$, $Y$, $Z$, ... denoted $\text{ob}(\mathcal{C})$
+> - a collection of _morphisms_, $f, g, h, \dots$, denoted $\text{mor}(\mathcal{C})$
+>
+> so that:
+> - Each morphism has specified _domain_ and _codomain_ objects; when we write $f: X \to Y$, we mean that the morphism $f$ has domain $X$ and codomain $Y$.
+> - Each object has an _identity morphism_ $1_X:X\rightarrow X$.
+> - For any pair of morphisms $f$, $g$ with the codomain of $f$ equal to the domain of $g$ (i.e. $f$ and $g$ are composable), there exists a _composite morphism_ $g \circ f$ whose domain is equal to the domain of $f$ and whose codomain is equal to the codomain of $g$, i.e.
+> \\[f: X\rightarrow Y, ~~~g: Y \rightarrow Z ~~~~~ \rightsquigarrow ~~~~~ g\circ f:X\rightarrow Z\\]
+>
+> Composition of morphisms is subject to the two following axioms:
+> - _Unity_. For any $f: X \rightarrow Y$, $f\circ1_X = 1_Y \circ f = f$.
+> - _Associativity_. For any composable $f$, $g$ and $h$, $(h\circ g)\circ f = h \circ (g \circ f)$.
+
+This, of course, is incredibly abstract and quite hard to take in. Instead, let us use a simpler definition to get some "ideas" across:
+
+> A category $\mathcal{C}$ consists of
+> - Dots $X$, $Y$, $Z$
+> - Arrows between dots $f, g, h, \dots$
+>
+> such that:
+> - Joining two arrows together gives another arrow
+> - There is a unique way to join three arrows together
+> - Every dot has an arrow pointing to itself, such that joining it with any other arrow $f$ just gives $f$
+
+Here is an example category:
+
+```
+    f
+A ----> B
+ \      |
+  \     | g
+ h \    |
+    \   v 
+     -> C
+```
+Here we have three objects `A` `B` and `C`, and the morphisms `f: A -> B`, `g: B -> C` and `h: A -> C`. The identity morphisms for the objects are omitted for simplicity. Note that the composition of `f` and `g` exists in the category (assume in the example `g . f == h`).
+
+Why do we care? Well, it turns out that types and functions in Haskell assemble into a category $\mathcal{H}$![^2]
+- Objects in $\mathcal{H}$ are types like `Int`, `String` etc.
+- Morphisms in $\mathcal{H}$ are functions like `(+1)` and `head`
+
+Furthermore,
+- The composition of two functions with `(.)` is also a function
+- Every type has the identity function `id x = x`, where for all functions `f`, `id . f` = `f . id` = `f`
+
+```
+    show
+Int ---> String
+   \      |
+    \     | head
+     \    |
+      \   v 
+       -> Char
+```
+The above is a fragment of $\mathcal{H}$. We can see that `show` is a function from `Int` to `String`, and `head` is a function from `String` to `Char`. In addition, the function `head . show` is a function from `Int` to `Char`! Furthermore, all of these types have the identity function `id` which we omit in the diagram.
+
+<mark>Still, who cares?</mark>
+
+Because the types in Haskell assemble into categories, let's see if there is anything that category theory has to tell us.
+
+# Functors
+
+In mathematics, the relationships between objects are frequently far more interesting 
+than the objects themselves. Of course, we do not just focus on _any_ relationship 
+between objects, but of keen interest, the _structure preserving_ relationships between 
+them, such as group homomorphisms that preserve group structures, or monotonic functions 
+between preordered sets that preserve ordering. In category theory, _functors_ are 
+maps between categories that preserve the structure of the domain category, 
+especially the compositions and identities.
+
+> Let $\mathcal{C}$ and $\mathcal{D}$ be categories. A (_covariant_)
+> _functor_ $F: \mathcal{C} \rightarrow \mathcal{D}$ consists of:
+> - An object $F(C) \in \text{ob}(\mathcal{D})$ for each object $C \in \text{ob}(\mathcal{C})$[^3].
+> - A morphism $F(f): F(C) \rightarrow F(D) \in \text{mor}(\mathcal{D})$ for each morphism $f: C\rightarrow D \in \text{mor}(\mathcal{C})$.
+>
+> subject to the two _functoriality axioms_:
+> - For any composable pair of morphisms $f, g\in\text{mor}(\mathcal{C})$, $F(g)\circ F(f) = F(g\circ f)$.
+> - For each $C \in \text{ob}(\mathcal{C})$, $F(1_C)=1_{F(C)}$.
+>
+> in other words, functors map dots and arrows between two categories, preserving composition and identities.
+
+
+```
+    f                          F(f)
+A ----> B                F(A) ----> F(B)
+ \      |        F            \      |
+  \     | g   ======>          \     | F(g)
+ h \    |                  F(h) \    |
+    \   v                        \   v
+     -> C                         > F(C)
+```
+
+What's so special about categories and functors, especially since categories are so abstract and have so little requirements for being one? This is precisely the beauty of category theory&mdash;it is abstract and simple enough for many things to assemble into one, yet the requirement of associativity and unity of the composition of morphisms and identities make things that assemble into categories behave in the _most obvious way_!
+
+## Types as Functors
+There are two parts two a functor in $\mathcal{H}$:
+- Maps types to types
+- Maps functions to functions
+
+We already know that the `[]` type constructor maps `a` to `[a]` for all `a` in $\mathcal{H}$.
+How do we map functions `f :: a -> b` to `F(f) :: [a] -> [b]` in the _most obvious way_, i.e. in a way that preserves function composition and identities? 
+
+It is simple! Recall the `map` function:
+
+```python-repl
+>>> def f(x: int) -> str:
+...     return str(x + 2)
+>>> f(3)
+'5'
+>>> list(map(f, [3]))
+['5']
+```
+```haskell
+ghci> :{
+ghci| f :: Int -> String
+ghci| f x = show (x + 2)
+ghci| :}
+ghci> f 3
+"5"
+ghci> :t map f
+map f :: [Int] -> [String]
+ghci> map f [3]
+["5"]
+```
+
+`map` preserves composition:
+```haskell
+ghci> (map (*2) . map (+3)) [1, 2, 3]
+[8, 10, 12]
+ghci> map ((*2) . (+3)) [1, 2, 3]
+[8, 10, 12]
+```
+`map` also preserves identities:
+```haskell
+ghci> :set -XTypeApplications
+ghci> map (id @Int) [1, 2, 3]
+[1, 2, 3]
+ghci> id @[Int] [1, 2, 3]
+[1, 2, 3]
+```
+That is great! `[]` and `map` form a functor over $\mathcal{H}$, which means that we no longer have to worry if someone wants to work in the `[]` context. This is because if we have functions from `a` to `b`, we can _lift_ it into a function from `[a]` to `[b]` using `map` and it will behave in the most obvious way!
+
+
+Can we say the same about `Maybe` and the other type constructors we saw earlier? Fret not! Let's see how we can define a function for `Maybe` so that it can behave as a functor as well! Let's look at `maybeMap`:
+
+```haskell
+maybeMap :: (a -> b) -> Maybe a -> Maybe b
+maybeMap _ Nothing = Nothing
+maybeMap f (Just x) = Just $ f x
+```
+
+`maybeMap` also preserves composition and identities!
+
+```haskell
+ghci> :set -XTypeApplications
+ghci> (maybeMap (*2) . maybeMap (+3)) (Just 1)
+Just 8
+ghci> maybeMap ((*2) . (+3)) (Just 1)
+Just 8
+ghci> maybeMap (id @Int) (Just 1)
+Just 1
+ghci> id @(Maybe Int) (Just 1)
+Just 1
+```
+
+Like we have seen before, all of these types have some `map`-like method that allows us to lift functions into its context; however, they all have their type-specific implementations. This is the reason why Haskell has a `Functor` typeclass!
+
+```haskell
+class Functor (f :: * -> *) where
+    fmap :: (a -> b) -> f a -> f b
+
+instance Functor [] where
+    fmap :: (a -> b) -> [a] -> [b]
+    fmap _ [] = []
+    fmap f (x : xs) = f x : fmap f xs
+
+instance Functor Maybe where
+    fmap :: (a -> b) -> Maybe a -> Maybe b
+    fmap _ Nothing = Nothing
+    fmap f (Just x) = Just $ f x
+
+instance Functor (Either a) where -- `a`, a.k.a. sad path is fixed!
+    fmap :: (b -> c) -> Either a b -> Either a c
+    fmap _ (Left x) = Left x
+    fmap f (Right x) = Right $ f x
+```
+
+The key point of `[]`, `Maybe`, `Either` etc being functors is as such:
+
+> Given any functor `F` and a function `f` from `A` to `B`, `fmap f` is a function from `F A` to `F B` and **behaves as we should expect**. 
+
+```
+       f
+  A ------> B
+       |
+       |
+       v
+F A ------> F B
+    fmap f
+```
+Whenever we are presented with a situation that requires us to map a function `f :: A -> B` over a functor `fa :: F A`, just use `fmap f fa` to give us some `fb :: F B`. There is no need to unwrap the `A` from the `F A` (which may not be possible), apply `f` then wrap it back in the `F`; just use `fmap`!
+
+A simple example is as follows. Suppose we have our `head'` function that returns a `Maybe a`, as we have defined earlier. A possible program that we could write that operates on the result of `head'` is the following:
+
+```haskell
+ls = [1, 2, 3]
+x = head' ls
+y = case x of 
+    Just z -> Just $ z + 1
+    Nothing -> Nothing
+```
+This `case` expression is actually just boilerplate and is not idiomatic! The `Maybe`-specific definition of `fmap` already handles this, therefore, we can re-write this program much more simply as such:
+
+```haskell
+ls = [1, 2, 3]
+x = head' ls
+y = fmap (+1) x
+```
+
+## Category Theory and Functional Programming
+Although we introduced some formalisms of category theory, rest assured that category theory is **not the main point** of this chapter. Instead, category theory _inspires_ tools that support _commonly-used programming patterns_ backed by _well-defined theoretical notions_. Therefore, when we say that a type is a functor, not only do we mean that it has an `fmap` definition, we also mean that this definition of `fmap` obeys well-understood laws (in the case of functors, `fmap` preserves compositions and identities) and you can use it assuredly.
+
+That being said, we now have a very powerful tool, `fmap`, that allows us to perform computations in context. What other operations might we need to make the railway pattern more ergonomic?
+
+---
+
+[^1]: We do not cover category theory in too much detail since it is not _required_ for functional programming, although an appreciation of it can help with understanding. For a more detailed walkthrough of the connections between functional programming and category theory, see my [article on category theory](https://yongqi.foo/blog/posts/monads/).
+
+[^2]: Not really... due to the laziness of Haskell and functions like `seq`, the types and functions in Haskell do not actually assemble in to a category. However, just to put some ideas across, we shall assume that they do.
+
+[^3]: We abuse the notation of set membership here. It is not necessary for the collections of objects and morphisms of a category to be sets, as is the case for the category of sets.

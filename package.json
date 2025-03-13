@@ -1,0 +1,27 @@
+{
+  "name": "test",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.32.2",
+    "@expressive-code/plugin-collapsible-sections": "^0.40.2",
+    "@expressive-code/plugin-line-numbers": "^0.40.2",
+    "astro": "^5.1.5",
+    "micromark": "^4.0.2",
+    "micromark-extension-math": "^3.1.0",
+    "rehype-components": "^0.3.0",
+    "rehype-mathjax": "^7.1.0",
+    "remark-directive": "^4.0.0",
+    "remark-directive-rehype": "^0.4.2",
+    "remark-math": "^6.0.0",
+    "remark-rehype": "^11.1.1",
+    "sharp": "^0.32.5"
+  }
+}
