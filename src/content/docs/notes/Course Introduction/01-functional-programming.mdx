@@ -151,7 +151,7 @@ print(ls) # [1, 2, 3]
 print(x) # [1, 2, 3]
 ```
 :::tip
-Impurity is inevitable in a useful program. Purely functional programming languages use a variety of techniques to allow us to write impure functions. We discuss this in [Chapter 5 (Monads)](/notes/monads/01-more-on-monads).
+Impurity is inevitable in a useful program. Purely functional programming languages use a variety of techniques to allow us to write impure functions. We discuss this in [Chapter 5 (Monads)](/it5100a-notes/notes/monads/01-more-on-monads).
 
 In general, it can be a good idea to separate impure functions from pure functions, and to keep as many functions (as reasonably possible) pure. We call this the principle of "separating Church and state" (referring to Alonzo Church).
 :::
@@ -405,7 +405,7 @@ Type annotations in Python are merely **suggestions**. If you write the followin
 ```python showLineNumbers=false
 x: int = 'abc'
 ```
-No type errors will be thrown by the Python interpreter. However, you can enforce adherence to type annotations with external programs. We discuss this in [Chapter 2.1 (Type Systems)](/notes/types/01-type-systems).
+No type errors will be thrown by the Python interpreter. However, you can enforce adherence to type annotations with external programs. We discuss this in [Chapter 2.1 (Type Systems)](/it5100a-notes/notes/types/01-type-systems).
 :::
 
 Types and type systems are useful not just for verification of
@@ -451,7 +451,7 @@ returns a function that receives the second addend and returns the sum.
 This way, adding 2 to the values of a tree is as simple as several
 function calls:
 
-``` python {"1. The add function is curried.":23-25} {"2. add(2) receives x and returns x + 2.":28} title="map.py" collapse={2-22} collapseStyle="collapsible-start"
+``` python {"1. The add function is curried.":23-25} {"2. add(2) receives x and returns x + 2.":28-29} title="map.py" collapse={2-22} collapseStyle="collapsible-start"
 # Data types
 @dataclass(frozen=True)
 class Tree:
@@ -517,7 +517,7 @@ and Python (which you should all be relatively familiar with).
 ## Things You Need
 For this course, you will need the following software:
 -   The Glasgow Haskell Compiler (GHC) (recommended: GHC 9.4.8 or newer)
--   Python 3.12 (note the version; we shall be using new features)
+-   Python 3.12 or newer (note the version; we shall be using new features)
 -   Any text editor you like (Visual Studio Code, Neovim etc.)
 
 
