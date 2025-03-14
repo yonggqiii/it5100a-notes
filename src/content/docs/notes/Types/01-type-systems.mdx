@@ -389,80 +389,149 @@ ghci> f 5
 "5 * 2 = 10"
 ```
 
-Let us try implementing this function. The first thing we have to
-consider is the type of `f` itself, which by definition,
-should receive an `Int` and return a `String`. As
-such, we may start with the type declaration
-`f :: Int -> String`.
+Let us try implementing this function. 
 
-Next, we know we are eventually going to have to convert `x`
-into a `String`. We know that there is a `show`
-function that does that. Its type signature (modified) is
-`Int -> String`, so we know that `show x` is a
-`String`.
+:::steps
+1. The first thing we have to
+    consider is the type of `f` itself, which by definition,
+    should receive an `Int` and return a `String`. As
+    such, we may start with the type declaration
+    `f :: Int -> String`.
 
-We also know that we need to multiply `x` by 2. For this, we
-can use the `(*)` function, which has a (modified) type
-signature of `Int -> Int -> Int`. Thus, we can write
-`x * 2` and that gives us an `Int`. Knowing that we
-eventually need to display it as a `String`, once again, we
+    ```haskell title="Example.hs"
+    f :: Int -> String
+    f x = undefined
+    ```
+
+2. Next, we know we are eventually going to have to convert `x`
+    into a `String`. We know that there is a `show`
+    function that does that. Its type signature (modified) is
+    `Int -> String`, so we know that `show x` is a
+    `String`.
+
+    ```haskell title="Example.hs" ins={3-5} del={2}
+    f :: Int -> String
+    f x = undefined
+    f x = 
+      let sx :: String = show x 
+      in  undefined
+    ```
+3. We also know that we need to multiply `x` by 2. For this, we
+    can use the `(*)` function, which has a (modified) type
+    signature of `Int -> Int -> Int`. Thus, we can write
+    `x * 2` and that gives us an `Int`. 
+
+    ```haskell title="Example.hs" ins={4}
+    f :: Int -> String
+    f x = 
+      let sx :: String = show x 
+          y  :: Int    = x * 2
+      in  undefined
+    ```
+
+
+4. Knowing that we eventually need to display it as a `String`, once again, we
 can rely on the `show` function.
 
-Now we have all the numbers we need in `String` form, we need
-to concatenate them together. For this, we can rely on our trusty
-`(++)` function that receives two `String`s and
-returns a `String`. Using this allows us to concatenate all
-our desired strings together. Since our original function `f`
-was meant to return a `String`, we can return it as our final
-result.
+    ```haskell title="Example.hs" ins={5}
+    f :: Int -> String
+    f x = 
+      let sx :: String = show x 
+          y  :: Int    = x * 2
+          sy :: String = show y
+      in  undefined
+    ```
+5. Now we have all the numbers we need in `String` form, we need
+    to concatenate them together. For this, we can rely on our trusty
+    `(++)` function that receives two `String`s and
+    returns a `String`. Using this allows us to concatenate all
+    our desired strings together. Since our original function `f`
+    was meant to return a `String`, we can return it as our final
+    result.
 
-``` haskell
-f :: Int -> String
-f x = 
-  let sx :: String = show x
-      y  :: Int    = x * 2
-      sy :: String = show y
-  in  sx ++ " * 2 = " ++ sy
-```
-
+    ```haskell title="Example.hs" ins={7} del={6}
+    f :: Int -> String
+    f x = 
+      let sx :: String = show x
+          y  :: Int    = x * 2
+          sy :: String = show y
+      in  undefined
+      in  sx ++ " * 2 = " ++ sy
+    ```
+:::
 This is a simple example of using
 types to guide your programming. While seemingly trivial, this skill can
 be incredibly useful for defining **recursive** functions!
 
 Suppose we are trying to define a function that sums the integers in a
-list. As always, we must decide what the type of this function is. As per our
-definition, it receives a list of integers and returns the final sum,
-which should be an integer as well. This gives us the type declaration
-`sum' :: [Int] -> Int`.
+list:
 
-First, let us define the base case. We should be quite clear on what the
-condition for the base case is: it should be when the input list is empty.
-What should we return in the base case? By our type declaration, we must
-return an `Int`, so we must express our base result in that
-type. The result is `0`, which matches our type declaration.
+:::steps
+1. As always, we must decide what the type of this function is. As per our
+    definition, it receives a list of integers and returns the final sum,
+    which should be an integer as well. This gives us the type declaration
+    `sum' :: [Int] -> Int`.
 
-Next we must define the recursive case. This one might be tricky
-initially. We know that we can make our recursive call, passing in the
-tail of the input list. This might look something like
-`sum' (tail ls)`. We must be very clear about the type of this
-expression; as per the type declaration, the result is an
-`Int`, and not anything else.
+    ```haskell title="Sum.hs"
+    sum' :: [Int] -> Int
+    ```
 
-We also know that we want to add the head of the input list to the
-result of the recursive call. In doing so we get an `Int`.
+2. First, let us define the base case. We should be quite clear on what the
+    condition for the base case is: it should be when the input list is empty.
+    What should we return in the base case? By our type declaration, we must
+    return an `Int`, so we must express our base result in that
+    type. The result is `0`, which matches our type declaration.
+    ```haskell title="Sum.hs" ins={2-5}
+    sum' :: [Int] -> Int
+    sum' ls = 
+        if null ls
+        then 0
+        else undefined
+    ```
 
-Finally, we can add the results together, giving us an `Int`,
-which matches our return type.
 
-``` haskell
-sum' :: [Int] -> Int
-sum' ls = 
-    if null ls
-    then 0
-    else let r  :: Int = sum' (tail ls)
-             hd :: Int = head ls
-         in  hd + r
-```
+3. Next we must define the recursive case. This one might be tricky
+    initially. We know that we can make our recursive call, passing in the
+    tail of the input list. This might look something like
+    `sum' (tail ls)`. We must be very clear about the type of this
+    expression; as per the type declaration, the result is an
+    `Int`, and not anything else.
+    ```haskell title="Sum.hs" ins={6-7} del={5}
+    sum' :: [Int] -> Int
+    sum' ls = 
+        if null ls
+        then 0
+        else undefined
+        else let r  :: Int = sum' (tail ls)
+             in  undefined
+    ```
+
+4. We also know that we want to add the head of the input list to the
+    result of the recursive call. In doing so we get an `Int`.
+    ```haskell title="Sum.hs" ins={6}
+    sum' :: [Int] -> Int
+    sum' ls = 
+        if null ls
+        then 0
+        else let r  :: Int = sum' (tail ls)
+                 hd :: Int = head ls
+             in  undefined
+    ```
+
+5. Finally, we can add the results together, giving us an `Int`,
+    which matches our return type.
+
+    ```haskell title="Sum.hs" del={7} ins={8}
+    sum' :: [Int] -> Int
+    sum' ls = 
+        if null ls
+        then 0
+        else let r  :: Int = sum' (tail ls)
+                 hd :: Int = head ls
+             in  undefined
+             in  hd + r
+    ```
+:::
 
 By getting used to types, having a statically-typed system no longer
 feels like a chore or a hurdle to cross, and instead feels like a
@@ -491,12 +560,12 @@ Running `pyright` on this program will reveal an error message:
 
 ```ansi title="Terminal session" showLineNumbers=false
 [32m~ $[0m [33m[1m[4mpyright[0m[1m[4m main.py[0m
-/home/main.py
+[31m/home/main.py
   /home/main.py:4:12 - error:
     Expression of type "float" is incompatible with return
     type "int"
-    "float" is incompatible with "int" (reportReturnType)
-1 error, 0 warnings, 0 informations 
+    "float" is incompatible with "int" (reportReturnType)[0m
+[31m1 error[0m, [34m0 warnings[0m, [36m0 informations[0m 
 ```
 
 Great! This makes sense because assuming `x` and `y`
@@ -504,16 +573,16 @@ are of type `int`, the type of `z` should actually be
 `float`! Let's correct the program and try running `pyright`
 against the new program:
 
-```python
-# main.py
+```python title="main.py" ins={3} del={2}
 def f(x: int, y: int) -> int:
+    z = x / y
     z = x // y
     return z
 ```
 
-```output info
-pyright main.py
-0 errors, 0 warnings, 0 informations
+```ansi title="Terminal session" showLineNumbers=false
+[32m~ $[0m [33m[1m[4mpyright[0m[1m[4m main.py[0m
+[31m0 errors[0m, [34m0 warnings[0m, [36m0 informations[0m 
 ```
 Very well! We have now learnt how to program with types in Haskell and
 in Python, and since Python does not come with a type-checker, we are
