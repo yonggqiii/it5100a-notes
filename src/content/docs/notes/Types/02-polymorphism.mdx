@@ -3,17 +3,19 @@ title: Polymorphism
 ---
 
 In FP, functions describe computation and applying functions perform
-said computation. For example, given a function \\(f\\):
-$$f(x) = x \times 2$$ 
-\\(f\\) describes what computation is to be done
-(multiplying the parameter by 2), and applying \\(f\\) onto a value (such as
-\\(f(2)\\)) performs the computation that gives the result, which is \\(4\\).
+said computation. For example, given a function $f$:
+$$
+f(x) = x \times 2
+$$ 
+$f$ describes what computation is to be done
+(multiplying the parameter by 2), and applying $f$ onto a value (such as
+$f(2)$) performs the computation that gives the result, which is $4$.
 Importantly, you might also find that applying it onto a different input
-may give you a different outcome. In this case, \\(f(2)=4\neq f(3)=6\\). The
+may give you a different outcome. In this case, $f(2)=4\neq f(3)=6$. The
 output depends on the input, i.e. we have *terms that depend on terms*.
 This may at first glance seem like a trivial observation because that is
 what functions are designed to do: if functions are always constant like
-\\(g(x) = 1\\) then we can always replace all applications of the function
+$g(x) = 1$ then we can always replace all applications of the function
 with the result and no computation needs to be done.
 
 However, now that we have learnt about types, we get a much more
@@ -21,13 +23,11 @@ interesting avenue for extending this idea of dependence. In fact, we
 now have three orthogonal directions to explore[^2]:
 
 1.  Can terms depend on types?
-
 2.  Can types depend on types?
-
 3.  Can types depend on terms?
 
 The answer to the first two questions is yes! This phenomenon is known
-as \[parametric\] *polymorphism*, i.e. where types and terms can depend
+as (parametric) **polymorphism**, i.e. where types and terms can depend
 on types[^3].
 
 ## Polymorphic Types
@@ -39,8 +39,7 @@ contains. At this point we cannot simply allow the value to be
 *anything*, so we shall fix the type of the value to something, say,
 `int`.
 
-``` python
-# Python
+``` python "int" title="IntBox.py"
 @dataclass
 class IntBox:
     value: int
@@ -49,38 +48,36 @@ class IntBox:
 However, we may later want a `Box` that stores strings. In this
 case, we will have to define a new class that does so.
 
-``` python
-# Python
+``` python "str" title="StrBox.py"
 @dataclass
 class StrBox:
     value: str
 ```
 
 Recall one of the core principles in programming: whenever you see a
-pattern in your code, *retain similarities* and *parameterize*
-differences. Looking at the two `Box` implementations, you should be
+pattern in your code, **retain similarities** and **parameterize differences**. Looking at the two `Box` implementations, you should be
 able to see that the implementation is virtually identical, and the only
-difference is the *type* of `value`. We have previously been able to
+difference is the **type** of `value`. We have previously been able to
 parameterize values (regular function parameters), parameterize
 behaviour (higher-order functions), however, can we parameterize
 *types*?
 
-Yes! We can define `Box` to receive a *type parameter* `a`, and allow
+Yes! We can define `Box` to receive a **type parameter** `a`, and allow
 the value in the box to be of that type `a`.
 
-```python
+```python "[a]" title="Box.py"
 @dataclass
 class Box[a]:
     value: a
 ```
 
-This class is a generalized `Box` class that can be *specialized* into a
+This class is a generalized `Box` class that can be **specialized** into a
 specific `Box`. For example, by replacing `a` with `int` then
 we recover our `IntBox` class with an `int` value;
 replacing `a` with `str` recovers our `StrBox` class
 with a `str` value.
 
-```python
+```python "[Box[int]]" "[int]" "[str]"
 x: Box[int] = Box[int](1)
 y: Box[str] = Box[str]('a')
 z: Box[Box[int]] = Box(Box(1))
@@ -88,19 +85,19 @@ bad: Box[int] = Box[int]('a')
 ```
 
 In Python and many Object-Oriented languages, `Box` is called a
-*generic* or *parametrically polymorphic* class/type. This is one
-example of a *type depending on a type*.
+**generic** or **parametrically polymorphic** class/type. This is one
+example of a **type depending on a type**.
 
 ## Polymorphic Functions
 
-The same principle can be applied to *terms depending on types*. Suppose
+The same principle can be applied to **terms depending on types**. Suppose
 we have a function `singleton` that is to receive an object and puts
 that object in a list. In the same vein, we have to decide what the type
 of the parameter is, which dictates the corresponding return type. For
 example, may define this function that works on `int`s, and
 separately, another function that works on `str`s:
 
-``` python
+```python ": int" "list[int]" "list[str]" ": str" title="singleton.py"
 def singleton_int(x: int) -> list[int]:
     return [x]
 def singleton_str(x: str) -> list[str]:
@@ -112,8 +109,7 @@ are identical, and only the types are different. Let us combine these
 implementations into a single function where the types are
 parameterized!
 
-``` python
-# Python 3.12
+```python "[a]" ": a" "list[a]" "list[int]" "list[str]" "list[bool]" title="singleton.py"
 def singleton[a](x: a) -> list[a]:
     return [x]
 x: list[int] = singleton(1)
@@ -121,7 +117,7 @@ y: list[str] = singleton('a')
 bad: list[bool] = singleton(2)
 ```
 
-`singleton` is what is known as a _polymorphic function_: a 
+`singleton` is what is known as a **polymorphic function**: a 
 function that depends on the type!
 
 ## Polymorphic Functions in Haskell
@@ -130,7 +126,7 @@ How would we define the type of polymorphic functions in Haskell? That
 is pretty straightforward: type parameters are lowercase. For example,
 the `singleton` function can be defined like so:
 
-``` haskell
+```haskell title="Singleton.hs"
 singleton :: a -> [a]
 singleton x = [x]
 ```
@@ -138,7 +134,7 @@ singleton x = [x]
 In fact we can see the type signatures of some built-in polymorphic
 functions:
 
-``` haskell
+```haskell title="GHCi session (types of polymorphic functions)" showLineNumbers=false frame="terminal"
 ghci> :t head
 head :: [a] -> a
 ghci> :t (.)
@@ -150,7 +146,7 @@ parameters explicit? We can use `forall` to introduce a
 polymorphic function type, with the variables succeeding
 `forall` being the type parameters to the function.
 
-``` haskell
+```haskell title="GHCi session (types of polymorphic functions)" showLineNumbers=false frame="terminal" {1}
 ghci> :set -fprint-explicit-foralls
 ghci> :t head
 head :: forall a. [a] -> a
@@ -175,44 +171,56 @@ function performs function composition; the implementation of
 (.) g f x = g (f x)
 ```
 
-We have three terms, `g`, `f` and `x`. We know that `g` and `f` must be
-functions since we are calling them, thus we are going to let the types
-of `g` and `f` to be `d -> c` and `a -> b`
-respectively. Additionally, `x` is just some other term, and we will let
-its type be `e`. Thus for now, we shall let the type signature of
-`(.)` be the following, assuming the function ultimately returns
-`r`:
+Let us make sense of this type signature.
 
-``` haskell
-(.) :: (d -> c) -> (a -> b) -> e -> r
-```
+:::steps
+1. We have three terms, `g`, `f` and `x`. We know that `g` and `f` must be
+    functions since we are calling them, thus we are going to let the types
+    of `g` and `f` to be `d -> c` and `a -> b`
+    respectively. Additionally, `x` is just some other term, and we will let
+    its type be `e`. Thus for now, we shall let the type signature of
+    `(.)` be the following, assuming the function ultimately returns
+    `r`:
 
-Now notice the following: for `f x` to be well-typed, the type
-of `x` must be the same as the type of the parameter to `f`, which is
-`a`. Thus, more accurately, `x` must be of type `a`:
+    ``` haskell showLineNumbers=false
+    (.) :: (d -> c) -> (a -> b) -> e -> r
+    ```
 
-``` haskell
-(.) :: (d -> c) -> (a -> b) -> a -> r
-```
+2. Now notice the following: for `f x` to be well-typed, the type
+    of `x` must be the same as the type of the parameter to `f`, which is
+    `a`. Thus, more accurately, `x` must be of type `a`:
 
-We can now see that `f x` is well-typed, and this expression is of type
-`b`. We then pass this result into `g`. For this to be well-typed,
-again, the parameter type of `g` must match the type of `f x`. Thus, `g`
-must actually be of type `b -> c` for some `c`:
+    ``` haskell showLineNumbers=false ins={2} del={1}
+    (.) :: (d -> c) -> (a -> b) -> e -> r
+    (.) :: (d -> c) -> (a -> b) -> a -> r
+    ```
 
-``` haskell
-(.) :: (b -> c) -> (a -> b) -> a -> r
-```
+3. We can now see that `f x` is well-typed, and this expression is of type
+    `b`. We then pass this result into `g`. For this to be well-typed,
+    again, the parameter type of `g` must match the type of `f x`. Thus, `g`
+    must actually be of type `b -> c` for some `c`:
 
-Finally, `g (f x)` has type `c`, which is what is returned from the
-function. As such, the return type of `(.) g f x` should also
-be `c`. This recovers the type signature shown by GHCI.
+    ``` haskell showLineNumbers=false ins={2} del={1}
+    (.) :: (d -> c) -> (a -> b) -> a -> r
+    (.) :: (b -> c) -> (a -> b) -> a -> r
+    ```
 
-> You might be surprised to know that the process of recovering or
+4. Finally, `g (f x)` has type `c`, which is what is returned from the
+    function. As such, the return type of `(.) g f x` should also
+    be `c`. This recovers the type signature shown by GHCI.
+    ``` haskell showLineNumbers=false ins={2} del={1}
+    (.) :: (b -> c) -> (a -> b) -> a -> r
+    (.) :: (b -> c) -> (a -> b) -> a -> c
+    ```
+:::
+
+:::tip[Did you know?]
+The process of recovering or
 reconstructing the types is known as type inference, which as stated in
 earlier chapters, is also done by GHC! When you omit the type signature
 of any binding, GHC goes through this same process and helps us
 determine what the type of that binding is.
+:::
 
 ## Programming with Polymorphic Types/Functions
 
@@ -232,7 +240,7 @@ to create a naive implementation of this class. Further suppose we are
 expecting to create a tree of integers, so we shall let that be the type
 of the values of our tree.
 
-``` python
+``` python title="IntTree.py"
 @dataclass
 class IntTree:
     pass
@@ -253,7 +261,7 @@ gives a binary tree with preorder 2, 1 and 3.
 Further suppose later on we need to store strings in a binary tree.
 Again, let's naively implement a separate class that does so:
 
-``` python
+``` python title="StrTree.py"
 @dataclass
 class StrTree:
     pass
@@ -271,7 +279,7 @@ Once again, notice that the implementations of the classes are
 identical, and the only difference is in the types! This is one clear
 example where we should make our class polymorphic!
 
-``` python
+``` python title="Tree.py"
 @dataclass
 class Tree[a]:
     pass
@@ -291,7 +299,7 @@ As another example, suppose we are trying to define a function that reverses a l
 again, we have to be specific with the type of this function.
 Temporarily, we shall create a function that works on lists of integers:
 
-``` python
+```python title="reverse.py"
 def reverse_int(ls: list[int]) -> list[int]:
     return [] if not ls else \
            reverse_int(ls[1:]) + [ls[0]]
@@ -300,7 +308,7 @@ def reverse_int(ls: list[int]) -> list[int]:
 Then, later on we might have to define a similar function that reverses
 lists of strings:
 
-``` python
+```python title="reverse.py"
 def reverse_str(ls: list[str]) -> list[str]:
     return [] if not ls else \
            reverse_str(ls[1:]) + [ls[0]]
@@ -310,7 +318,7 @@ Once again, we can see that the implementations of the two functions are
 identical, and only the types are different. Make this function
 polymorphic!
 
-``` python
+```python title="reverse.py"
 def reverse[a](ls: list[a]) -> list[a]:
     return [] if not ls else \
            reverse(ls[1:]) + [ls[0]]
