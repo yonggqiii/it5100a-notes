@@ -81,6 +81,10 @@ export default defineConfig({
               label: 'Concurrent and Parallel Programming',
               autogenerate: { directory: 'notes/concurrent/' } 
             },
+            {
+              label: 'Recap',
+              autogenerate: { directory: 'notes/recap/' }
+            }
           ]
         },
         {
