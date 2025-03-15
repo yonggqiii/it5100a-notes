@@ -8,16 +8,17 @@ functions that access these fields, if we do not use record syntax? For
 example, if we defined a fraction type normally, how do we obtain a
 fraction's numerator and denominator?
 
-The answer to this question is to use *pattern matching*. It is a
+The answer to this question is to use **pattern matching**. It is a
 control structure just like `if`-`then`-`else` expressions, except that we would
-execute different branches based on the _value/structure_ of the data,
+execute different branches based on the **value/structure** of the data,
 instead of a general condition.
 
+## Case Expressions
 Let us define the `factorial` function using pattern matching instead of
 conditional expressions or guards. We use `case` expressions
 to do so:
 
-``` haskell
+```haskell title="Factorial.hs"
 fac :: Int -> Int
 fac n = case n of -- match n against these patterns:
     0 -> 1
@@ -25,11 +26,11 @@ fac n = case n of -- match n against these patterns:
 ```
 
 The nice thing about pattern matching is that we can also match against
-the *structure* of data, i.e. to match against constructors.
+the **structure** of data, i.e. to match against constructors.
 Let us redefine the `fst` and `snd` functions which project
 a pair into its components:
 
-``` haskell
+``` haskell title="Projection.hs"
 fst' :: (a, b) -> a
 fst' p = case p of 
     (x, _) -> x
@@ -42,7 +43,7 @@ snd' p = case p of
 Let us also write accessor functions to access the numerator and denominator of a
 fraction.
 
-``` haskell
+```haskell title="Fraction.hs"
 data Fraction = F Int Int
 numerator, denominator :: Fraction -> Int
 numerator f = case f of
@@ -50,41 +51,54 @@ numerator f = case f of
 denominator f = case f of 
     F _ x -> x
 ```
-
+## Pattern Matching Declarations
 One nice thing about Haskell is that because we perform pattern matching
 over the arguments of functions so frequently, we can actually bring the
 patterns up to the definitions of the functions themselves. Let us define all the functions we've just written using
 `case` expressions into more idiomatic uses of pattern matching.
 
-``` haskell
+```haskell title="Factorial.hs" showLineNumbers=false del={2-4} ins={5-6}
 fac :: Int -> Int
+fac n = case n of -- match n against these patterns:
+    0 -> 1
+    x -> x * fac (x - 1) -- any other Int
 fac 0 = 1
 fac n = n * fac (n - 1)
- 
+```
+
+```haskell title="Projection.hs" del={2-3,7-8} ins={4,9} showLineNumbers=false
 fst' :: (a, b) -> a
+fst' p = case p of 
+    (x, _) -> x
 fst' (x, _) = x
 
 snd' :: (a, b) -> b
+snd' p = case p of
+    (_, y) -> y
 snd' (_, y) = y
- 
+```
+
+```haskell title="Fraction.hs" showLineNumbers=false ins={5,8} del={3-4,6-7}
 data Fraction = F Int Int
 numerator, denominator :: Fraction -> Int
-
+numerator f = case f of
+    F x _ -> x
 numerator (F x _) = x
+denominator f = case f of 
+    F _ x -> x
 denominator (F _ y) = y
 ```
 
-We also know that the list type is a singly linked list, which is
-roughly defined as such:
+We also know that the list type is a singly linked list, which is roughly defined as such:
 
-``` haskell
+```haskell
 data [a] = [] | a : [a]
 ```
 
 We can use this fact to pattern match against lists! For instance, the sum of a list of integers is 0 if the list is empty, otherwise its
 the head of the list plus the sum of the tail of the list.
 
-``` haskell
+```haskell title="Sum.hs"
 sum' :: [Int] -> Int
 sum' [] = 0
 sum' (x : xs) = x + sum' xs
@@ -92,7 +106,7 @@ sum' (x : xs) = x + sum' xs
 Similarly, the length of a list is 0 if the list is empty, otherwise it is 1 more
 than the length of its tail.
 
-``` haskell
+```haskell title="Len.hs"
 len :: [a] -> Int
 len [] = 0
 len (_ : xs) = 1 + len xs
@@ -105,7 +119,7 @@ on the left side of any binding:
 
 Let us use pattern matching in a `let` binding:
 
-``` haskell
+```haskell 
 len :: [a] -> Int
 len [] = 0
 len ls = 
@@ -113,30 +127,28 @@ len ls =
     in  1 + len xs
 ```
 
+### Exhaustivity Checks
 Perhaps the most powerful feature of pattern matching is that the
 compiler will warn you if your pattern matches are non-exhaustive, i.e.
 if you do not match against all possible constructors of the type! Let
 us define a function that only matches against the empty list
 constructor.
 
-``` haskell
--- Main.hs
+```haskell title="Main.hs"
 emp :: [a] -> [a]
 emp [] = []
 ```
 
 Compile it to see the warning!
 
-```
-ghc Main.hs
-```
-```output warn
-Main.hs:3:1: warning: [-Wincomplete-patterns]
+```ansi title="Terminal session" showLineNumbers=false
+[32m~ $[0m [33m[1m[4mghc[0m[1m[4m Main.hs[0m
+[35mMain.hs:3:1: warning: [-Wincomplete-patterns]
     Pattern match(es) are non-exhaustive
-    In an equation for 'emp': Patterns of type '[a]' not matched: (_:_)
-  |
-3 | emp [] = []
-  | ^^^^^^^^^^^
+    In an equation for 'emp': Patterns of type '[a]' not matched: (_:_)[0m
+  [34m|
+3 |[0m [35memp [] = [][0m
+  [34m|[0m [36m[1m^^^^^^^^^^^[0m
 ```
 
 This is one reason why pattern matching is so powerful: compilers can
@@ -145,7 +157,8 @@ unlike the usual `if`-`else` statements in other languages where it is much less
 check if you have covered all possible branches, especially if you omit
 `else` statements.
 
-One important point to highlight here is that pattern matching is done
+:::caution
+Pattern matching is done
 top-down. Pattern-matching is kind of similar to `if`-`else`
 statements in that regard: your most specific condition should be
 defined first, then followed by more general or catch-all patterns.
@@ -154,20 +167,22 @@ The following factorial function is poorly defined, because the first
 pattern match will match all possible integers, thereby causing the
 function to never terminate:
 
-``` haskell
+``` haskell title="BadFactorial.hs" {"Redundant pattern match as pattern above matches all possible integers":3-4}
 fac :: Int -> Int
 fac n = n * fac (n - 1)
-fac 0 = 1 -- redundant as pattern above matches all possible integers
-```
 
+fac 0 = 1
+```
+:::
+
+## Pattern Matching GADTs 
 With pattern matching, let us know fulfil our earlier promise of
 defining the `eval` function for the `Expr` GADT in
-[Chapter 2.3 (Algebraic Data Types)](./algebraic_data_types.md). In our Python formulation, we know that `eval` should have the
+[Chapter 2.3 (Generalized Algebraic Data Types)](/it5100a-notes/notes/types/03-adt/#generalized-algebraic-data-types). In our Python formulation, we know that `eval` should have the
 type signature `Expr a -> a`. Let us then define how each
 expression should be evaluated with pattern matching.
 
-``` haskell
--- Main.hs
+``` haskell title="Expr.hs" startLineNumber=6
 eval :: Expr a -> a
 eval (LitNumExpr n)   = n
 eval (AddExpr a b)    = eval a + eval b
@@ -179,36 +194,34 @@ This seems straightforward. However, you might find that when this
 program is compiled, the compiler throws an error on the use of the
 `(==)` function:
 
-```
-ghc Main.hs
-```
-```output error
-Main.hs:13:28: error:
+```ansi title="Terminal session" showLineNumbers=false
+[32m~ $[0m [33m[1m[4mghc[0m[1m[4m Expr.hs[0m
+[31mExpr.hs:9:28: error:
     • Could not deduce (Eq a1) arising from a use of ‘==’
       from the context: a ~ Bool
         bound by a pattern with constructor:
                    EqExpr :: forall a. Expr a -> Expr a -> Expr Bool,
-                 in an equation for ‘eval’
-        at app/Main.hs:13:7-16
+                 in an equation for 'eval'
+        at Expr.hs:9:7-16
       Possible fix:
-        add (Eq a1) to the context of the data constructor ‘EqExpr’
+        add (Eq a1) to the context of the data constructor 'EqExpr'
     • In the expression: eval a == eval b
-      In an equation for ‘eval’: eval (EqExpr a b) = eval a == eval b
-   |
-13 | eval (EqExpr a b) = eval a == eval b
-   |       
+      In an equation for 'eval': eval (EqExpr a b) = eval a == eval b[0m
+  [34m|
+9 |[0m eval (EqExpr a b)     = [31meval a == eval b[0m
+  [34m|[0m                         [36m[1m^^^^^^^^^^^^^^^^[0m
 ```
 
 The reason for this is Haskell is unable to determine that the type
 parameter `a` is amenable to equality comparisons. Solving this requires
-an understanding of *typeclasses*, which we will explore in the next
+an understanding of **typeclasses**, which we will explore in the next
 chapter. For now, just include an `Eq a =>` constraint in our
 GADT declaration.
 
 You might also get a warning about pattern matching on GADTs being
 fragile; that is because GADTs are actually a Haskell language
 extension. As such, enable this extension when compiling this program,
-or add a `LANGUAGE` *pragma* at the top of the file.
+or add a `LANGUAGE` **pragma** at the top of the file.
 
 ``` haskell
 {-# LANGUAGE GADTs #-}
@@ -221,13 +234,13 @@ data Expr a where
 
 Our program should compile now!
 
-### Pattern Matching in Python
+## Pattern Matching in Python
 
 Python also has pattern matching with `match` statements with
 `case` clauses! It looks very similar to how we would write
 `case` expressions in Haskell.
 
-``` python
+``` python title="factorial.py" {2-4}
 def factorial(n: int) -> int:
   match n:
     case 0: return 1
@@ -237,7 +250,7 @@ def factorial(n: int) -> int:
 We can also match on the structure of types by unpacking. For example,
 defining a function that sums over a list of integers:
 
-``` python
+```python title="sum.py" {2-5}
 def sum(ls: list[int]) -> int:
   match ls:
     case []: return 0
@@ -248,7 +261,7 @@ def sum(ls: list[int]) -> int:
 Alternatively, performing structural pattern matching over a so called
 algebraic data type:
 
-``` python
+``` python title="tree.py" {15-18}
 @dataclass
 class Tree[a]: pass
  
@@ -283,7 +296,7 @@ error is because we did not match against other possible subclasses of
 If we had formulated our `Tree` type using unions, `pyright` can determine
 the exhaustiveness of our patterns:
 
-``` python
+```python title="tree.py" {1,14-17}
 type Tree[a] = Node[a] | Leaf[a]
 
 @dataclass
@@ -311,6 +324,7 @@ difficult to do. When doing pattern matching in Python, ensure that all
 possible cases are handled before doing a catch-all clause in your
 `match` statement.
 
+## Summary
 All-in-all, we have just introduced a new control structure known as
 pattern matching. When should we use this control structure? The general
 rule of thumb is as follows:

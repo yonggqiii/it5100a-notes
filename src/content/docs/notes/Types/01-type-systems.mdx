@@ -141,21 +141,20 @@ print(s) # 3 * 2 = 6
 ```
 
 This program fragment contains several **type annotations**. 
-- In the function header, we have a specification for `f` to receive an
-  `int` and return a `str`. That is, if the type
-  annotations make sense, then passing an `int` into `f`
-  will always result in a `str`. 
-- In the function body, we also
-  have an annotation for the variable `y` stating that it is also
-  an `int`. This makes sense&mdash;if `x` is an `int`,
-  then so will `x * 2`. Actually, the type of `y` can be
-**inferred** (a **type checker** can determine the type of `y`
-automatically), so our type annotation for it is not necessary.
-- Outside the function body we have other type annotations, documenting what the
-  types of the other variables are. On visual inspection, we can see that
-  all the type annotations make sense and we have adhered to them fully;
-  we are thus guaranteed that we have no type errors.
-
+:::steps
+1. In the function header, we have a specification for `f` to receive an
+   `int` and return a `str`. That is, if the type
+   annotations make sense, then passing an `int` into `f`
+   will always result in a `str`. 
+2. In the function body, we also
+   have an annotation for the variable `y` stating that it is also
+   an `int`. This makes sense&mdash;if `x` is an `int`,
+   then so will `x * 2`. Actually, the type of `y` can be **inferred** (a **type checker** can determine the type of `y` automatically), so our type annotation for it is not necessary.
+3. Outside the function body we have other type annotations, documenting what the
+   types of the other variables are. On visual inspection, we can see that
+   all the type annotations make sense and we have adhered to them fully;
+   we are thus guaranteed that we have no type errors.
+:::
 While Haskell also provides the capability for type annotations, a
 notable distinction lies in Haskell's **enforcement** of adherence to
 these annotations. Consequently, it might be more fitting to refer to
@@ -207,7 +206,8 @@ $$
 
 The T-Abs rule is an **inference rule** stating that if the
 premise above the line is true, then the conclusion below the line will
-also be true. 
+also be true. Let's dive into this in a bit more detail:
+:::steps
 1. Let's first parse the premise. 
     1. The part to the left of $\vdash$ is the *typing environment*, more or less describing the type
         declarations we have at the point of analysis of the program.
@@ -218,6 +218,7 @@ also be true.
    Overall, the premise states \"given what we have so far, if in
         assuming $x$ is of type $S$ we get that $e$ is of type $T$, \...\". 
 2. The conclusion can be understood similarly: it states that the typing environment $\Gamma$ will show that the function $\lambda x.e$ has type $S \to T$. 
+:::
 
 Putting these together, the rule states that \"given typing
 environment $\Gamma$, if by assuming that variable $x$ has type $S$ we
@@ -351,24 +352,57 @@ snippet. Can you get it all right?
 ```haskell title="Example.hs"
 f :: Int -> Int -> [Int]
 f x n =
-  if n == 0 then
-    []
+  if n == 0
+  then []
   else
     let r = f x (n - 1)
     in  x : r
 ```
 
 Let's work through this example. 
-- We are declaring `f` to be of type `Int -> Int -> [Int]`, so it stands to reason that in the definition of `f` we are assuming that `x` and `n` are both of type `Int`. 
-- For this to be well-typed, we must ensure that the conditional expression evaluates to `[Int]`, that means both branches must themselves evaluate to `[Int]`. 
-- First we observe the condition `n == 0`; the `(==)` function receives two numbers and returns a `Bool`, so this is well-typed.
-- Looking at the `True` branch, we see that we are returning the empty list, which matches the type of `[Int]`. 
-- In the `False` branch, we have a `let` expression, so we must ensure that `x : r` evaluates to `[Int]` too. 
-- The `let` binding contains a binding `r = f x (n - 1)`; knowing that (by our own declaration) `f` has type `Int -> Int -> [Int]`, knowing that `x` and `n - 1` are of type `Int` means we can safely conclude that `r` has type `[Int]` (of course, the `(-)` function receives two
-integers and returns an integer). 
-- The `(:)` function receives an `Int` and a `[Int]` and returns a
-`[Int]`, so all the types match. 
-
+:::steps
+1. Observe line 1:
+   ```haskell title="Example.hs"
+   f :: Int -> Int -> [Int]
+   ```
+   We are declaring `f` to be of type `Int -> Int -> [Int]`, so it stands to reason that in the definition of `f` we are assuming that `x` and `n` are both of type `Int`. 
+2. Observe the body of `f`:
+   ```haskell title="Example.hs" startLineNumber=3
+     if n == 0
+     then []
+     else
+       let r = f x (n - 1)
+       in  x : r
+   ```
+   For this to be well-typed, we must ensure that the conditional expression evaluates to `[Int]`, that means both branches must themselves evaluate to `[Int]`. 
+3. First we observe the condition `n == 0`: 
+   ```haskell title="Example.hs" startLineNumber=3 "n == 0"
+     if n == 0
+   ```
+   The `(==)` function receives two numbers and returns a `Bool`, so this is well-typed.
+4. Looking at the `True` branch:
+   ```haskell title="Example.hs" startLineNumber=4 "[]"
+     then []
+   ```
+   We see that we are returning the empty list, which matches the type of `[Int]`. 
+5. In the `False` branch:
+    ```haskell title="Example.hs" startLineNumber=6 "x : r"
+        let r = f x (n - 1)
+        in  x : r
+    ```
+    we have a `let` expression, so we must ensure that `x : r` evaluates to `[Int]` too. 
+6. The `let` binding:
+    ```haskell title="Example.hs" startLineNumber=6 "f x (n - 1)"
+        let r = f x (n - 1)
+    ```
+   contains a binding `r = f x (n - 1)`; knowing that (by our own declaration) `f` has type `Int -> Int -> [Int]`, knowing that `x` and `n - 1` are of type `Int` means we can safely conclude that `r` has type `[Int]` (of course, the `(-)` function receives two integers and returns an integer). 
+7. In the `let` body:
+    ```haskell title="Example.hs" startLineNumber=7 "x : r"
+        in  x : r
+    ```
+    The `(:)` function receives an `Int` and a `[Int]` and returns a
+   `[Int]`, so all the types match. 
+:::
 Overall, we have seen that we
 successfully determined the types of every expression in the program
 fragment, and concluded that it is well-typed.

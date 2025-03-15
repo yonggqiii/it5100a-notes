@@ -71,6 +71,21 @@ class Box[a]:
     value: a
 ```
 
+:::note
+This syntax for writing polymorphic classes was introduced in Python 3.12. Support for polymorphic, or **generic**, classes were introduced earlier, but must be written using `Generic` and `TypeVar`:
+
+```python "[a]" title="Box.py" {"Type variable declaration":2-3} {"Polymorphic class extends Generic":5-6}
+from typing import Generic, TypeVar
+
+T = TypeVar('T')
+@dataclass
+
+class Box(Generic[T]):
+    value: T
+```
+
+:::
+
 This class is a generalized `Box` class that can be **specialized** into a
 specific `Box`. For example, by replacing `a` with `int` then
 we recover our `IntBox` class with an `int` value;
