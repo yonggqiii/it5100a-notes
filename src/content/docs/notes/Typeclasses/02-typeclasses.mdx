@@ -2,6 +2,7 @@
 title: Typeclasses
 ---
 
+import { Card } from '@astrojs/starlight/components';
 
 Typeclasses are a type system construct that enables ad-hoc
 polymorphism. Essentially, a typeclass is a nominal classification of
@@ -19,23 +20,39 @@ implementations of functions specified in the typeclass. In essence, a
 typeclass is a constraint over types, and a typeclass instance is a witness that
 for types meeting those constraints.
 
+## What is a typeclass?
+
 To build on intuition, pretend that there is a super cool magic club,
 and members of this club must have a magic assistant and a magic trick.
-This club acts as a typeclass. Then suppose cats and dogs want to join
+This club acts as a typeclass. 
+
+<Card icon="moon" title="Super Cool Magic Club">
+To join, must have:
+1. A magic assistant
+2. A magic trick
+</Card>
+
+Then suppose cats and dogs want to join
 this club. To do so, they must provide proof to the club administrators
 (in Haskell, the compiler) that they have a magic assistant and a magic
-trick. Suppose that the cats come together with their mouse friends as
-their magic assistants, and their magic trick is to cough up a furball,
-and the dogs all present their chew toys as their magic assistants, and
-their magic trick is to give their paw. The club administrator then puts
+trick. Let's say:
+- Cats have 
+  - a mouse friend acting as their magic assistant
+  - a trick that is to cough up a furball
+- Dogs have
+  - a chew toy acting as their magic assistant
+  - a trick that is to give their paw
+
+The club administrator then puts
 all these into boxes as certificates of their membership into the
 club&mdash;in our analogy, these certificates are typeclass instances.
 
+## Typeclasses in Haskell
 Let us return to the shape and house example we have seen at the start
 of this chapter. We first define some types (slightly different from
 before) that all have an area:
 
-``` haskell
+```haskell title="Shape.hs"
 data Shape = Circle Double
            | Rectangle Double Double
            | Triangle Double Double
@@ -49,7 +66,7 @@ area. For this, we shall describe a contract for such types to follow.
 The contract is straightforward&mdash;all such types must have an
 `area` function (known as a method).
 
-``` haskell
+```haskell title="Shape.hs" startLineNumber=7
 class HasArea a where
   area :: a -> Double
 ```
@@ -69,7 +86,7 @@ type `a`&mdash;that is, if `a` is a member of the
 `area :: a -> Double`. The example typeclass instances make
 this clear:
 
-``` haskell
+```haskell title="Shape.hs" startLineNumber=9
 instance HasArea Shape where
   area :: Shape -> Double
   area (Circle r) = pi * r ^ 2
@@ -93,19 +110,21 @@ so by providing an implementation of `area :: Shape -> Double`
 (in the obvious way). We do the same for rooms and houses, and now the
 `area` function works for all (and only) these three types!
 
-``` haskell
-x :: Shape = Triangle 2 3
-y :: Room = R "bedroom" (Rectangle 3 4)
-z :: House = H [y]
-
-ax = area x -- 3
-ay = area y -- 12
-az = area z -- 12
+```haskell title="GHCi session (area)" frame="terminal" showLineNumbers=false
+ghci> x :: Shape = Triangle 2 3
+ghci> y :: Room = R "bedroom" (Rectangle 3 4)
+ghci> z :: House = H [y]
+ghci> area x
+3
+ghci> area y
+12
+ghci> area z
+12
 ```
 
 Now let us investigate the type of `area`:
 
-``` haskell
+```haskell title="GHCi session (area)" frame="terminal" showLineNumbers=false
 ghci> :t area
 area :: forall a. HasArea a => a -> double
 ```
@@ -114,24 +133,31 @@ The type of `area` is read as "a function for all
 `a` where `a` is constrained by `HasArea`,
 and receives an `a`, and returns a `Double`".
 
-Constrains on type variables are not limited to class methods. In fact,
+Constraints on type variables are not limited to class methods. In fact,
 we can, and probably should, make functions that use `area`
 polymorphically over type variables, constrained by `HasArea`. Let
 us consider a function that sums the area over a list of shapes, and
 another one over a list of rooms:
 
-``` haskell
+```haskell title="Shape.hs" startLineNumber=22
 totalArea :: [Shape] -> Double
 totalArea [] = 0
 totalArea (x : xs) = area x + totalArea xs
 
--- alternatively
-totalArea' :: [Shape] -> Double
-totalArea' = sum . map area
-
-totalArea'' :: [Room] -> Double
-totalArea'' = sum . map area
+totalArea' :: [Room] -> Double
+totalArea' [] = 0
+totalArea' (x : xs) = area x + totalArea xs
 ```
+
+:::tip[Did you know?]
+There is a style of programming known as point-free style, where functions are written in terms of function composition. For instance, `totalArea` can be written very simply as follows:
+
+```haskell title="Shape.hs" showLineNumbers=false
+totalArea :: [Shape] -> Double
+totalArea = sum . map area
+```
+
+:::
 
 Both `totalArea'` and `totalArea''` have
 precisely the same implementation, except that they operate over
@@ -140,22 +166,30 @@ substitute these types for any type variable `a`, so long as
 there is an instance of `HasArea a`! Therefore, the most
 general type we should ascribe for this function would be
 
-``` haskell
+```haskell showLineNumbers=false ins={2} del={1,5-8}
+totalArea :: [Shape] -> Double
 totalArea :: HasArea a => [a] -> Double
-totalArea = sum . map area
+totalArea [] = 0
+totalArea (x : xs) = area x + totalArea xs
+
+totalArea' :: [Room] -> Double
+totalArea' [] = 0
+totalArea' (x : xs) = area x + totalArea xs
 ```
 
 Now our `totalArea` function works on any list that contains a
 type that has an instance of `HasArea`!
 
-``` haskell
-xs :: [Shape] = [Rectangle 1 2, Triangle 3 4]
-ys :: [House] = [H [R "bedroom" (Rectangle 1 2)]]
-axs = totalArea xs -- 8
-ayx = totalArea ys -- 2
+```haskell title="GHCi session (total area)" frame="terminal" showLineNumbers=false
+ghci> xs :: [Shape] = [Rectangle 1 2, Triangle 3 4]
+ghci> ys :: [House] = [H [R "bedroom" (Rectangle 1 2)]]
+ghci> totalArea xs
+8
+ghci> totalArea ys
+2
 ```
 
-### How Typeclasses Work
+## How Typeclasses Work
 
 By now, you should be able to observe that typeclasses allow (1)
 otherwise disparate types adhering to a common interface, i.e. ad-hoc
@@ -169,14 +203,14 @@ typeclasses are implemented as regular algebraic data types, and
 typeclass instances are implemented as regular terms of typeclasses.
 Using our `area` example, we can define the typeclass as
 
-``` haskell
+```haskell
 data HasArea a = HA { area :: a -> Double }
 ```
 
 Then, typeclass instances are merely helper-terms of the
 `HasArea` type:
 
-``` haskell
+```haskell startLineNumber=2
 hasAreaShape :: HasArea Shape
 hasAreaShape = HA $ \x -> case x of
   Circle    r   -> pi * r ^ 2
@@ -191,7 +225,7 @@ implementation for obtaining the area of a shape! We can take this
 further by defining the helper-terms for other types that wish to
 implement the `HasArea` typeclass:
 
-``` haskell
+```haskell startLineNumber=7
 hasAreaRoom :: HasArea Room
 hasAreaRoom = HA $ \x -> area hasAreaShape (shape x)
 
@@ -203,19 +237,21 @@ hasAreaHouse = HA $ \x -> case x of
 Finally, we can use the `area` function, together with the
 type-specific helpers, to compute the area of shapes, rooms and houses!
 
-``` haskell
-x :: Shape = Triangle 2 3
-y :: Room = R "bedroom" (Rectangle 3 4)
-z :: House = H [y]
-
-ax = area hasAreaShape x -- 3
-ay = area hasAreaRoom y -- 12
-az = area hasAreamHouse z -- 12
+```haskell title="GHCi session (area)" frame="terminal" showLineNumbers=false "hasAreaShape" "hasAreaRoom" "hasAreaHouse"
+ghci> x :: Shape = Triangle 2 3
+ghci> y :: Room = R "bedroom" (Rectangle 3 4)
+ghci> z :: House = H [y]
+ghci> area hasAreaShape x
+3
+ghci> area hasAreaRoom y
+12
+ghci> area hasAreaHouse z
+12
 ```
 
 This is (more-or-less) how Haskell implements typeclasses and typeclass
 instances. The only difference is that the Haskell compiler will
-automatically *infer* the helper term when a typeclass method is used,
-allowing us to omit them. This *term inference* that Haskell supports
+automatically **infer** the helper term when a typeclass method is used,
+allowing us to omit them. This **term inference** that Haskell supports
 allow us to define and use ad-hoc polymorphic functions in a type-safe
 way.
