@@ -5,7 +5,7 @@ title: Commonly Used Typeclasses
 Let us have a look at some typeclasses and their methods that you have
 already used.
 
-``` haskell
+```haskell
 class Eq a where
   (==) :: a -> a -> Bool
   (/=) :: a -> a -> Bool
@@ -30,16 +30,16 @@ the instances of these typeclasses for commonly-used types, such as
 instances for `Num Int` and `Eq String`.
 
 Let us try defining our own instance of `Eq`. Suppose we are
-re-using the `Fraction` algebraic data type defined in [Chapter 2.3 (Types#Algebraic Data Types)](../../types/sections/algebraic_data_types.md):
+re-using the `Fraction` algebraic data type defined in [Chapter 2.3 (Algebraic Data Types)](/it5100a-notes/notes/types/03-adt/#algebraic-data-types):
 
-``` haskell
+``` haskell title="Fraction.hs"
 data Fraction = Fraction Int Int
 ```
 
 We allow `Fraction` to be amenable to equality comparisons
 by implementing a typeclass instance for `Eq Fraction`:
 
-``` haskell
+``` haskell title="Fraction.hs" startLineNumber=2
 instance Eq Fraction where
   (==) :: Fraction -> Fraction -> Bool
   F a b == F c d = a == c && b == d
@@ -60,7 +60,7 @@ every instance is cumbersome.
 
 Let us inspect the definition of the `Eq` typeclass:
 
-``` haskell
+```haskell title="GHCi session (Eq)" frame="terminal" showLineNumbers=false
 ghci> :i Eq
 type Eq :: * -> Constraint
 class Eq a where
@@ -70,19 +70,22 @@ class Eq a where
     -- Defined in 'GHC.Classes'
 ```
 
-Notice the `MINIMAL` *pragma*&mdash;the pragma states that we only need to
-define either `(==)` *or* `(/=)` for a complete
+Notice the `MINIMAL` **pragma**&mdash;the pragma states that we only need to
+define either `(==)` **or** `(/=)` for a complete
 instance definition! Therefore, we can omit the definition of
 `(/=)` in our `Eq Fraction` instance, and we would
 still have a complete definition:
 
-``` haskell
+``` haskell title="Fraction.hs" startLineNumber=2 del={4-6}
 instance Eq Fraction where
   (==) :: Fraction -> Fraction -> Bool
   F a b == F c d = a == c && b == d
+
+  (/=) :: Fraction -> Fraction -> Bool
+  F a b /= F c d = a /= c || b /= d
 ```
 
-``` haskell
+```haskell title="GHCi session (equality of fractions)" frame="terminal" showLineNumbers=false
 ghci> Fraction 1 2 == Fraction 1 2
 True
 ghci> Fraction 1 2 /= Fraction 1 2
@@ -101,7 +104,7 @@ x /= y = not (x == y)
 ```
 
 By placing both functions as methods in the typeclass, programmers have
-the option to define *either* `(==)` *or* `(/=)`, or
+the option to define **either** `(==)` **or** `(/=)`, or
 both, if specifying each implementation individually gives better performance or 
 different behaviour than the default.
 
@@ -110,7 +113,7 @@ different behaviour than the default.
 We can even define instances over polymorphic types. Here is an example
 of how we can perform equality comparisons over trees:
 
-``` haskell
+```haskell title="Tree.hs"
 data Tree a = Node (Tree a) a (Tree a)
             | Empty
 
@@ -124,13 +127,14 @@ instance Eq (Tree a) where
 However, our instance will not type-check because the elements
 `a` of the trees also need to be amenable to equality
 comparisons for us to compare trees! Therefore, we should constrain
-`a` with `Eq` in the *instance* declaration, like
+`a` with `Eq` in the **instance** declaration, like
 so:
 
-``` haskell
+```haskell title="Tree.hs" del={4} ins={5} showLineNumbers=false
 data Tree a = Node (Tree a) a (Tree a)
             | Empty
 
+instance Eq (Tree a) where
 instance Eq a => Eq (Tree a) where
   (==) :: Tree a -> Tree a -> Bool
   Empty == Empty = True
@@ -143,7 +147,7 @@ well. For example, the `Ord` typeclass describes (total)
 orders on types, and all (totally) ordered types must also be amenable
 to equality comparisons:
 
-``` haskell
+``` haskell {1}
 class Eq a => Ord a where
   (<) :: a -> a -> Bool
   (<=) :: a -> a -> Bool
@@ -159,12 +163,12 @@ are built with the same constructor and their argument terms are
 respectively equal. As such, the language should not require programmers
 to implement straightforward instances of classes like `Eq`.
 
-Haskell has a *deriving mechanism* that allows the compiler to
+Haskell has a **deriving mechanism** that allows the compiler to
 automatically synthesize typeclass instances for us. It is able to do so
 for `Eq`, `Ord`, and others like `Enum`.
 Doing so is incredibly straightforward:
 
-``` haskell
+```haskell
 data A = B | C
 
 data Fraction = Fraction Int Int 
@@ -180,7 +184,7 @@ These declarations tell the compiler to synthesize instance declarations
 in the most obvious way. This way, we do not have to write our own
 instance declarations for these typeclasses!
 
-``` haskell
+```haskell title="GHCi session (derived instances)" frame="terminal" showLineNumbers=false
 ghci> x = Node Empty 1 Empty
 ghci> y = Node (Node Empty 1 Empty) 2 Empty
 ghci> x
