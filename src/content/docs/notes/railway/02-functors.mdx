@@ -2,6 +2,8 @@
 title: Functors
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+
 We can borrow some ideas from a branch of mathematics, known as _Category Theory_, to improve the ergonomics of these structures. Part of the reason why we are able to do so is that all the types that we have described have kind `* -> *`, i.e. they "wrap" around another type. As such, they should be able to behave as _functors_, which we will formalize shortly.[^1]
 
 However, before we even talk about what a functor is and how the data structures we have described are functors, we first need to describe what category theory is. Intuitively, most theories (especially the algebraic ones) study mathematical structures that abstract over things; _groups_ are abstractions of _symmetries_, and _geometric spaces_ are abstractions of _space_. Category theory takes things one step further and studies _abstraction itself_.
@@ -11,43 +13,387 @@ Effectively the goal of category theory is to observe similar underlying structu
 On the other hand, the generality of category theory also makes it incredibly abstract and difficult to understand&mdash;this is indeed the case in our very first definition. As such, I will, as much as possible, show you "concrete" examples of each definition and reason about them if I can. With this in mind, let us start with the definition of a category, as seen in many sources.
 
 
-> **Definition (Category)**. A category $\mathcal{C}$ consists of
-> - a collection of _objects_ $X$, $Y$, $Z$, ... denoted $\text{ob}(\mathcal{C})$
-> - a collection of _morphisms_, $f, g, h, \dots$, denoted $\text{mor}(\mathcal{C})$
->
-> so that:
-> - Each morphism has specified _domain_ and _codomain_ objects; when we write $f: X \to Y$, we mean that the morphism $f$ has domain $X$ and codomain $Y$.
-> - Each object has an _identity morphism_ $1_X:X\rightarrow X$.
-> - For any pair of morphisms $f$, $g$ with the codomain of $f$ equal to the domain of $g$ (i.e. $f$ and $g$ are composable), there exists a _composite morphism_ $g \circ f$ whose domain is equal to the domain of $f$ and whose codomain is equal to the codomain of $g$, i.e.
-> \\[f: X\rightarrow Y, ~~~g: Y \rightarrow Z ~~~~~ \rightsquigarrow ~~~~~ g\circ f:X\rightarrow Z\\]
->
-> Composition of morphisms is subject to the two following axioms:
-> - _Unity_. For any $f: X \rightarrow Y$, $f\circ1_X = 1_Y \circ f = f$.
-> - _Associativity_. For any composable $f$, $g$ and $h$, $(h\circ g)\circ f = h \circ (g \circ f)$.
+:::theorem{#def:cat title="Category"}
+A category $\mathcal{C}$ consists of
+- a collection of _objects_ $X$, $Y$, $Z$, ... denoted $\text{ob}(\mathcal{C})$
+- a collection of _morphisms_, $f, g, h, \dots$, denoted $\text{mor}(\mathcal{C})$
+
+so that:
+- Each morphism has specified _domain_ and _codomain_ objects; when we write $f: X \to Y$, we mean that the morphism $f$ has domain $X$ and codomain $Y$.
+- Each object has an _identity morphism_ $1_X:X\rightarrow X$.
+- For any pair of morphisms $f$, $g$ with the codomain of $f$ equal to the domain of $g$ (i.e. $f$ and $g$ are composable), there exists a _composite morphism_ $g \circ f$ whose domain is equal to the domain of $f$ and whose codomain is equal to the codomain of $g$, i.e.
+
+$$
+f: X\rightarrow Y, ~~~g: Y \rightarrow Z ~~~~~ \rightsquigarrow ~~~~~ g\circ f:X\rightarrow Z
+$$
+
+Composition of morphisms is subject to the two following axioms:
+- _Unity_. For any $f: X \rightarrow Y$, $f\circ1_X = 1_Y \circ f = f$.
+- _Associativity_. For any composable $f$, $g$ and $h$, $(h\circ g)\circ f = h \circ (g \circ f)$.
+:::
 
 This, of course, is incredibly abstract and quite hard to take in. Instead, let us use a simpler definition to get some "ideas" across:
 
-> A category $\mathcal{C}$ consists of
-> - Dots $X$, $Y$, $Z$
-> - Arrows between dots $f, g, h, \dots$
->
-> such that:
-> - Joining two arrows together gives another arrow
-> - There is a unique way to join three arrows together
-> - Every dot has an arrow pointing to itself, such that joining it with any other arrow $f$ just gives $f$
+:::theorem{#def:cat2 title="Category"}
+A category $\mathcal{C}$ consists of
+- Dots $X$, $Y$, $Z$
+- Arrows between dots $f, g, h, \dots$
 
+such that:
+- Joining two arrows together gives another arrow
+- There is a unique way to join three arrows together
+- Every dot has an arrow pointing to itself, such that joining it with any other arrow $f$ just gives $f$
+:::
 Here is an example category:
 
-```
-    f
-A ----> B
- \      |
-  \     | g
- h \    |
-    \   v 
-     -> C
-```
-Here we have three objects `A` `B` and `C`, and the morphisms `f: A -> B`, `g: B -> C` and `h: A -> C`. The identity morphisms for the objects are omitted for simplicity. Note that the composition of `f` and `g` exists in the category (assume in the example `g . f == h`).
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+<svg
+   version="1.1"
+   width="175px"
+   height="100px"
+   viewBox="19.92528 -12.366209 50.365986 43.890418"
+   id="svg53"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6">
+    <font
+       id="stix-mathit"
+       horiz-adv-x="0"
+       horiz-origin-x="0"
+       horiz-origin-y="0"
+       vert-origin-x="512"
+       vert-origin-y="768"
+       vert-adv-y="1024">
+      <font-face
+         font-family="stix-mathit"
+         units-per-em="1000"
+         ascent="819"
+         descent="478"
+         id="font-face1" />
+      <glyph
+         unicode="𝐴"
+         horiz-adv-x="717"
+         vert-adv-y="717"
+         glyph-name="u1D434"
+         d="M685 0V16H669C627 16 602 37 595 86L517 667H499L143 90C107 32 70 20 35 16V0H253V16H224C198 16 182 27 181 45C181 52 184 63 191 71L275 211H473L486 98C487 91 488 83 488 77C488 37 472 16 416 16H400V0H685ZM466 248H296L435 475H441L466 248Z"
+         id="glyph1" />
+      <glyph
+         unicode="𝐵"
+         horiz-adv-x="696"
+         vert-adv-y="696"
+         glyph-name="u1D435"
+         d="M198 653L193 637H212C271 637 290 621 290 595C290 589 289 579 288 574L165 79C157 45 138 16 62 16H42L38 0H362C569 0 651 94 651 193C651 278 584 320 524 331L521 335C541 340 570 348 595 361C643 385 686 430 686 508C686 644 534 653 450 653H198ZM406 611C419 613 434 614 449 614C503 614 568 593 568 516C568 419 512 353 400 353C385 353 367 355 347 359L406 611ZM338 314C353 318 373 318 389 318C467 318 531 283 531 210C531 80 435 38 341 38C315 38 295 40 270 47L338 314Z"
+         id="glyph2" />
+      <glyph
+         unicode="𝐶"
+         horiz-adv-x="671"
+         vert-adv-y="671"
+         glyph-name="u1D436"
+         d="M711 659H693C678 634 662 632 651 632C599 632 547 659 493 659C251 659 50 496 50 266C50 119 145-12 338-12C377-12 453-6 531 49C560 70 593 100 620 141L600 154C595 147 590 141 583 134C538 85 465 36 367 36C232 36 172 138 172 250C172 421 290 622 491 622C612 622 643 543 643 478C643 453 643 444 642 436H658L711 659Z"
+         id="glyph3" />
+      <glyph
+         unicode="𝑓"
+         horiz-adv-x="555"
+         vert-adv-y="555"
+         glyph-name="u1D453"
+         d="M248 437L239 399H316L229 57C214 0 184-158 119-158C110-158 104-155 104-149C104-137 120-136 120-117C120-102 110-84 83-84C54-84 40-109 40-133C40-163 64-187 112-187C200-187 254-92 287-9C302 28 310 66 317 93L396 399H472L484 437H404L423 507C444 585 483 639 533 639C545 639 548 636 548 631C548 623 539 608 539 594S546 569 574 569C594 569 615 581 615 609C615 644 586 668 536 668C460 668 417 625 386 578C343 514 348 437 285 437H248Z"
+         id="glyph4" />
+      <glyph
+         unicode="𝑔"
+         horiz-adv-x="492"
+         vert-adv-y="492"
+         glyph-name="u1D454"
+         d="M492 413H366C351 428 320 441 278 441C172 441 104 362 104 283C104 236 131 189 198 174V170C150 170 113 121 113 83C113 66 120 47 137 36C75 16 20-14 20-72S70-187 204-187C353-187 419-107 419-36C419 89 186 49 186 112C186 137 215 162 274 170C362 181 415 243 415 318C415 340 411 353 398 368H479L492 413ZM336 349C336 293 311 191 240 191C196 191 184 226 184 272C184 340 228 411 282 411C326 411 336 386 336 349ZM349-69C349-113 313-159 222-159C127-159 83-109 83-62C83-35 105-9 131 10C139 16 149 21 157 26C217 4 349 9 349-69Z"
+         id="glyph5" />
+      <glyph
+         unicode="ℎ"
+         horiz-adv-x="577"
+         vert-adv-y="577"
+         glyph-name="uni210E"
+         d="M533 117C484 59 461 50 444 50C435 50 431 57 431 67C431 81 437 105 442 122L493 301C501 328 504 352 504 372C504 430 476 460 416 460C357 460 281 409 197 246H196L316 681L308 683C270 668 236 656 152 639V624C182 624 209 622 209 602C209 595 208 585 205 573L47 0H131C175 156 197 208 241 273C296 354 349 406 381 406C410 406 418 388 418 362C418 343 413 315 409 300L369 156C357 113 345 66 345 46C345 9 365-10 398-10C435-10 485 17 545 106L533 117Z"
+         id="glyph6" />
+    </font>
+  </defs>
+  <g
+     id="page1"
+     transform="translate(-3.9750791,-14.533062)">
+    <g
+       stroke-miterlimit="10"
+       transform="matrix(0.996264,0,0,-0.996264,48.159323,26.49809)"
+       id="g53">
+      <g
+         fill="var(--sl-color-white)"
+         stroke="var(--sl-color-white)"
+         id="g52">
+        <g
+           stroke-width="0.4"
+           id="g51">
+          <g
+             transform="translate(-28.33992,-19.45253)"
+             id="g23">
+            <g
+               stroke="none"
+               transform="matrix(1.00375,0,0,-1.00375,-48.33992,26.597458)"
+               id="g22">
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,56.214093,-5.711173)"
+                 id="g10">
+                <g
+                   transform="translate(-3.58499)"
+                   id="g9">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-56.424896,-5.7325899)"
+                     id="g8">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g7">
+                      <g
+                         stroke="none"
+                         id="g6">
+                        <text
+                           class="f1"
+                           x="56.214092"
+                           y="-5.7111731"
+                           id="text6"
+                           style="font-family: stix-mathit; font-size:9.4px">𝐴</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,96.403273,-5.711173)"
+                 id="g15">
+                <g
+                   transform="translate(-3.68)"
+                   id="g14">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-96.764785,-5.7325899)"
+                     id="g13">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g12">
+                      <g
+                         stroke="none"
+                         id="g11">
+                        <text
+                           class="f1"
+                           x="96.403275"
+                           y="-5.7111731"
+                           id="text10"
+                           style="font-family: stix-mathit; font-size:9.4px">𝐵</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,56.214093,26.49809)"
+                 id="g16" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,96.403273,26.49809)"
+                 id="g21">
+                <g
+                   transform="translate(-3.75499)"
+                   id="g20">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-96.764785,26.597458)"
+                     id="g19">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g18">
+                      <g
+                         stroke="none"
+                         id="g17">
+                        <text
+                           class="f1"
+                           x="96.403275"
+                           y="26.498091"
+                           id="text16"
+                           style="font-family: stix-mathit; font-size:9.4px">𝐶</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g32">
+            <path
+               d="M -11.96997,15.37752 H 11.045"
+               fill="none"
+               id="path23" />
+            <g
+               transform="translate(11.37498,15.37752)"
+               id="g27">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g26">
+                <g
+                   stroke-linecap="round"
+                   id="g25">
+                  <g
+                     stroke-linejoin="round"
+                     id="g24">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path24" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-2.66374,19.33748)"
+               id="g31">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-48.33992,26.597458)"
+                 id="g30">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g29">
+                  <g
+                     stroke="none"
+                     id="g28">
+                    <text
+                       class="f0"
+                       x="48.159325"
+                       y="26.498091"
+                       id="text27"
+                       style="font-family: stix-mathit; font-size:7.4px">𝑓</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g41">
+            <path
+               d="M -12.11542,8.85251 11.11502,-9.76627"
+               fill="none"
+               id="path32" />
+            <g
+               transform="matrix(0.78027,-0.62537,0.62537,0.78027,11.3725,-9.97263)"
+               id="g36">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g35">
+                <g
+                   stroke-linecap="round"
+                   id="g34">
+                  <g
+                     stroke-linejoin="round"
+                     id="g33">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path33" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-7.15018,-8.25319)"
+               id="g40">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-48.33992,26.597458)"
+                 id="g39">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g38">
+                  <g
+                     stroke="none"
+                     id="g37">
+                    <text
+                       class="f0"
+                       x="48.159325"
+                       y="26.498091"
+                       id="text36"
+                       style="font-family: stix-mathit; font-size:7.4px">ℎ</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g50">
+            <path
+               d="M 20.08495,8.85251 V -8.08755"
+               fill="none"
+               id="path41" />
+            <g
+               transform="rotate(-90,5.833705,-14.251245)"
+               id="g45">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g44">
+                <g
+                   stroke-linecap="round"
+                   id="g43">
+                  <g
+                     stroke-linejoin="round"
+                     id="g42">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path42" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(22.66492,-0.91876)"
+               id="g49">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-48.33992,26.597458)"
+                 id="g48">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g47">
+                  <g
+                     stroke="none"
+                     id="g46">
+                    <text
+                       class="f0"
+                       x="48.159325"
+                       y="26.498091"
+                       id="text45"
+                       style="font-family: stix-mathit; font-size:7.4px">𝑔</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+</div>
+
+Here we have three objects $A$, $B$ and $C$, and the morphisms $f: A \to B$, $g: B \to C$ and $h: A \to C$. The identity morphisms for the objects are omitted for simplicity. Note that the composition of $f$ and $g$ exists in the category (assume in the example $g \circ f = h$).
 
 Why do we care? Well, it turns out that types and functions in Haskell assemble into a category $\mathcal{H}$![^2]
 - Objects in $\mathcal{H}$ are types like `Int`, `String` etc.
@@ -57,53 +403,1389 @@ Furthermore,
 - The composition of two functions with `(.)` is also a function
 - Every type has the identity function `id x = x`, where for all functions `f`, `id . f` = `f . id` = `f`
 
-```
-    show
-Int ---> String
-   \      |
-    \     | head
-     \    |
-      \   v 
-       -> Char
-```
+
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+<svg
+   version="1.1"
+   width="170pt"
+   height="120pt"
+   viewBox="177.42236 -2.443462 116.9025 63.080988"
+   id="svg67"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs16">
+    <font
+       id="stix-mathscr"
+       horiz-adv-x="0"
+       horiz-origin-x="0"
+       horiz-origin-y="0"
+       vert-origin-x="512"
+       vert-origin-y="768"
+       vert-adv-y="1024">
+      <font-face
+         font-family="stix-mathscr"
+         units-per-em="1000"
+         ascent="830"
+         descent="324"
+         id="font-face1" />
+      <glyph
+         unicode="◦"
+         horiz-adv-x="523"
+         vert-adv-y="523"
+         glyph-name="uni25E6"
+         d="M455 252C455 357 376 444 262 444C156 444 70 356 70 252C70 145 156 59 262 59C367 59 455 146 455 252ZM389 251C389 179 334 125 262 125S136 179 136 251S190 378 262 378S389 323 389 251Z"
+         id="glyph1" />
+    </font>
+    <font
+       id="stix-mathtt"
+       horiz-adv-x="0"
+       horiz-origin-x="0"
+       horiz-origin-y="0"
+       vert-origin-x="512"
+       vert-origin-y="768"
+       vert-adv-y="1024">
+      <font-face
+         font-family="stix-mathtt"
+         units-per-em="1000"
+         ascent="914"
+         descent="406"
+         id="font-face2" />
+      <glyph
+         unicode="𝙲"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D672"
+         d="M448 232C435 232 424 221 424 208C424 122 367 53 294 53C193 53 98 170 98 330C98 491 192 608 293 608C364 608 416 534 424 440C425 428 435 418 448 418H458C471 418 482 429 482 442V648C482 661 471 672 458 672H455C444 672 435 665 432 655L417 607C383 646 337 672 280 672C140 672 40 510 40 330C40 151 140-11 280-11C398-11 482 93 482 208C482 221 471 232 458 232H448Z"
+         id="glyph2" />
+      <glyph
+         unicode="𝙸"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D678"
+         d="M438 40C438 53 427 64 414 64H290L291 598H414C427 598 438 608 438 622V638C438 651 427 662 414 662H108C95 662 84 651 84 638V622C84 608 95 598 108 598H232L231 64H108C95 64 84 53 84 40V24C84 11 95 0 108 0H414C427 0 438 11 438 24V40Z"
+         id="glyph3" />
+      <glyph
+         unicode="𝚂"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D682"
+         d="M203 389C151 402 114 446 114 496C114 556 166 608 235 608C323 608 376 555 386 464C387 451 397 442 410 442H420C433 442 444 453 444 466V648C444 661 433 672 420 672H417C405 672 396 664 393 653L384 613C349 650 299 672 235 672C136 672 52 596 52 499C52 418 111 351 188 332L316 300C371 286 409 236 409 178C409 109 354 53 287 53C178 53 110 104 110 195C110 208 100 219 86 219H76C63 219 52 208 52 195V13C52 0 63-11 76-11H79C91-11 100-3 103 8L112 48C155 9 217-11 287-11C389-11 470 73 470 175C470 260 414 335 331 356L203 389Z"
+         id="glyph4" />
+      <glyph
+         unicode="𝚊"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D68A"
+         d="M516 127C516 140 505 151 492 151H482C469 151 458 140 458 127V93C458 72 444 60 432 60C417 60 407 71 407 84V317C407 401 323 459 232 459H210C163 459 84 455 84 393C84 368 104 356 122 356C138 356 158 368 159 392H160C180 395 207 395 232 395C304 395 349 353 349 317V302C181 297 58 247 58 140C58 63 115-6 194-6C250-6 314 10 356 46C365 20 386-3 419-3C472-3 516 39 516 93V127ZM349 138C349 92 294 58 218 58C160 58 117 95 117 140C117 195 184 243 349 248V138Z"
+         id="glyph5" />
+      <glyph
+         unicode="𝚍"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D68D"
+         d="M505 40C505 53 495 64 481 64H421V585C421 598 410 609 397 609H302C289 609 278 598 278 585V569C278 555 289 544 302 544H363V404C328 437 279 456 228 456C120 456 41 347 41 225C41 104 115-6 220-6C278-6 328 20 363 60V24C363 11 373 0 387 0H481C495 0 505 11 505 24V40ZM363 170C349 106 297 58 235 58C164 58 99 129 99 225C99 320 167 392 245 392C303 392 350 357 363 311V170Z"
+         id="glyph6" />
+      <glyph
+         unicode="𝚎"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D68E"
+         d="M462 131C462 144 451 155 438 155H428C417 155 408 147 405 137C391 91 351 58 305 58C200 58 118 136 118 227L119 238H438C451 238 462 249 462 262C462 385 390 459 268 459C151 459 60 352 60 227C60 99 159-6 283-6C364-6 438 45 461 124L462 131ZM132 296C156 355 209 395 268 395C344 395 390 360 401 296H132Z"
+         id="glyph7" />
+      <glyph
+         unicode="𝚐"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D690"
+         d="M196 65C192 68 187 70 182 70L164 69C146 77 133 96 133 122C133 133 135 145 141 156C167 137 198 127 232 127C321 127 392 201 392 291C392 325 382 356 365 382C389 392 415 397 441 397H446C453 386 465 380 475 380C490 380 508 392 508 414C508 458 456 461 441 461C400 461 360 448 328 423C301 444 268 456 232 456C143 456 72 381 72 291C72 254 84 219 105 192C90 169 83 144 83 120C83 95 91 70 106 50C60 24 29-24 29-80C29-172 146-228 261-228C377-228 493-172 493-80C493 27 404 65 261 65H196ZM333 291C333 231 287 184 232 184S131 231 131 291C131 352 177 399 232 399S333 352 333 291ZM261 13C400 13 439-23 439-80C439-120 373-171 261-171S83-120 83-80C83-30 126 13 182 13H261Z"
+         id="glyph8" />
+      <glyph
+         unicode="𝚑"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D691"
+         d="M505 40C505 53 495 64 481 64H421V325C421 412 377 456 290 456C240 456 193 436 160 403V585C160 598 149 609 136 609H41C28 609 17 598 17 585V569C17 555 28 544 41 544H101V64H41C28 64 17 53 17 40V24C17 11 28 0 41 0H220C233 0 244 11 244 24V40C244 53 233 64 220 64H160V286C160 344 210 392 273 392C343 392 363 369 363 325V64H302C289 64 278 53 278 40V24C278 11 289 0 302 0H481C495 0 505 11 505 24V40Z"
+         id="glyph9" />
+      <glyph
+         unicode="𝚒"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D692"
+         d="M304 569C304 591 286 610 263 610C239 610 221 591 221 569C221 546 239 527 263 527C286 527 304 546 304 569ZM448 40C448 53 437 64 424 64H303V426C303 439 292 450 279 450H116C103 450 92 439 92 426V410C92 397 103 386 116 386H245V64H108C95 64 84 53 84 40V24C84 11 95 0 108 0H424C437 0 448 11 448 24V40Z"
+         id="glyph10" />
+      <glyph
+         unicode="𝚗"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D697"
+         d="M505 40C505 53 495 64 481 64H421V325C421 412 377 456 290 456C240 456 193 436 160 403V426C160 439 149 450 136 450H41C28 450 17 439 17 426V410C17 397 28 386 41 386H101V64H41C28 64 17 53 17 40V24C17 11 28 0 41 0H220C233 0 244 11 244 24V40C244 53 233 64 220 64H160V286C160 344 210 392 273 392C343 392 363 369 363 325V64H302C289 64 278 53 278 40V24C278 11 289 0 302 0H481C495 0 505 11 505 24V40Z"
+         id="glyph11" />
+      <glyph
+         unicode="𝚘"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D698"
+         d="M460 225C460 354 371 459 261 459S62 354 62 225C62 97 151-6 261-6S460 97 460 225ZM402 234C402 137 339 58 261 58S120 137 120 234C120 323 183 395 261 395S402 323 402 234Z"
+         id="glyph12" />
+      <glyph
+         unicode="𝚛"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D69B"
+         d="M392 456C322 456 258 425 216 374V426C216 439 205 450 192 450H61C48 450 37 439 37 426V410C37 397 48 386 61 386H158V64H61C48 64 37 53 37 40V24C37 11 48 0 61 0H343C356 0 367 11 367 24V40C367 53 356 64 343 64H216V238C216 324 295 392 392 392L416 391C421 375 437 367 450 367C466 367 485 379 485 402C485 453 426 456 400 456H392Z"
+         id="glyph13" />
+      <glyph
+         unicode="𝚜"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D69C"
+         d="M220 274C163 284 130 304 130 333C130 363 162 395 262 395C333 395 369 368 369 320C369 307 380 296 394 296H404C417 296 428 307 428 320V435C428 448 417 459 404 459H401C390 459 381 452 378 443L373 430C344 449 306 459 265 459C158 459 72 423 72 339C72 262 155 233 212 223L302 207C361 197 399 170 399 134C399 93 363 58 265 58C192 58 147 95 130 167C127 178 118 186 106 186H96C83 186 72 175 72 162V18C72 5 83-6 96-6H99C110-6 120 1 122 11L132 44C165 12 209-6 265-6C374-6 457 37 457 128C457 208 377 247 312 258L220 274Z"
+         id="glyph14" />
+      <glyph
+         unicode="𝚝"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D69D"
+         d="M448 173C448 186 437 197 424 197H414C401 197 390 186 390 173V131C390 92 352 58 303 58C243 58 216 86 216 131V386H401C414 386 425 397 425 410V426C425 439 414 450 401 450H216V555C216 569 205 580 192 580H182C168 580 158 569 158 555V450H49C36 450 25 439 25 426V410C25 397 36 386 49 386H158V131C158 48 204-6 284-6S448 45 448 131V173Z"
+         id="glyph15" />
+      <glyph
+         unicode="𝚠"
+         horiz-adv-x="525"
+         vert-adv-y="525"
+         glyph-name="u1D6A0"
+         d="M508 426C508 439 497 450 484 450H340C327 450 316 439 316 426V410C316 397 327 386 340 386H407C386 265 356 92 356 72H355C355 94 328 188 311 246C307 260 293 270 279 270H258C244 270 230 260 226 246L173 60L116 386H182C195 386 206 397 206 410V426C206 439 195 450 182 450H39C25 450 15 439 15 426V410C15 397 25 386 39 386H67L131 20C133 6 145-4 159-4H193C207-4 221 6 225 20C242 79 268 170 268 198H269C269 170 295 79 312 20C316 6 330-4 344-4H363C377-4 390 6 392 20L456 386H484C497 386 508 397 508 410V426Z"
+         id="glyph16" />
+    </font>
+  </defs>
+  <g
+     id="page1"
+     transform="translate(-1.7622766,-25.90793)">
+    <g
+       stroke-miterlimit="10"
+       transform="matrix(0.996264,0,0,-0.996264,233.83564,56.779524)"
+       id="g67">
+      <g
+         fill="var(--sl-color-white)"
+         stroke="var(--sl-color-white)"
+         id="g66">
+        <g
+           stroke-width="0.4"
+           id="g65">
+          <g
+             transform="translate(-56.62483,-29.68755)"
+             id="g36">
+            <g
+               stroke="none"
+               transform="matrix(1.00375,0,0,-1.00375,-234.71252,56.992447)"
+               id="g35">
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,246.16436,4.306224)"
+                 id="g20">
+                <g
+                   transform="translate(-7.87497)"
+                   id="g19">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-247.08748,4.3223723)"
+                     id="g18">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g17">
+                      <g
+                         stroke="none"
+                         id="g16">
+                        <text
+                           class="f1"
+                           x="246.16437"
+                           y="4.3062239"
+                           id="text16"
+                           style="font-family: stix-mathtt; font-size: 10px">𝙸𝚗𝚝</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,282.40336,4.306224)"
+                 id="g21" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,326.48792,4.306224)"
+                 id="g26">
+                <g
+                   transform="translate(-15.74995)"
+                   id="g25">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-327.71225,4.3223723)"
+                     id="g24">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g23">
+                      <g
+                         stroke="none"
+                         id="g22">
+                        <text
+                           class="f1"
+                           x="326.48792"
+                           y="4.3062239"
+                           id="text21"
+                           style="font-family: stix-mathtt; font-size: 10px">𝚂𝚝𝚛𝚒𝚗𝚐</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,246.16436,28.286337)"
+                 id="g27" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,246.16436,56.779524)"
+                 id="g28" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,282.40336,56.779524)"
+                 id="g29" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,326.48792,56.779524)"
+                 id="g34">
+                <g
+                   transform="translate(-10.49997)"
+                   id="g33">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-327.71225,56.992447)"
+                     id="g32">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g31">
+                      <g
+                         stroke="none"
+                         id="g30">
+                        <text
+                           class="f1"
+                           x="326.48792"
+                           y="56.779526"
+                           id="text29"
+                           style="font-family: stix-mathtt; font-size: 10px">𝙲𝚑𝚊𝚛</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g45">
+            <path
+               d="M -31.67493,25.48253 H 15.26498"
+               fill="none"
+               id="path36" />
+            <g
+               transform="translate(15.59497,25.48253)"
+               id="g40">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g39">
+                <g
+                   stroke-linecap="round"
+                   id="g38">
+                  <g
+                     stroke-linejoin="round"
+                     id="g37">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path37" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-15.74995,28.11499)"
+               id="g44">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-234.71252,56.992447)"
+                 id="g43">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g42">
+                  <g
+                     stroke="none"
+                     id="g41">
+                    <text
+                       class="f0"
+                       x="233.83565"
+                       y="56.779526"
+                       id="text40"
+                       style="font-family: stix-mathtt; font-size:7.4px;">𝚜𝚑𝚘𝚠</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g55">
+            <path
+               d="M -34.1544,18.88753 23.12,-18.52663"
+               fill="none"
+               id="path45" />
+            <g
+               transform="matrix(0.83716,-0.54688,0.54688,0.83716,23.39622,-18.70709)"
+               id="g49">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g48">
+                <g
+                   stroke-linecap="round"
+                   id="g47">
+                  <g
+                     stroke-linejoin="round"
+                     id="g46">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path46" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-48.2433,-7.20744)"
+               id="g54">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-234.71252,56.992447)"
+                 id="g53">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g52">
+                  <g
+                     stroke="none"
+                     id="g51">
+                    <text
+                       class="f0"
+                       x="226.86662"
+                       y="56.779526"
+                       id="text49"
+                       style="font-family: stix-mathtt; font-size:7.4px;">𝚑𝚎𝚊𝚍</text>
+                    <text
+                       class="f2"
+                       x="252.0174"
+                       y="56.779526"
+                       id="text50"
+                       style="font-family: stix-mathscr; font-size: 7.4px">◦</text>
+                    <text
+                       class="f0"
+                       x="258.41589"
+                       y="56.779526"
+                       id="text51"
+                       style="font-family: stix-mathtt; font-size:7.4px;">𝚜𝚑𝚘𝚠</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g64">
+            <path
+               d="M 36.3749,16.71252 V -18.22757"
+               fill="none"
+               id="path55" />
+            <g
+               transform="rotate(-90,8.90867,-27.46623)"
+               id="g59">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g58">
+                <g
+                   stroke-linecap="round"
+                   id="g57">
+                  <g
+                     stroke-linejoin="round"
+                     id="g56">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path56" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(38.95486,-3.375)"
+               id="g63">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-234.71252,56.992447)"
+                 id="g62">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g61">
+                  <g
+                     stroke="none"
+                     id="g60">
+                    <text
+                       class="f0"
+                       x="233.83565"
+                       y="56.779526"
+                       id="text59"
+                       style="font-family: stix-mathtt; font-size:7.4px;">𝚑𝚎𝚊𝚍</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+</div>
+
+
 The above is a fragment of $\mathcal{H}$. We can see that `show` is a function from `Int` to `String`, and `head` is a function from `String` to `Char`. In addition, the function `head . show` is a function from `Int` to `Char`! Furthermore, all of these types have the identity function `id` which we omit in the diagram.
 
-<mark>Still, who cares?</mark>
+> Still, who cares?
 
 Because the types in Haskell assemble into categories, let's see if there is anything that category theory has to tell us.
 
-# Functors
+## Functors
 
 In mathematics, the relationships between objects are frequently far more interesting 
-than the objects themselves. Of course, we do not just focus on _any_ relationship 
-between objects, but of keen interest, the _structure preserving_ relationships between 
+than the objects themselves. Of course, we do not just focus on **any** relationship 
+between objects, but of keen interest, the **structure preserving** relationships between 
 them, such as group homomorphisms that preserve group structures, or monotonic functions 
-between preordered sets that preserve ordering. In category theory, _functors_ are 
+between preordered sets that preserve ordering. In category theory, **functors** are 
 maps between categories that preserve the structure of the domain category, 
 especially the compositions and identities.
 
-> Let $\mathcal{C}$ and $\mathcal{D}$ be categories. A (_covariant_)
-> _functor_ $F: \mathcal{C} \rightarrow \mathcal{D}$ consists of:
-> - An object $F(C) \in \text{ob}(\mathcal{D})$ for each object $C \in \text{ob}(\mathcal{C})$[^3].
-> - A morphism $F(f): F(C) \rightarrow F(D) \in \text{mor}(\mathcal{D})$ for each morphism $f: C\rightarrow D \in \text{mor}(\mathcal{C})$.
->
-> subject to the two _functoriality axioms_:
-> - For any composable pair of morphisms $f, g\in\text{mor}(\mathcal{C})$, $F(g)\circ F(f) = F(g\circ f)$.
-> - For each $C \in \text{ob}(\mathcal{C})$, $F(1_C)=1_{F(C)}$.
->
-> in other words, functors map dots and arrows between two categories, preserving composition and identities.
+:::theorem{#def:functor}
+Let $\mathcal{C}$ and $\mathcal{D}$ be categories. A (**covariant**) **functor** $F: \mathcal{C} \rightarrow \mathcal{D}$ consists of:
+- An object $F(C) \in \text{ob}(\mathcal{D})$ for each object $C \in \text{ob}(\mathcal{C})$[^3].
+- A morphism $F(f): F(C) \rightarrow F(D) \in \text{mor}(\mathcal{D})$ for each morphism $f: C\rightarrow D \in \text{mor}(\mathcal{C})$.
+
+subject to the two **functoriality axioms**:
+- For any composable pair of morphisms $f, g\in\text{mor}(\mathcal{C})$, $F(g)\circ F(f) = F(g\circ f)$.
+- For each $C \in \text{ob}(\mathcal{C})$, $F(1_C)=1_{F(C)}$.
+
+in other words, functors map dots and arrows between two categories, preserving composition and identities.
+:::
 
 
-```
-    f                          F(f)
-A ----> B                F(A) ----> F(B)
- \      |        F            \      |
-  \     | g   ======>          \     | F(g)
- h \    |                  F(h) \    |
-    \   v                        \   v
-     -> C                         > F(C)
-```
 
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+<svg
+   version="1.1"
+   width="350.20033pt"
+   height="120.912834pt"
+   viewBox="113.41376 -3.589147 235.20033 73.912834"
+   id="svg141"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs9">
+    <font
+       id="stix-mathrm"
+       horiz-adv-x="0"
+       horiz-origin-x="0"
+       horiz-origin-y="0"
+       vert-origin-x="512"
+       vert-origin-y="768"
+       vert-adv-y="1024">
+      <font-face
+         font-family="stix-mathrm"
+         units-per-em="1000"
+         ascent="1023"
+         descent="341"
+         id="font-face1" />
+      <glyph
+         unicode="("
+         horiz-adv-x="333"
+         vert-adv-y="333"
+         glyph-name="parenleft"
+         d="M304-161C164-44 134 69 134 255C134 448 165 541 304 660L295 676C135 581 48 437 48 252C48 82 134-87 292-177L304-161Z"
+         id="glyph1" />
+      <glyph
+         unicode=")"
+         horiz-adv-x="333"
+         vert-adv-y="333"
+         glyph-name="parenright"
+         d="M29 660C174 546 199 431 199 244C199 50 171-44 29-161L38-177C197-80 285 62 285 247C285 417 194 584 41 676L29 660Z"
+         id="glyph2" />
+    </font>
+    <font
+       id="stix-mathit"
+       horiz-adv-x="0"
+       horiz-origin-x="0"
+       horiz-origin-y="0"
+       vert-origin-x="512"
+       vert-origin-y="768"
+       vert-adv-y="1024">
+      <font-face
+         font-family="stix-mathit"
+         units-per-em="1000"
+         ascent="819"
+         descent="478"
+         id="font-face2" />
+      <glyph
+         unicode="𝐴"
+         horiz-adv-x="717"
+         vert-adv-y="717"
+         glyph-name="u1D434"
+         d="M685 0V16H669C627 16 602 37 595 86L517 667H499L143 90C107 32 70 20 35 16V0H253V16H224C198 16 182 27 181 45C181 52 184 63 191 71L275 211H473L486 98C487 91 488 83 488 77C488 37 472 16 416 16H400V0H685ZM466 248H296L435 475H441L466 248Z"
+         id="glyph3" />
+      <glyph
+         unicode="𝐵"
+         horiz-adv-x="696"
+         vert-adv-y="696"
+         glyph-name="u1D435"
+         d="M198 653L193 637H212C271 637 290 621 290 595C290 589 289 579 288 574L165 79C157 45 138 16 62 16H42L38 0H362C569 0 651 94 651 193C651 278 584 320 524 331L521 335C541 340 570 348 595 361C643 385 686 430 686 508C686 644 534 653 450 653H198ZM406 611C419 613 434 614 449 614C503 614 568 593 568 516C568 419 512 353 400 353C385 353 367 355 347 359L406 611ZM338 314C353 318 373 318 389 318C467 318 531 283 531 210C531 80 435 38 341 38C315 38 295 40 270 47L338 314Z"
+         id="glyph4" />
+      <glyph
+         unicode="𝐶"
+         horiz-adv-x="671"
+         vert-adv-y="671"
+         glyph-name="u1D436"
+         d="M711 659H693C678 634 662 632 651 632C599 632 547 659 493 659C251 659 50 496 50 266C50 119 145-12 338-12C377-12 453-6 531 49C560 70 593 100 620 141L600 154C595 147 590 141 583 134C538 85 465 36 367 36C232 36 172 138 172 250C172 421 290 622 491 622C612 622 643 543 643 478C643 453 643 444 642 436H658L711 659Z"
+         id="glyph5" />
+      <glyph
+         unicode="𝐹"
+         horiz-adv-x="618"
+         vert-adv-y="618"
+         glyph-name="u1D439"
+         d="M723 653H203L199 638H218C278 638 294 620 294 599C294 592 292 583 290 575L166 78C157 44 136 16 60 16H42L38 0H380L384 16H352C292 16 273 32 273 57C273 64 276 72 277 78L339 332H436C465 332 506 329 506 282C506 264 504 235 501 221H517L577 463H561C540 378 494 368 432 368H349L411 616H558C605 616 665 607 668 529C668 515 668 501 667 493H683L723 653Z"
+         id="glyph6" />
+      <glyph
+         unicode="𝑓"
+         horiz-adv-x="555"
+         vert-adv-y="555"
+         glyph-name="u1D453"
+         d="M248 437L239 399H316L229 57C214 0 184-158 119-158C110-158 104-155 104-149C104-137 120-136 120-117C120-102 110-84 83-84C54-84 40-109 40-133C40-163 64-187 112-187C200-187 254-92 287-9C302 28 310 66 317 93L396 399H472L484 437H404L423 507C444 585 483 639 533 639C545 639 548 636 548 631C548 623 539 608 539 594S546 569 574 569C594 569 615 581 615 609C615 644 586 668 536 668C460 668 417 625 386 578C343 514 348 437 285 437H248Z"
+         id="glyph7" />
+      <glyph
+         unicode="𝑔"
+         horiz-adv-x="492"
+         vert-adv-y="492"
+         glyph-name="u1D454"
+         d="M492 413H366C351 428 320 441 278 441C172 441 104 362 104 283C104 236 131 189 198 174V170C150 170 113 121 113 83C113 66 120 47 137 36C75 16 20-14 20-72S70-187 204-187C353-187 419-107 419-36C419 89 186 49 186 112C186 137 215 162 274 170C362 181 415 243 415 318C415 340 411 353 398 368H479L492 413ZM336 349C336 293 311 191 240 191C196 191 184 226 184 272C184 340 228 411 282 411C326 411 336 386 336 349ZM349-69C349-113 313-159 222-159C127-159 83-109 83-62C83-35 105-9 131 10C139 16 149 21 157 26C217 4 349 9 349-69Z"
+         id="glyph8" />
+      <glyph
+         unicode="ℎ"
+         horiz-adv-x="577"
+         vert-adv-y="577"
+         glyph-name="uni210E"
+         d="M533 117C484 59 461 50 444 50C435 50 431 57 431 67C431 81 437 105 442 122L493 301C501 328 504 352 504 372C504 430 476 460 416 460C357 460 281 409 197 246H196L316 681L308 683C270 668 236 656 152 639V624C182 624 209 622 209 602C209 595 208 585 205 573L47 0H131C175 156 197 208 241 273C296 354 349 406 381 406C410 406 418 388 418 362C418 343 413 315 409 300L369 156C357 113 345 66 345 46C345 9 365-10 398-10C435-10 485 17 545 106L533 117Z"
+         id="glyph9" />
+    </font>
+  </defs>
+  <g
+     id="page1"
+     transform="translate(-3.9750801,-27.249653)">
+    <g
+       stroke-miterlimit="10"
+       transform="matrix(0.996264,0,0,-0.996264,231.93901,63.110808)"
+       id="g141">
+      <g
+         fill="var(--sl-color-white)"
+         stroke="var(--sl-color-white)"
+         id="g140">
+        <g
+           stroke-width="0.4"
+           id="g139">
+          <g
+             transform="translate(-118.96971,-32.58005)"
+             id="g65">
+            <g
+               stroke="none"
+               transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+               id="g64">
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,239.99378,3.314961)"
+                 id="g13">
+                <g
+                   transform="translate(-3.58499)"
+                   id="g12">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-240.89375,3.3273921)"
+                     id="g11">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g10">
+                      <g
+                         stroke="none"
+                         id="g9">
+                        <text
+                           class="f1"
+                           x="239.99377"
+                           y="3.314961"
+                           id="text9"
+                           style="font-family: stix-mathit; font-size:10px">𝐴</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,271.95882,3.314961)"
+                 id="g14" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,304.09323,3.314961)"
+                 id="g19">
+                <g
+                   transform="translate(-3.68)"
+                   id="g18">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-305.23358,3.3273921)"
+                     id="g17">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g16">
+                      <g
+                         stroke="none"
+                         id="g15">
+                        <text
+                           class="f1"
+                           x="304.09323"
+                           y="3.314961"
+                           id="text14"
+                           style="font-family: stix-mathit; font-size:10px">𝐵</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,336.22764,3.314961)"
+                 id="g20" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,375.311,3.314961)"
+                 id="g27">
+                <g
+                   transform="translate(-10.73)"
+                   id="g26">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-376.71841,3.3273921)"
+                     id="g25">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g24">
+                      <g
+                         stroke="none"
+                         id="g23">
+                        <text
+                           class="f1"
+                           x="375.311"
+                           y="3.314961"
+                           id="text20"
+                           style="font-family: stix-mathit; font-size:10px">𝐹</text>
+                        <text
+                           class="f3"
+                           x="380.91248"
+                           y="3.314961"
+                           id="text21"
+                           style="font-family: stix-mathit; font-size:10px">(</text>
+                        <text
+                           class="f1"
+                           x="386.23004"
+                           y="3.314961"
+                           id="text22"
+                           style="font-family: stix-mathit; font-size:10px">𝐴</text>
+                        <text
+                           class="f3"
+                           x="391.37326"
+                           y="3.314961"
+                           id="text23"
+                           style="font-family: stix-mathit; font-size:10px">)</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,414.39436,3.314961)"
+                 id="g28" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,453.64706,3.314961)"
+                 id="g35">
+                <g
+                   transform="translate(-10.82498)"
+                   id="g34">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-455.34824,3.3273921)"
+                     id="g33">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g32">
+                      <g
+                         stroke="none"
+                         id="g31">
+                        <text
+                           class="f1"
+                           x="453.64706"
+                           y="3.314961"
+                           id="text28"
+                           style="font-family: stix-mathit; font-size:10px">𝐹</text>
+                        <text
+                           class="f3"
+                           x="459.24857"
+                           y="3.314961"
+                           id="text29"
+                           style="font-family: stix-mathit; font-size:10px">(</text>
+                        <text
+                           class="f1"
+                           x="464.5661"
+                           y="3.314961"
+                           id="text30"
+                           style="font-family: stix-mathit; font-size:10px">𝐵</text>
+                        <text
+                           class="f3"
+                           x="469.89862"
+                           y="3.314961"
+                           id="text31"
+                           style="font-family: stix-mathit; font-size:10px">)</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,239.99378,30.652479)"
+                 id="g36" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,271.95882,30.652479)"
+                 id="g37" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,304.09323,30.652479)"
+                 id="g41">
+                <g
+                   stroke="none"
+                   transform="matrix(1.00375,0,0,-1.00375,-305.23358,30.767426)"
+                   id="g40">
+                  <g
+                     fill="var(--sl-color-white)"
+                     id="g39">
+                    <g
+                       stroke="none"
+                       id="g38" />
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,336.22764,30.652479)"
+                 id="g42" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,375.311,30.652479)"
+                 id="g46">
+                <g
+                   stroke="none"
+                   transform="matrix(1.00375,0,0,-1.00375,-376.71841,30.767426)"
+                   id="g45">
+                  <g
+                     fill="var(--sl-color-white)"
+                     id="g44">
+                    <g
+                       stroke="none"
+                       id="g43" />
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,239.99378,63.110808)"
+                 id="g47" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,271.95882,63.110808)"
+                 id="g48" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,304.09323,63.110808)"
+                 id="g53">
+                <g
+                   transform="translate(-3.75499)"
+                   id="g52">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-305.23358,63.347474)"
+                     id="g51">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g50">
+                      <g
+                         stroke="none"
+                         id="g49">
+                        <text
+                           class="f1"
+                           x="304.09323"
+                           y="63.110809"
+                           id="text48"
+                           style="font-family: stix-mathit; font-size:10px">𝐶</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,336.22764,63.110808)"
+                 id="g54" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,375.311,63.110808)"
+                 id="g55" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,414.39436,63.110808)"
+                 id="g56" />
+              <g
+                 stroke="var(--sl-color-white)"
+                 stroke-miterlimit="10"
+                 transform="matrix(0.996264,0,0,-0.996264,453.64706,63.110808)"
+                 id="g63">
+                <g
+                   transform="translate(-10.89998)"
+                   id="g62">
+                  <g
+                     stroke="none"
+                     transform="matrix(1.00375,0,0,-1.00375,-455.34824,63.347474)"
+                     id="g61">
+                    <g
+                       fill="var(--sl-color-white)"
+                       id="g60">
+                      <g
+                         stroke="none"
+                         id="g59">
+                        <text
+                           class="f1"
+                           x="453.64706"
+                           y="63.110809"
+                           id="text56"
+                           style="font-family: stix-mathit; font-size:10px">𝐹</text>
+                        <text
+                           class="f3"
+                           x="459.24857"
+                           y="63.110809"
+                           id="text57"
+                           style="font-family: stix-mathit; font-size:10px">(</text>
+                        <text
+                           class="f1"
+                           x="464.5661"
+                           y="63.110809"
+                           id="text58"
+                           style="font-family: stix-mathit; font-size:10px">𝐶</text>
+                        <text
+                           class="f3"
+                           x="470.04803"
+                           y="63.110809"
+                           id="text59"
+                           style="font-family: stix-mathit; font-size:10px">)</text>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g74">
+            <path
+               d="m -102.59976,29.94003 h 47.01491"
+               fill="none"
+               id="path65" />
+            <g
+               transform="translate(-55.25487,29.94003)"
+               id="g69">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g68">
+                <g
+                   stroke-linecap="round"
+                   id="g67">
+                  <g
+                     stroke-linejoin="round"
+                     id="g66">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path66" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-81.29356,33.9)"
+               id="g73">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g72">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g71">
+                  <g
+                     stroke="none"
+                     id="g70">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text69"
+                       style="font-family: stix-mathit; font-size:7.5px">𝑓</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g83">
+            <path
+               d="m -103.89627,23.41502 48.41382,-45.16223"
+               fill="none"
+               id="path74" />
+            <g
+               transform="matrix(0.73122,-0.68213,0.68213,0.73122,-55.24118,-21.97229)"
+               id="g78">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g77">
+                <g
+                   stroke-linecap="round"
+                   id="g76">
+                  <g
+                     stroke-linejoin="round"
+                     id="g75">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path75" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-86.35553,-6.98112)"
+               id="g82">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g81">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g80">
+                  <g
+                     stroke="none"
+                     id="g79">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text78"
+                       style="font-family: stix-mathit; font-size:7.5px">ℎ</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g92">
+            <path
+               d="M -46.5449,23.41502 V -21.21507"
+               fill="none"
+               id="path83" />
+            <g
+               transform="rotate(-90,-34.04498,12.49992)"
+               id="g87">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g86">
+                <g
+                   stroke-linecap="round"
+                   id="g85">
+                  <g
+                     stroke-linejoin="round"
+                     id="g84">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path84" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-43.96494,-0.20126)"
+               id="g91">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g90">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g89">
+                  <g
+                     stroke="none"
+                     id="g88">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text87"
+                       style="font-family: stix-mathit; font-size:7.5px">𝑔</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g103">
+            <path
+               d="M 40.3699,29.94003 H 87.38481"
+               fill="none"
+               id="path92" />
+            <g
+               transform="translate(87.7148,29.94003)"
+               id="g96">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g95">
+                <g
+                   stroke-linecap="round"
+                   id="g94">
+                  <g
+                     stroke-linejoin="round"
+                     id="g93">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path93" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(56.31735,33.9)"
+               id="g102">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g101">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g100">
+                  <g
+                     stroke="none"
+                     id="g99">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text96"
+                       style="font-family: stix-mathit; font-size:7.5px">𝐹</text>
+                    <text
+                       class="f2"
+                       x="236.64012"
+                       y="63.110809"
+                       id="text97"
+                       style="font-family: stix-mathit; font-size:7.4px">(</text>
+                    <text
+                       class="f0"
+                       x="240.1283"
+                       y="63.110809"
+                       id="text98"
+                       style="font-family: stix-mathit; font-size:7.5px">𝑓</text>
+                    <text
+                       class="f2"
+                       x="242.17188"
+                       y="63.110809"
+                       id="text99"
+                       style="font-family: stix-mathit; font-size:7.4px">)</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g114">
+            <path
+               d="M 35.82645,21.62505 91.97774,-21.2247"
+               fill="none"
+               id="path103" />
+            <g
+               transform="matrix(0.79494,-0.60661,0.60661,0.79494,92.24005,-21.42488)"
+               id="g107">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g106">
+                <g
+                   stroke-linecap="round"
+                   id="g105">
+                  <g
+                     stroke-linejoin="round"
+                     id="g104">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path104" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(46.53947,-7.77745)"
+               id="g113">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g112">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g111">
+                  <g
+                     stroke="none"
+                     id="g110">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text107"
+                       style="font-family: stix-mathit; font-size:7.5px">𝐹</text>
+                    <text
+                       class="f2"
+                       x="236.64012"
+                       y="63.110809"
+                       id="text108"
+                       style="font-family: stix-mathit; font-size:7.4px">(</text>
+                    <text
+                       class="f0"
+                       x="240.1283"
+                       y="63.110809"
+                       id="text109"
+                       style="font-family: stix-mathit; font-size:7.5px">ℎ</text>
+                    <text
+                       class="f2"
+                       x="243.43962"
+                       y="63.110809"
+                       id="text110"
+                       style="font-family: stix-mathit; font-size:7.4px">)</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g125">
+            <path
+               d="M 103.56975,21.62505 V -20.96507"
+               fill="none"
+               id="path114" />
+            <g
+               transform="rotate(-90,41.137345,-62.432405)"
+               id="g118">
+              <g
+                 stroke-dasharray="none"
+                 stroke-dashoffset="0"
+                 id="g117">
+                <g
+                   stroke-linecap="round"
+                   id="g116">
+                  <g
+                     stroke-linejoin="round"
+                     id="g115">
+                    <path
+                       d="M -3.43193,3.9599 C -2.80493,1.58394 -1.40773,0.46199 0,0 -1.40773,-0.46199 -2.80493,-1.58394 -3.43193,-3.9599"
+                       fill="none"
+                       id="path115" />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(106.14972,-1.90875)"
+               id="g124">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g123">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g122">
+                  <g
+                     stroke="none"
+                     id="g121">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text118"
+                       style="font-family: stix-mathit; font-size:7.5px">𝐹</text>
+                    <text
+                       class="f2"
+                       x="236.64012"
+                       y="63.110809"
+                       id="text119"
+                       style="font-family: stix-mathit; font-size:7.4px">(</text>
+                    <text
+                       class="f0"
+                       x="240.1283"
+                       y="63.110809"
+                       id="text120"
+                       style="font-family: stix-mathit; font-size:7.5px">𝑔</text>
+                    <text
+                       class="f2"
+                       x="243.10336"
+                       y="63.110809"
+                       id="text121"
+                       style="font-family: stix-mathit; font-size:7.4px">)</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g
+             stroke-width="0.65999"
+             id="g138">
+            <g
+               stroke-width="2.68497"
+               id="g133"
+               transform="translate(11.400288,-0.60001514)">
+              <path
+                 d="M -41.84492,2.5 H 17.82425"
+                 fill="none"
+                 id="path125" />
+              <g
+                 stroke-width="1.36499"
+                 id="g127">
+                <g
+                   stroke="var(--sl-color-bg)"
+                   id="g126">
+                  <path
+                     d="M -41.84492,2.5 H 17.82425"
+                     fill="none"
+                     id="path126" />
+                </g>
+              </g>
+              <g
+                 transform="translate(17.82425,2.5)"
+                 id="g132">
+                <g
+                   stroke-width="0.65999"
+                   id="g131">
+                  <g
+                     stroke-dasharray="none"
+                     stroke-dashoffset="0"
+                     id="g130">
+                    <g
+                       stroke-linecap="round"
+                       id="g129">
+                      <g
+                         stroke-linejoin="round"
+                         id="g128">
+                        <path
+                           d="M -1.35672,2.68306 C -0.69861,1.2656 1.07323,0.05061 2.08571,0 1.07323,-0.05061 -0.69861,-1.2656 -1.35672,-2.68306"
+                           fill="none"
+                           id="path127" />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g
+               transform="translate(-2.2634424,6.8800154)"
+               id="g137">
+              <g
+                 stroke="none"
+                 transform="matrix(1.00375,0,0,-1.00375,-232.80878,63.347474)"
+                 id="g136">
+                <g
+                   fill="var(--sl-color-white)"
+                   id="g135">
+                  <g
+                     stroke="none"
+                     id="g134">
+                    <text
+                       class="f0"
+                       x="231.93901"
+                       y="63.110809"
+                       id="text133"
+                       style="font-family: stix-mathit; font-size:7.5px">𝐹</text>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+</div>
 What's so special about categories and functors, especially since categories are so abstract and have so little requirements for being one? This is precisely the beauty of category theory&mdash;it is abstract and simple enough for many things to assemble into one, yet the requirement of associativity and unity of the composition of morphisms and identities make things that assemble into categories behave in the _most obvious way_!
 
 ## Types as Functors
@@ -116,48 +1798,86 @@ How do we map functions `f :: a -> b` to `F(f) :: [a] -> [b]` in the _most obvio
 
 It is simple! Recall the `map` function:
 
-```python-repl
->>> def f(x: int) -> str:
-...     return str(x + 2)
->>> f(3)
-'5'
->>> list(map(f, [3]))
-['5']
-```
-```haskell
-ghci> :{
-ghci| f :: Int -> String
-ghci| f x = show (x + 2)
-ghci| :}
-ghci> f 3
-"5"
-ghci> :t map f
-map f :: [Int] -> [String]
-ghci> map f [3]
-["5"]
-```
+<Tabs syncKey="lang">
+  <TabItem label="Haskell" icon="seti:haskell">
+    ```haskell frame="terminal" title="GHCi session (map)" showLineNumbers=false
+    ghci> :{
+    ghci| f :: Int -> String
+    ghci| f x = show (x + 2)
+    ghci| :}
+    ghci> f 3
+    "5"
+    ghci> :t map f
+    map f :: [Int] -> [String]
+    ghci> map f [3]
+    ["5"]
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```python frame="terminal" title="Python interactive session (map)" showLineNumbers=false
+    >>> def f(x: int) -> str:
+    ...     return str(x + 2)
+    >>> f(3)
+    '5'
+    >>> list(map(f, [3]))
+    ['5']
+    ```
+  </TabItem>
+</Tabs>
+
 
 `map` preserves composition:
-```haskell
-ghci> (map (*2) . map (+3)) [1, 2, 3]
-[8, 10, 12]
-ghci> map ((*2) . (+3)) [1, 2, 3]
-[8, 10, 12]
-```
+<Tabs syncKey="lang">
+  <TabItem label="Haskell" icon="seti:haskell">
+    ```haskell frame="terminal" title="GHCi session (map)" showLineNumbers=false
+    ghci> (map (*2) . map (+3)) [1, 2, 3]
+    [8, 10, 12]
+    ghci> map ((*2) . (+3)) [1, 2, 3]
+    [8, 10, 12]
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```python frame="terminal" title="Python interactive session (map)" showLineNumbers=false collapse={1-2} collapseStyle="collapsible-start"
+    >>> compose = lambda g, f: lambda x: g(f(x))
+    >>> list_map = lambda f: lambda x: list(map(f, x))
+    >>> compose(list_map(lambda x: x * 2), list_map(lambda x: x + 3))([1, 2, 3])
+    [8, 10, 12]
+    >>> list_map(compose(lambda x: x * 2, lambda x: x + 3))([1, 2, 3])
+    [8, 10, 12]
+    ```
+  </TabItem>
+</Tabs>
+
+
 `map` also preserves identities:
-```haskell
-ghci> :set -XTypeApplications
-ghci> map (id @Int) [1, 2, 3]
-[1, 2, 3]
-ghci> id @[Int] [1, 2, 3]
-[1, 2, 3]
-```
+<Tabs syncKey="lang">
+  <TabItem label="Haskell" icon="seti:haskell">
+    ```haskell frame="terminal" title="GHCi session (map)" showLineNumbers=false
+    ghci> :set -XTypeApplications
+    ghci> map (id @Int) [1, 2, 3]
+    [1, 2, 3]
+    ghci> id @[Int] [1, 2, 3]
+    [1, 2, 3]
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```python frame="terminal" title="Python interactive session (map)" showLineNumbers=false collapse={1-2} collapseStyle="collapsible-start"
+    >>> id = lambda x: x
+    >>> list_map = lambda f: lambda x: list(map(f, x))
+    >>> list_map(id)([1, 2, 3])
+    [1, 2, 3]
+    >>> id([1, 2, 3])
+    [1, 2, 3]
+    ```
+  </TabItem>
+</Tabs>
+
 That is great! `[]` and `map` form a functor over $\mathcal{H}$, which means that we no longer have to worry if someone wants to work in the `[]` context. This is because if we have functions from `a` to `b`, we can _lift_ it into a function from `[a]` to `[b]` using `map` and it will behave in the most obvious way!
 
 
 Can we say the same about `Maybe` and the other type constructors we saw earlier? Fret not! Let's see how we can define a function for `Maybe` so that it can behave as a functor as well! Let's look at `maybeMap`:
 
-```haskell
+```haskell title="Maybe.hs"
 maybeMap :: (a -> b) -> Maybe a -> Maybe b
 maybeMap _ Nothing = Nothing
 maybeMap f (Just x) = Just $ f x
@@ -165,7 +1885,7 @@ maybeMap f (Just x) = Just $ f x
 
 `maybeMap` also preserves composition and identities!
 
-```haskell
+```haskell frame="terminal" title="GHCi session (maybeMap)" showLineNumbers=false
 ghci> :set -XTypeApplications
 ghci> (maybeMap (*2) . maybeMap (+3)) (Just 1)
 Just 8
@@ -203,7 +1923,7 @@ The key point of `[]`, `Maybe`, `Either` etc being functors is as such:
 
 > Given any functor `F` and a function `f` from `A` to `B`, `fmap f` is a function from `F A` to `F B` and **behaves as we should expect**. 
 
-```
+```txt showLineNumbers=false
        f
   A ------> B
        |
@@ -216,7 +1936,7 @@ Whenever we are presented with a situation that requires us to map a function `f
 
 A simple example is as follows. Suppose we have our `head'` function that returns a `Maybe a`, as we have defined earlier. A possible program that we could write that operates on the result of `head'` is the following:
 
-```haskell
+```haskell title="Example.hs"
 ls = [1, 2, 3]
 x = head' ls
 y = case x of 
@@ -225,9 +1945,12 @@ y = case x of
 ```
 This `case` expression is actually just boilerplate and is not idiomatic! The `Maybe`-specific definition of `fmap` already handles this, therefore, we can re-write this program much more simply as such:
 
-```haskell
+```haskell title="Example.hs" del={3-5} ins={6}
 ls = [1, 2, 3]
 x = head' ls
+y = case x of 
+    Just z -> Just $ z + 1
+    Nothing -> Nothing
 y = fmap (+1) x
 ```
 
