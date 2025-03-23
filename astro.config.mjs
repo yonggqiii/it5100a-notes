@@ -37,7 +37,7 @@ export default defineConfig({
       customCss: ['./src/global.css'],
 			title: 'IT5100A Course Notes',
 			social: {
-				github: 'https://github.com/plilab',
+				github: 'https://github.com/yonggqiii',
 			},
       components: {
         Sidebar: './src/components/starlight/Sidebar.astro',
