@@ -4,7 +4,7 @@ title: Validation
 
 One of the most common use of applicatives is _validation_. From our example at the start of this chapter, we have several data structures and we want to be able to parse them from strings:
 
-```haskell
+```haskell title="Example.hs"
 data Email = Email { emailUsername :: String
                    , emailDomain   :: String }
   deriving (Eq, Show)
@@ -20,14 +20,14 @@ data User = User { username   :: String
 ```
 Parsing them from strings may not always succeed, therefore it is imperative that our parsing function does not guarantee that it returns the desired data structure. Therefore, what we can do instead is to have our parsing functions return results in the `Maybe` context to express this fact. This makes our parsing functions have the following type signatures:
 
-```haskell
+```haskell title="Example.hs" startLineNumber={13}
 parseEmail :: String -> Maybe Email
 parseSalary :: String -> Maybe Salary
 ```
 
 Given these functions, we should be able to define a function that parses a `User` from three strings: the user name (which requires no parsing), the email (which is parsed using `parseEmail`) and the salary (which is parsed using `parseSalary`). One way we can implement this `parseUser` function is by receiving the three strings, performing parsing on the `email` and `salary` (in _parallel_[^1]), then constructing our `User` term with the usual `Functor` and `Applicative` methods.
 
-```haskell
+```haskell title="Example.hs" startLineNumber={15}
 parseUser :: String -- name
              -> String -- email
              -> String -- salary
@@ -40,7 +40,7 @@ parseUser name email salary =
 
 Now our parsing function works just fine!
 
-```haskell
+```haskell frame="terminal" title="GHCi session (parsing users)" showLineNumbers=false
 ghci> parseUser "Foo" "yong@qi.com" "1000"
 Just (User "Foo" (Email "yong" "qi.com") 1000)
 ghci> parseUser "Foo" "yong" "1000"
@@ -50,7 +50,7 @@ Nothing
 ## Validation with Error Messages
 However, this is not always helpful since when parsing a user, several things could go wrong&mdash;either (1) the supplied email is invalid, (2) the supplied salary is invalid, or (3) both. Therefore, let's have our parsing functions return an error message instead of `Nothing`. For this, what we want to rely on is the `Either` type, which consists of a `Left` of something sad (like an error message), or a `Right` of something happy (the desired result type). We show the definitions of `Either` and its supporting typeclass instances here.
 
-```haskell
+```haskell title="Either.hs"
 data Either a b = Left a -- sad
                 | Right b -- happy
 
@@ -71,28 +71,32 @@ instance Applicative (Either a) where
 
 Let us change the context that our parsing functions will return. Some of the implementation of `parseEmail` and `parseSalary` will need to be changed to add descriptive error messages, and so will their type signatures.
 
-```haskell
+```haskell del={1,5,6,10,14,15} ins={2,7,8,11,16,17}
+parseEmail :: String -> Maybe Email
 parseEmail :: String -> Either String Email
 parseEmail email = 
-    if ... then
-        Left $ "error: " ++ email ++ " is not an email"
-    else
-        Right $ Email ...
+    if   ...
+    then Nothing
+    else Just $ Email ...
+    then Left $ "error: " ++ email ++ " is not an email"
+    else Right $ Email ...
 
+parseSalary :: String -> Maybe Salary
 parseSalary :: String -> Either String Salary
 parseSalary salary = 
-    if ... then
-        Left $ "error: " ++ salary ++ " is not a number"
-    else
-        Right $ SInt ...
-
+    if   ... 
+    then Nothing
+    else Just $ SInt ...
+    then Left $ "error: " ++ salary ++ " is not a number"
+    else Right $ SInt ...
 ```
 The great thing is that although we have changed the return types of our individual parsing functions, the implementation of `parseUser` does not, because our definition only relies on the typeclass methods of `Functor` and `Applicative`. Since `Either a` is also an `Applicative`, our definition can be unchanged, and only the type signature of `parseUser` needs to be updated.
 
-```haskell
+```haskell del={4} ins={5}
 parseUser :: String -- name
              -> String -- email
              -> String -- salary
+             -> Maybe User -- user
              -> Either String User -- user
 parseUser name email salary =
     let e = parseEmail email
@@ -102,7 +106,7 @@ parseUser name email salary =
 
 Now, users of our `parseUser` function will get more descriptive error message reports when parsing fails!
 
-```haskell
+```haskell title="GHCi session (parsing users)" frame="terminal" showLineNumbers=false
 ghci> parseUser "Foo" "yong@qi.com" "1000"
 Right (User "Foo" (Email "yong" "qi.com") 1000)
 ghci> parseUser "Foo" "yong" "1000"
@@ -114,7 +118,7 @@ Left "error: x is not a number"
 ## Accumulating Error Messages
 However, there is one case that is not handled in our validation function. Let's see what that is:
 
-```haskell
+```haskell title="GHCi session (parsing users)" frame="terminal" showLineNumbers=false
 ghci> parseUser "Foo" "abc" "x"
 Left "error: abc is not an email"
 ```
@@ -126,7 +130,7 @@ As briefly stated earlier, although the `Applicative` laws describe how an `Appl
 
 The first is to re-define `Either` as an ADT called `Validation` that is practically the same (isomorphic) to `Either`, since that structure is still useful for our purposes. The `Functor` instance of this ADT will remain the same.
 
-```haskell
+```haskell title="Validation.hs"
 data Validation err a = Success a
                       | Failure err
 
@@ -137,18 +141,20 @@ instance Functor (Validation err) where
 
 Notice that our `err` type variable remains as a type variable, instead of a pre-defined error message collection type like `[String]`. This is because, as always, we want to keep our types as general as possible so that it can be used liberally. However, it is now incumbent on us to restrict or constraint `err` in a way that makes it amenable to collecting error messages in an obvious way so that we can still use it for our purposes. In essence, we just need `err` to have some binary operation that is _associative_:
 
-\\[E_1\oplus(E_2 \oplus E_3) = (E_1 \oplus E_2) \oplus E_3 \\]
+$$
+E_1\oplus(E_2 \oplus E_3) = (E_1 \oplus E_2) \oplus E_3
+$$
 
 
 For this, we introduce the `Semigroup` typeclass which represents just that!
 
-```haskell
+```haskell title="Semigroup.hs"
 class Semigroup a where
     -- must be associative
     (<>) :: a -> a -> a 
 ```
 Any type is a semigroup as long as it is closed under an associative binary operation. With this, as long as our error is a semigroup, we can use that as our errors in `Validation`! Let us define our `Applicative` instance for this:
-```haskell
+```haskell title="Validation.hs" startLineNumber={7}
 instance Semigroup err => Applicative (Validation err) where
     pure :: a -> Validation err a
     pure = Success
@@ -163,7 +169,7 @@ Notice the double-failure case&mdash;the errors are combined or aggregated using
 
 Assuredly, using a list of strings as our error log is fine because concatenation is an associative binary operation over lists!
 
-```haskell
+```haskell showLineNumbers=false
 instance Semigroup [a] where
     (<>) :: [a] -> [a] -> [a]
     (<>) = (++)
@@ -171,28 +177,33 @@ instance Semigroup [a] where
 
 Therefore, with these definitions we can now amend our parsing functions to use our new `Validation` `Applicative`. First, as per usual, we amend `parseEmail` and `parseUser` so that they correctly use `Validation` instead of `Either`
 
-```haskell
+```haskell title="Example.hs" del={1,5,6,10,14,15} ins={2,7,8,11,16,17}
+parseEmail :: String -> Either String Email
 parseEmail :: String -> Validation [String] Email
 parseEmail email =
-    if ... then
-        Failure ["error: " ++ email ++ " is not an email"]
-    else
-        Success $ Email ...
+    if   ... 
+    then Left $ "error: " ++ email ++ " is not an email"
+    else Right $ Email ...
+    then Failure ["error: " ++ email ++ " is not an email"]
+    else Success $ Email ...
 
+parseSalary :: String -> Either String Salary
 parseSalary :: String -> Validation [String] Salary
 parseSalary salary =
-    if ... then
-        Failure ["error: " ++ salary ++ " is not a number"]
-    else
-        Success $ SInt ...
+    if   ... 
+    then Left $ "error: " ++ salary ++ " is not a number"
+    else Right $ SInt ...
+    then Failure ["error: " ++ salary ++ " is not a number"]
+    else Success $ SInt ...
 ```
 
 Once again, our `parseUser` function does not need to change, except for the type signature.
 
-```haskell
+```haskell title="Example.hs" del={4} ins={5}
 parseUser :: String -- name
              -> String -- email
              -> String -- salary
+             -> Either String User -- user
              -> Validation [String] User -- user
 parseUser name email salary =
     let e = parseEmail email
@@ -202,7 +213,7 @@ parseUser name email salary =
 
 Now, our parsing function works exactly as we want!
 
-```haskell
+```haskell title="GHCi session (parsing users)" frame="terminal" showLineNumbers=false
 ghci> parseUser "Foo" "yong@qi.com" "1000"
 Success (User "Foo" (Email "yong" "qi.com") 1000)
 ghci> parseUser "Foo" "yong" "1000"
@@ -218,7 +229,7 @@ In this chapter, we went from parsing with `Maybe`s to parsing with `Either`s an
 
 Written below is the full program for parsing users with `Maybe`. Try replacing the `Maybe`s with `Either`s, then with `Validation`s and see the outcome of running the program each time!
 
-```haskell
+```haskell title="Example.hs"
 module Main where
 
 import Control.Applicative

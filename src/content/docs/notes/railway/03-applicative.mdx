@@ -5,7 +5,7 @@ title: Applicative Functors
 What if we had 2 (or more) parallel railways and want to merge them? For example, by using `head`, we can easily retrieve the elements of the list and combine them together in whatever manner we wish:
 
 
-```
+```text showLineNumbers=false
         head         (+)
 [Int] -------> Int ━━━┓
                       ┣━━━ Int
@@ -22,7 +22,7 @@ z = x + y -- 5
 
 However, when we are using `head'`, combining them is not so easy!
 
-```
+```text showLineNumbers=false
        head'               ???
 [Int] -------> Maybe Int ━━━┓
                             ┣━━━ ???
@@ -39,10 +39,11 @@ z = x + y -- ???
 As a first attempt, let us try mapping `(+)` onto `x`:
 
 
-```haskell
+```haskell del={4} ins={6-7}
 x, y :: Maybe Int
 x = head' [1, 2, 3]
 y = head' [4, 5, 6]
+z = x + y -- ???
 
 f :: Maybe (Int -> Int)
 f = fmap (+) x
@@ -53,7 +54,7 @@ The question now is, how do we apply `f :: Maybe (Int -> Int)` above onto `y :: 
 ## Applicatives
 If a functor `f` has the ability to apply `f (a -> b)` onto a `f a` to give an `f b`, then it is an _applicative functor_, which has the same laws of a _(lax-) closed (lax-) monoidal functor_ in category theory. Although we could give the formal definition of these, it is quite a lot to unpack, and not necessary for understanding how to use them. Instead, let us directly show the `Applicative` typeclass and some _laws_ that govern these typeclass methods.
 
-```haskell
+```haskell title="Applicative.hs"
 class Functor f => Applicative f where
     -- pure computation in context
     pure :: a -> f a 
@@ -70,7 +71,7 @@ These methods are subject to:
 The four laws above, again, govern `Applicatives` to behave in the obvious way. However, as we shall see, there is more than one _obvious way_, therefore, whenever you're using instances of `Functor`s, `Applicative`s and some of the other typeclasses, ensure you read their documentation to understand _which_ obvious way it behaves.
 
 Let us look at an example `Applicative` instance:
-```haskell
+```haskell title="Applicative.hs"
 instance Applicative Maybe where
     pure :: a -> Maybe a
     pure = Just
@@ -95,7 +96,7 @@ Finally, using `<*>` again allows us to apply the resulting function onto `y`, g
 
 `pure f <*> x <*> y :: Maybe c`
 
-```
+```text showLineNumbers=false
                   pure f   
 Maybe a --<*>--> ━━━┓
                     ┣━━━━ Maybe c
@@ -104,7 +105,7 @@ Maybe b --<*>--> ━━━┛
 
 However, recall from our very first example that we had attempted to use `fmap` to apply `(+)` onto a `Maybe Int` to give a `Maybe (Int -> Int)`. Now we know that we can directly use this result and apply it onto another `Maybe Int` to give us a `Maybe Int`, thereby applying `(+)` in context! This is a natural consequence of the applicative laws, where `pure f <*> x` is the same as `fmap f x`!
 
-```haskell
+```haskell showLineNumbers=false
 pure f <*> x == Just f <*> x
              == case x of
                     Just y -> Just $ f y
@@ -113,7 +114,7 @@ pure f <*> x == Just f <*> x
 ```
 Therefore, Haskell also defines a function `<$>` as an alias of `fmap`:
 
-```haskell
+```haskell title="Functor.hs"
 (<$>) :: Functor f => (a -> b) -> f a -> f b
 (<$>) = fmap
 ```
@@ -134,10 +135,13 @@ z = case (x, y) of
 
 Don't torture yourself! Instead, knowing that `Maybe` is an applicative (and therefore also a functor), let us just use `<$>` and `<*>`!
 
-```haskell
+```haskell del={4-6} ins={7}
 x, y, z :: Maybe Int
 x = head' [1, 2, 3]
 y = head' [4, 5, 6]
+z = case (x, y) of
+    (Just x, Just y) -> x + y
+    _ -> Nothing
 z = (+) <$> x <*> y -- Just 5
 ```
 
