@@ -115,8 +115,85 @@ ghci> l $ l $ l w
 Let us create a data structure that represents
 sorted sets. These are collections that contain unique elements and are
 sorted in ascending order. A natural data structure that can represent
-such sets is the Binary Search Tree (BST) abstract data type (ADT).
+such sets is the Binary Search Tree (BST) abstract data type (ADT). For those
+already know what BSTs are, skip ahead to the question. Otherwise, we summarize
+what BSTs are and how operations on them are defined.
 
+
+### Definition of BST
+First of all, let us define what a BST is.
+
+:::theorem{#def:tree title="Tree"}
+A Tree is an abstract data structure representing a hierarchical tree structure with a set of connected nodes. Each node can be connected to many children but must be connected to exactly one parent, except for the root node which has no parent. Trees have no cycles or loops.
+:::
+
+:::theorem{#def:bin-tree title="Binary Tree"}
+A Binary Tree is a tree where each node has up to two children.
+:::
+
+Here is an example of a binary tree of integers.
+```haskell showLineNumbers=false
+            4
+      ┏━━━━━┻━━━┓
+      3         1
+  ┏━━━┛         ┻━┓
+  8               9
+┏━┻━┓      
+0   4    
+```
+
+The root is the node on top with value `4` and has two children. Some of the other nodes have 0, 1 or two children. There are no cycles in this tree.
+
+Notice that this definition allows us to define binary trees recursively, just like how lists are defined. A binary tree is either:
+1. The empty tree
+2. A node with a left child (also a binary tree), a value at the node, and a right child (also a binary tree).
+
+:::theorem{#def:bintree title="Binary Search Tree"}
+A Binary Search Tree (BST) is a binary tree with the following invariants:
+1. Values in the BST are all unique
+2. Suppose we have a node $n$ with left child $l$ and right child $r$. The value at $n$ is larger than all nodes in $l$ and smaller than all nodes in $r$.
+:::
+
+Here is an example BST of integers. Notice that the value of any node is larger than all the values in its left child (if it exists) and smaller than all the values in the right child (if it exists). The values are also all unique.
+
+```haskell showLineNumbers=false
+            7
+      ┏━━━━━┻━━━┓
+      3         9
+  ┏━━━┻━━━┓   ┏━┻━┓
+  1       5   8   10
+┏━┻━┓   ┏━┛
+0   2   4
+```
+
+### Operations on BSTs
+There are several operations we might consider. 
+
+
+#### Search
+The first is checking whether an element is a member of a BST.
+The algorithm for doing so is quite simple. Given an element $$x$$ and a tree $$t$$:
+1. If $$t$$ is empty, then return False.
+2. Otherwise, $$t$$ is a node with left child $$l$$, right child $$r$$ and value $$v$$.
+    1. If $$x = v$$, then return True.
+    2. If $$x < v$$, $$x$$ must be in the left child $$l$$, so recursively search for $$x$$ in $$l$$.
+    3. Otherwise, $$x > v$$ and thus $$x$$ must be in the right child $$r$$, so recursively search for $$x$$ in $$r$$.
+
+#### Insertion
+The next is inserting an element to a BST. Doing so is very similar to search.
+Given an element to insert $$x$$ and tree $$t$$:
+1. If $$t$$ is empty, then return a node $$n$$ with empty children and value $$x$$.
+2. Otherwise, $$t$$ is a node with left child $$l$$, right child $$r$$ and value $$v$$.
+    1. If $$x = v$$, then return $$t$$ itself unmodified since values in a BST are unique.
+    2. If $$x < v$$, $$x$$ must be in the left child $$l$$, so recursively insert $$x$$ into $$l$$, returning $$l'$$. Return a new tree $$t'$$ with the new left child $$l'$$, the same value $$v$$ and the same right child $$r$$.
+    3. Otherwise, $$x > v$$ and thus $$x$$ must be in the right child $$r$$, so recursively insert $$x$$ into $$r$$ returning $$r'$$. Return a new tree $$t'$$ with the same left child $$l$$, same value $$v$$ and the new right child $$r'$$.
+
+#### Values in List 
+The last operation we can do is to obtain a sorted list of all the elements in a BST. By design, the BST keeps track of the ordering of the elements within it. This makes obtaining a sorted list of all the elements within it incredibly simple. The way we do so is via an in-order traversal of the BST $$t$$, defined as follows:
+1. If $$t$$ is empty, return the empty list
+2. Otherwise, $$t$$ is a node with left child $$l$$, value $$v$$ and right child $$r$$. The in-order traversal of $$t$$ is the in-order traversal of $$l$$, concatenated with the node $$v$$, then concatenated with the in-order traversal of $$r$$.
+
+### Question
 Create a new type `SortedSet`. Then define the following
 functions:
 
@@ -133,7 +210,8 @@ functions:
 Note that if any of your functions perform any comparison operations
 (`>` etc.), you will need to include the `Ord a =>` constraint
 over the elements of the sorted set or list at the beginning of the type
-signature of those functions. Example runs follow:
+signature of those functions. For example: the type of `setToList` might have `Ord a => SortedSet a -> [a]`.
+Example runs follow:
 
 ```haskell title="GHCi session (sorted sets example run)" frame="terminal" showLineNumbers=false
 ghci> setToList $ (sortedSet []) @+ 1
