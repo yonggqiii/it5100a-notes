@@ -54,7 +54,7 @@ title: Haskell Basics
     `[fst x | x <- ...]` would therefore give
     `[1,1,1,2,2,2,3,3,3,4,4,4]` which sums to 30.
 
-### Question 2
+## Question 2
 Idea: take the last elements of both lists, and check for
 equality. For this, we can use the `last` function.
 
@@ -62,7 +62,7 @@ equality. For this, we can use the `last` function.
 eqLast xs ys = last xs == last ys
 ```
 
-### Question 3
+## Question 3
 Idea: reverse the string, and check if the string and its
 reverse are equal. For this, we can use the `reverse`
 function.
@@ -71,13 +71,13 @@ function.
 isPalindrome w = w == reverse w
 ```
 
-### Question 4
+## Question 4
 
 ```haskell title="TaxiFare.hs"
 taxiFare f r d = f + r * d
 ```
 
-### Question 5
+## Question 5
 There are several ways to approach this problem. Let us
 first define the `ingredientPrice` function which should be
 straightforward to do.
@@ -168,7 +168,7 @@ $$
 This style of writing functions is known as _point-free_ style, where functions are expressed 
 as a _composition_ of functions.
 
-### Question 6
+## Question 6
 Again, there are several ways to solve this. To do so
 numerically, we can define our function recursively:
 
@@ -254,7 +254,7 @@ Obtaining the sum of this list gives us exactly what we want. Thus, our
 sumDigits = sum . map (read . return) . show
 ```
 
-### Question 7
+## Question 7
 Idea: drop the first `start` elements, then take the
 `stop - start` elements after that.
 
