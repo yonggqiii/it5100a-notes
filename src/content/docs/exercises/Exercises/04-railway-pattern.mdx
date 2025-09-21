@@ -330,6 +330,10 @@ ghci> choose 3 6
 Failure ["n - k cannot be negative!"]
 ```
 
-> Tip: With the `-XApplicativeDo` extension, you can actually use `do` notation on `Functor`s and `Applicative`s. Give it a try by defining `choose` using `do`-notation! For more information on the conditions for when you can use `Applicative` `do`-notation, see the [GHC Users Guide](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/applicative_do.html).
+:::tip
+With the `-XApplicativeDo` extension, you can actually use `do` notation on `Functor`s and `Applicative`s. Give it a try by defining `choose` using `do`-notation! For more information on the conditions for when you can use `Applicative` `do`-notation, see the [GHC Users Guide](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/applicative_do.html).
+:::
 
-> Note: `Validation` is not included in Haskell's Prelude. You can use the `Validation` datatype definition and its supporting typeclass instances as defined in the hands-on portion of [Chapter 4.4 (Railway Pattern#Validation)](/it5100a-notes/notes/railway/04-validation/).
+:::note
+`Validation` is not included in Haskell's Prelude. You can use the `Validation` datatype definition and its supporting typeclass instances as defined in the hands-on portion of [Chapter 4.4 (Railway Pattern#Validation)](/it5100a-notes/notes/railway/04-validation/).
+:::
